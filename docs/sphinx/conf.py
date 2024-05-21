@@ -10,7 +10,7 @@ import subprocess, sys, os
 
 def run_doxygen(folder):
     try:
-        print("Moving to %s" % folder)
+        print("Moving to %s" % os.get_abs_path(folder))
         os.chdir(folder)
         print("Running doxygen")
         retcode = subprocess.call('doxygen', shell=True)
@@ -28,29 +28,22 @@ def generate_doxygen_xml(app):
         os.makedirs('build', exist_ok=True)
         run_doxygen('..')
 
-generate_doxygen_xml(None)
-#def setup(app):
-#    app.connect('builder-inited', generate_doxygen_xml)
+def setup(app):
+    app.connect('builder-inited', generate_doxygen_xml)
+
+html_extra_path = ['../build/xml']
 
 project = 'ChessEngine'
 copyright = '2024, Matthew Brown'
 author = 'Matthew Brown'
 release = 'v0.0.1'
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
     'breathe'
 ]
 
 templates_path = ['_templates']
-exclude_patterns = ['Doxyfile']
-
-
-
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'alabaster'
 
@@ -60,6 +53,3 @@ breathe_projects = {
 
 breathe_default_project = "ChessEngine"
 
-
-html_static_path = ['_static']
-html_extra_path = ['../build/xml']
