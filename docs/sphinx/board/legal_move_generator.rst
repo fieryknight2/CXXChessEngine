@@ -1,4 +1,4 @@
 Legal Move Generator
 ====================
 
-.. doxygenfile:: chess_engine/board/legal_move_generator.h
+.. doxygenfile:: source/include/chess_engine/board/legal_move_generator.h
