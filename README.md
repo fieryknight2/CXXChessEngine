@@ -40,7 +40,7 @@ installed and a program such as Visual Studio, Make or Ninja installed.
 To run the program, simply execute the `ChessEngine` or `ChessEngine.exe` executable file.
 
 ```bash
-./ChessEngine
+./chess_engine
 ```
 
 The program will prompt the user to enter a move, and then it will
