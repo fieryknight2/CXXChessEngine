@@ -10,17 +10,4 @@ Welcome to ChessEngine's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. doxygenfunction::
-   :members:
-.. doxygenindex::
-   :members:
-.. doxygenfunction::
-   :members:
-.. doxygenstruct::
-   :members:
-.. doxygenenum::
-   :members:
-.. doxygentypedef::
-   :members:
-.. doxygenclass::
-   :members:
+   board/legal_move_generator
