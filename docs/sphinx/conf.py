@@ -28,10 +28,10 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
-html_extra_path = ['../html']
+html_extra_path = ['../xml']
 
 breathe_projects = {
-    "ChessEngine": "../html"
+    "ChessEngine": "../xml"
 }
 
 breathe_default_project = "ChessEngine"
