@@ -10,15 +10,11 @@ import subprocess, sys, os, os.path
 
 def run_doxygen(folder):
     try:
-        print("Moving to %s" % os.path.abspath(folder))
         os.chdir(folder)
-        print("Running doxygen")
         retcode = subprocess.call('doxygen', shell=True)
         if retcode < 0:
             sys.stderr.write("doxygen terminated by signal {:d}".format(retcode))
-        print(os.listdir())
         os.chdir('..')
-        print("Returned")
 
     except OSError as e:
         sys.stderr.write("doxygen execution failed: {}".format(e))
