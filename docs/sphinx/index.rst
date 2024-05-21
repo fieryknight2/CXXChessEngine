@@ -10,11 +10,10 @@ Welcome to ChessEngine's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. doxygenfunction:: ChessEngine::board::move_generator::generate_legal_moves
+.. doxygenindex::
+.. doxygenfunction::
+.. doxygenstruct::
+.. doxygenenum::
+.. doxygentypedef::
+.. doxygenclass::

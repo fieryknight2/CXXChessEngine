@@ -14,7 +14,9 @@ release = 'v0.0.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'breathe'
+]
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -28,10 +30,30 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 html_extra_path = ['../html']
 
-import subprocess, os
+breathe_projects = {
+    "ChessEngine": "../html"
+}
 
-read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+breathe_default_project = "ChessEngine"
 
-if read_the_docs_build:
-    subprocess.call('cd ..; doxygen', shell=True)
+import subprocess, sys
+
+
+def run_doxygen(folder):
+    try:
+        retcode = subprocess.call('cd %s; doxygen' % folder, shell=True)
+        if retcode < 0:
+            sys.stderr.write("doxygen terminated by signal {:d}".format(retcode))
+    except OSError as e:
+        sys.stderr.write("doxygen execution failed: {}".format(e))
+
+
+def generate_doxygen_xml(app):
+    read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+    if read_the_docs_build:
+        run_doxygen('../../docs')
+
+def setup(app):
+    app.connect('builder-inited', generate_doxygen_xml)
 
