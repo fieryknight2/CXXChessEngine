@@ -10,9 +10,13 @@ import subprocess, sys, os
 
 def run_doxygen(folder):
     try:
-        retcode = subprocess.call('cd %s; doxygen ./Doxyfile' % folder, shell=True)
+        print("Moving to %s" % folder)
+        os.chdir(folder)
+        print("Running doxygen")
+        retcode = subprocess.call('doxygen', shell=True)
         if retcode < 0:
             sys.stderr.write("doxygen terminated by signal {:d}".format(retcode))
+        os.chdir('..')
     except OSError as e:
         sys.stderr.write("doxygen execution failed: {}".format(e))
 
