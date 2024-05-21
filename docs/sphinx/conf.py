@@ -5,7 +5,7 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import subprocess, sys
+import subprocess, sys, os
 
 
 def run_doxygen(folder):
