@@ -1,4 +1,4 @@
 Legal Move Generator
 ====================
 
-.. doxygenfile:: legal_move_generator
+.. doxygenfile:: board/legal_move_generator
