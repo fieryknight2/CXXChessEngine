@@ -9,15 +9,11 @@ import subprocess, sys, os, os.path
 
 
 def run_doxygen(folder):
-    try:
-        os.chdir(folder)
-        retcode = subprocess.call('doxygen', shell=True)
-        if retcode < 0:
-            sys.stderr.write("doxygen terminated by signal {:d}".format(retcode))
-        os.chdir('..')
-
-    except OSError as e:
-        sys.stderr.write("doxygen execution failed: {}".format(e))
+    os.chdir(folder)
+    retcode = subprocess.call('doxygen', shell=True)
+    if retcode < 0:
+        sys.stderr.write("doxygen terminated by signal {:d}".format(retcode))
+    os.chdir('..')
 
 
 def generate_doxygen_xml(app):
@@ -28,8 +24,10 @@ def generate_doxygen_xml(app):
         os.makedirs('../build/xml', exist_ok=True)
         run_doxygen('..')
 
+
 def setup(app):
     app.connect('builder-inited', generate_doxygen_xml)
+
 
 html_extra_path = ['../build/xml']
 
@@ -45,7 +43,7 @@ extensions = [
 
 templates_path = ['_templates']
 
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 breathe_projects = {
     "ChessEngine": "../build/xml"
