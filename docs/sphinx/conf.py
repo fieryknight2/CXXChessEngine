@@ -50,11 +50,11 @@ exclude_patterns = ['Doxyfile']
 html_theme = 'alabaster'
 
 breathe_projects = {
-    "ChessEngine": "../xml"
+    "ChessEngine": "../build/xml"
 }
 
 breathe_default_project = "ChessEngine"
 
 
 html_static_path = ['_static']
-html_extra_path = ['../xml']
+html_extra_path = ['../build/xml']
