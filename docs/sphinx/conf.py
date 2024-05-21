@@ -10,7 +10,7 @@ import subprocess, sys, os
 
 def run_doxygen(folder):
     try:
-        retcode = subprocess.call('cd %s; doxygen' % folder, shell=True)
+        retcode = subprocess.call('cd %s; doxygen .' % folder, shell=True)
         if retcode < 0:
             sys.stderr.write("doxygen terminated by signal {:d}".format(retcode))
     except OSError as e:
@@ -21,7 +21,7 @@ def generate_doxygen_xml(app):
     read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
     if read_the_docs_build:
-        run_doxygen('../../docs')
+        run_doxygen('..')
 
 generate_doxygen_xml(None)
 #def setup(app):
@@ -40,7 +40,7 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['Doxyfile']
 
 
 
