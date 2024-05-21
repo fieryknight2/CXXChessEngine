@@ -10,7 +10,7 @@ PROJECT_BRIEF          = "A C++ Chess Engine for Learning"
 
 PROJECT_LOGO           =
 
-OUTPUT_DIRECTORY       = ./docs/build
+OUTPUT_DIRECTORY       = ../docs/build
 
 CREATE_SUBDIRS         = NO
 
