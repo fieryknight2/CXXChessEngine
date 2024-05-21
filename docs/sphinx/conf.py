@@ -5,12 +5,12 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import subprocess, sys, os
+import subprocess, sys, os, os.path
 
 
 def run_doxygen(folder):
     try:
-        print("Moving to %s" % os.get_abs_path(folder))
+        print("Moving to %s" % os.path.abspath(folder))
         os.chdir(folder)
         print("Running doxygen")
         retcode = subprocess.call('doxygen', shell=True)
