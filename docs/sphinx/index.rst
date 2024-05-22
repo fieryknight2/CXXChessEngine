@@ -11,3 +11,5 @@ Welcome to ChessEngine's documentation!
    :caption: Contents:
 
    board/legal_move_generator
+   board/move_generator
+   board/attack_generator
