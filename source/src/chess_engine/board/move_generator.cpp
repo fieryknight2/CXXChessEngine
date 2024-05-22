@@ -23,90 +23,83 @@
  * move_generator.cpp - Constants used in the program
  * @author Matthew Brown
  * @date 05/21/2024
-*****************************************************************************/
+ *****************************************************************************/
 #include "chess_engine/board/move_generator.h"
 
 
 /** Generates all legal moves on the board for the given piece
-*
-* Determines which function to call based on the piece type, it may
-* be more efficient to call the appropriate function directly.
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
+ *
+ * Determines which function to call based on the piece type, it may
+ * be more efficient to call the appropriate function directly.
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
 
-void get_moves(std::stack<int>* moves, int* board, int piece) {
-}
+void get_moves(std::stack<int> *moves, int *board, int piece) {}
 
 
 /** Generates all legal moves on the board for the given pawn
-*
-* See documentation for legal_pawn_moves() for more information
-* This function returns all possible moves, and does not check for
-* legality.
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
-void get_pawn_moves(std::stack<int>* moves, int* board, int piece) {
-}
+ *
+ * See documentation for legal_pawn_moves() for more information
+ * This function returns all possible moves, and does not check for
+ * legality.
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
+void get_pawn_moves(std::stack<int> *moves, int *board, int piece) {}
 
 
 /** Generates all legal moves on the board for the given knight
-*
-* See documentation for legal_knight_moves() for more information
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
-void get_knight_moves(std::stack<int>* moves, int* board, int piece) {
-}
+ *
+ * See documentation for legal_knight_moves() for more information
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
+void get_knight_moves(std::stack<int> *moves, int *board, int piece) {}
 
 
 /** Generates all legal moves on the board for the given bishop
-*
-* See documentation for legal_bishop_moves() for more information
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
-void get_bishop_moves(std::stack<int>* moves, int* board, int piece) {
-}
+ *
+ * See documentation for legal_bishop_moves() for more information
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
+void get_bishop_moves(std::stack<int> *moves, int *board, int piece) {}
 
 /** Generates all legal moves on the board for the given rook
-*
-* See documentation for legal_rook_moves() for more information
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
-void get_rook_moves(std::stack<int>* moves, int* board, int piece) {
-}
+ *
+ * See documentation for legal_rook_moves() for more information
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
+void get_rook_moves(std::stack<int> *moves, int *board, int piece) {}
 
 /** Generates all legal moves on the board for the given queen
-*
-* See documentation for legal_queen_moves() for more information
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
-void get_queen_moves(std::stack<int>* moves, int* board, int piece) {
-}
+ *
+ * See documentation for legal_queen_moves() for more information
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
+void get_queen_moves(std::stack<int> *moves, int *board, int piece) {}
 
 /** Generates all legal moves on the board for the given king
-*
-* See documentation for legal_king_moves() for more information
-*
-* @param moves Stack of moves to add to
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-*/
-void get_king_moves(std::stack<int>* moves, int* board, int piece) {
-}
+ *
+ * See documentation for legal_king_moves() for more information
+ *
+ * @param moves Stack of moves to add to
+ * @param board List of all pieces and their locations on the board
+ * @param piece The piece to generate legal moves for
+ */
+void get_king_moves(std::stack<int> *moves, int *board, int piece) {}
