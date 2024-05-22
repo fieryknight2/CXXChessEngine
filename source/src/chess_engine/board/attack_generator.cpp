@@ -26,15 +26,7 @@
 *****************************************************************************/
 #include "chess_engine/board/move_generator.h"
 
-/** Generates all legal moves on the board for the given piece
-*
-* Determines which function to call based on the piece type, it may
-* be more efficient to call the appropriate function directly.
-*
-* @param board List of all pieces and their locations on the board
-* @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
-*/
+
 std::stack<std::pair<int, int>> get_attacks(char* board, int piece) {
 
  return std::stack<std::pair<int, int>>{};
