@@ -26,97 +26,95 @@
 *****************************************************************************/
 #include "chess_engine/board/move_generator.h"
 
+/** Generates all legal moves on the board for the given piece
+*
+* Determines which function to call based on the piece type, it may
+* be more efficient to call the appropriate function directly.
+*
+* @param board List of all pieces and their locations on the board
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
 std::stack<std::pair<int, int>> get_attacks(char* board, int piece) {
- /** Generates all legal moves on the board for the given piece
- *
- * Determines which function to call based on the piece type, it may
- * be more efficient to call the appropriate function directly.
- *
- * @param board List of all pieces and their locations on the board
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
 
  return std::stack<std::pair<int, int>>{};
 }
 
 
-std::stack<int> get_pawn_attacks(char* board, int piece) {
- /** Generates all legal moves on the board for the given pawn
- *
- * See documentation for legal_pawn_moves() for more information
- * Pawn attacks don't depend on the board so slight time save
- *
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
-
+/** Generates all legal moves on the board for the given pawn
+*
+* See documentation for legal_pawn_moves() for more information
+* Pawn attacks don't depend on the board so slight time save
+*
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
+std::stack<int> get_pawn_attacks(int piece) {
  return std::stack<int>{};
 }
 
+/** Generates all legal moves on the board for the given knight
+*
+* The knight only attacks the 8 possible squares and doesn't require the
+* board to be passed in.
+*
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
 std::stack<int> get_knight_attacks(int piece) {
- /** Generates all legal moves on the board for the given knight
- *
- * The knight only attacks the 8 possible squares and doesn't require the
- * board to be passed in.
- *
- * @param board List of all pieces and their locations on the board
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
 
  return std::stack<int>{};
 }
 
 
+/** Generates all legal moves on the board for the given bishop
+*
+* See documentation for legal_bishop_moves() for more information
+*
+* @param board List of all pieces and their locations on the board
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
 std::stack<int> get_bishop_attacks(char* board, int piece) {
- /** Generates all legal moves on the board for the given bishop
- *
- * See documentation for legal_bishop_moves() for more information
- *
- * @param board List of all pieces and their locations on the board
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
 
  return std::stack<int>{};
 }
 
+/** Generates all legal moves on the board for the given rook
+*
+* See documentation for legal_rook_moves() for more information
+*
+* @param board List of all pieces and their locations on the board
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
 std::stack<int> get_rook_attacks(char* board, int piece) {
- /** Generates all legal moves on the board for the given rook
- *
- * See documentation for legal_rook_moves() for more information
- *
- * @param board List of all pieces and their locations on the board
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
 
  return std::stack<int>{};
 }
 
+/** Generates all legal moves on the board for the given queen
+*
+* See documentation for legal_queen_moves() for more information
+*
+* @param board List of all pieces and their locations on the board
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
 std::stack<int> get_queen_attacks(char* board, int piece) {
- /** Generates all legal moves on the board for the given queen
- *
- * See documentation for legal_queen_moves() for more information
- *
- * @param board List of all pieces and their locations on the board
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
 
  return std::stack<int>{};
 }
 
+/** Generates all legal moves on the board for the given king
+*
+* See documentation for legal_king_moves() for more information
+*
+* @param board List of all pieces and their locations on the board
+* @param piece The piece to generate legal moves for
+* @return All possible legal moves for the given piece
+*/
 std::stack<int> get_king_attacks(char* board, int piece) {
- /** Generates all legal moves on the board for the given king
- *
- * See documentation for legal_king_moves() for more information
- *
- * @param board List of all pieces and their locations on the board
- * @param piece The piece to generate legal moves for
- * @return All possible legal moves for the given piece
- */
 
  return std::stack<int>{};
 }
