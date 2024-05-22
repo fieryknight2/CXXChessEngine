@@ -37,7 +37,7 @@
 * @param color The color of pieces to generate legal moves for
 * @return All possible legal moves for the given color
 */
-void generate_legal_moves(std::stack<std::pair<int, int>>* legal_moves, char* board, bool color) {
+void generate_legal_moves(std::stack<std::pair<int, int>>* legal_moves, int* board, bool color) {
 }
 
 
@@ -51,7 +51,7 @@ void generate_legal_moves(std::stack<std::pair<int, int>>* legal_moves, char* bo
 * @param piece The piece to generate legal moves for
 * @return All possible legal moves for the given piece
 */
-void generate_legal_moves(std::stack<int>* legal_moves, char* board, int piece) {
+void generate_legal_moves(std::stack<int>* legal_moves, int* board, int piece) {
 }
 
 /** Generate the legal moves for a given pawn
@@ -69,7 +69,7 @@ void generate_legal_moves(std::stack<int>* legal_moves, char* board, int piece) 
 * @return A stack of all legal moves for the given piece
 */
 
-void legal_pawn_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc, int enPassantSquare) {
+void legal_pawn_moves(std::stack<int>* legal_moves, int* board, int piece, int kingLoc, int enPassantSquare) {
 }
 
 
@@ -84,7 +84,7 @@ void legal_pawn_moves(std::stack<int>* legal_moves, char* board, int piece, int 
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-void legal_knight_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
+void legal_knight_moves(std::stack<int>* legal_moves, int* board, int piece, int kingLoc) {
 }
 
 
@@ -98,7 +98,7 @@ void legal_knight_moves(std::stack<int>* legal_moves, char* board, int piece, in
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-void legal_bishop_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
+void legal_bishop_moves(std::stack<int>* legal_moves, int* board, int piece, int kingLoc) {
 }
 
 /** Generate the legal moves for a given rook
@@ -111,7 +111,7 @@ void legal_bishop_moves(std::stack<int>* legal_moves, char* board, int piece, in
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-void legal_rook_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
+void legal_rook_moves(std::stack<int>* legal_moves, int* board, int piece, int kingLoc) {
 }
 
 /** Generate the legal moves for a given queen
@@ -124,7 +124,7 @@ void legal_rook_moves(std::stack<int>* legal_moves, char* board, int piece, int 
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-void legal_queen_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
+void legal_queen_moves(std::stack<int>* legal_moves, int* board, int piece, int kingLoc) {
 }
 
 /** Generate the legal moves for a given king
@@ -137,5 +137,5 @@ void legal_queen_moves(std::stack<int>* legal_moves, char* board, int piece, int
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-void legal_king_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
+void legal_king_moves(std::stack<int>* legal_moves, int* board, int piece, int kingLoc) {
 }

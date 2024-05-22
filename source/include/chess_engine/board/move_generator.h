@@ -29,33 +29,33 @@
 
 #include <stack>
 
-void generate_legal_moves(std::stack<std::pair<int, int>>*, const char*, bool);
-void generate_legal_moves(std::stack<int>*, const char*, int);
+void generate_legal_moves(std::stack<std::pair<int, int>>*, const int*, bool);
+void generate_legal_moves(std::stack<int>*, const int*, int);
 
-void legal_pawn_moves(std::stack<int>*, const char*, int, int=-1, int=-1);
-void legal_knight_moves(std::stack<int>*, const char*, int, int=-1);
-void legal_bishop_moves(std::stack<int>*, const char*, int, int=-1);
-void legal_rook_moves(std::stack<int>*, const char*, int, int=-1);
-void legal_queen_moves(std::stack<int>*, const char*, int, int=-1);
-void legal_king_moves(std::stack<int>*, const char*, int, int=-1);
+void legal_pawn_moves(std::stack<int>*, const int*, int, int=-1, int=-1);
+void legal_knight_moves(std::stack<int>*, const int*, int, int=-1);
+void legal_bishop_moves(std::stack<int>*, const int*, int, int=-1);
+void legal_rook_moves(std::stack<int>*, const int*, int, int=-1);
+void legal_queen_moves(std::stack<int>*, const int*, int, int=-1);
+void legal_king_moves(std::stack<int>*, const int*, int, int=-1);
 
-void get_moves(std::stack<std::pair<int, int>>*, char*, int);
+void get_moves(std::stack<int>*, const int*, int);
 
-void get_pawn_moves(std::stack<int>*, const char*, int);
-void get_knight_moves(std::stack<int>*, const char*, int);
-void get_bishop_moves(std::stack<int>*, const char*, int);
-void get_rook_moves(std::stack<int>*, const char*, int);
-void get_queen_moves(std::stack<int>*, const char*, int);
-void get_king_moves(std::stack<int>*, const char*, int);
+void get_pawn_moves(std::stack<int>*, const int*, int);
+void get_knight_moves(std::stack<int>*, const int*, int);
+void get_bishop_moves(std::stack<int>*, const int*, int);
+void get_rook_moves(std::stack<int>*, const int*, int);
+void get_queen_moves(std::stack<int>*, const int*, int);
+void get_king_moves(std::stack<int>*, const int*, int);
 
-void get_attacks(std::stack<std::pair<int, int>>*, char*, int);
+void get_attacks(std::stack<int>*, int*, int);
 
 void get_pawn_attacks(std::stack<int>*, bool, int);
-void get_pawn_attacks(std::stack<int>*, const char*, int);
+void get_pawn_attacks(std::stack<int>*, const int*, int);
 void get_knight_attacks(std::stack<int>*, int);
-void get_bishop_attacks(std::stack<int>*, const char*, int);
-void get_rook_attacks(std::stack<int>*, const char*, int);
-void get_queen_attacks(std::stack<int>*, const char*, int);
+void get_bishop_attacks(std::stack<int>*, const int*, int);
+void get_rook_attacks(std::stack<int>*, const int*, int);
+void get_queen_attacks(std::stack<int>*, const int*, int);
 void get_king_attacks(std::stack<int>*, int);
 
 #endif // legal_move_generator_H

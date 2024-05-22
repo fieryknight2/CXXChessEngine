@@ -37,7 +37,24 @@
  * @param piece The piece to generate legal moves for
  * @return All possible legal moves for the given piece
  */
-void get_attacks(std::stack<std::pair<int, int>>* attacks, char *board, int piece) {
+void get_attacks(std::stack<int>* attacks, const char *board, const int piece) {
+    std::stack<int> temp;
+    switch (board[piece]) {
+        case 0: // Empty square
+            break;
+        case 1: // White pawn
+            get_pawn_attacks(attacks, false, piece);
+            break;
+        case -1: // Black pawn
+            get_pawn_attacks(attacks, true, piece);
+            break;
+        case 2: // White knight
+            get_knight_attacks(attacks, piece);
+            break;
+        case -2: // Black knight
+            get_knight_attacks(attacks, piece);
+            break;
+    }
 }
 
 
@@ -59,21 +76,20 @@ void get_pawn_attacks(std::stack<int>* attacks, const char *board, const int pie
         return;
     }
 
-    if (board[piece] > 0) { // White pawn
-        if (piece % 8) {
-            attacks->push(piece + 8);
+    if (board[piece] < 0) { // Black pawn
+        if (piece % 8 > 0) {
+            attacks->push(piece - 9); // Left side (white perspective)
         }
-        if (board[piece] == board[piece - 8]) {
-            attacks->push(piece - 8);
+        if (piece % 8 < 7) {
+            attacks->push(piece - 7); // Right side
         }
     }
-    else // Black pawn
-    {
-        if (board[piece] == board[piece + 8]) {
-            attacks->push(piece - 8);
+    else { // White pawn
+        if (piece % 8 > 0) {
+            attacks->push(piece + 7); // Right side
         }
-        if (board[piece] == board[piece - 8]) {
-            attacks->push(piece + 8);
+        if (piece % 8 < 7) {
+            attacks->push(piece + 9); // Left side
         }
     }
 }
@@ -85,11 +101,31 @@ void get_pawn_attacks(std::stack<int>* attacks, const char *board, const int pie
  * This version allows you to specify the color of the pawn
  *
  * @param attacks Stacks to add attacks too
- * @param color Color of the pawn
+ * @param color Color of the pawn. True for White; false for Black
  * @param piece The piece to generate legal moves for
  * @return All possible legal moves for the given piece
  */
 void get_pawn_attacks(std::stack<int>* attacks, bool color, int piece) {
+    if (!attacks or piece < 8 or piece > 55) {
+        return;
+    }
+
+    if (color) { // Black pawn
+        if (piece % 8 > 0) {
+            attacks->push(piece - 9); // Left side (white perspective)
+        }
+        if (piece % 8 < 7) {
+            attacks->push(piece - 7); // Right side
+        }
+    }
+    else { // White pawn
+        if (piece % 8 > 0) {
+            attacks->push(piece + 7); // Right side
+        }
+        if (piece % 8 < 7) {
+            attacks->push(piece + 9); // Left side
+        }
+    }
 }
 
 /** Generates all legal moves on the board for the given knight

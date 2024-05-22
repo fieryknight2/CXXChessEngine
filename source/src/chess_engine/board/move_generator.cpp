@@ -37,7 +37,7 @@
 * @param piece The piece to generate legal moves for
 */
 
-void get_moves(std::stack<std::pair<int, int>>* moves, char* board, int piece) {
+void get_moves(std::stack<int>* moves, int* board, int piece) {
 }
 
 
@@ -51,7 +51,7 @@ void get_moves(std::stack<std::pair<int, int>>* moves, char* board, int piece) {
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 */
-void get_pawn_moves(std::stack<int>* moves, char* board, int piece) {
+void get_pawn_moves(std::stack<int>* moves, int* board, int piece) {
 }
 
 
@@ -63,7 +63,7 @@ void get_pawn_moves(std::stack<int>* moves, char* board, int piece) {
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 */
-void get_knight_moves(std::stack<int>* moves, char* board, int piece) {
+void get_knight_moves(std::stack<int>* moves, int* board, int piece) {
 }
 
 
@@ -75,7 +75,7 @@ void get_knight_moves(std::stack<int>* moves, char* board, int piece) {
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 */
-void get_bishop_moves(std::stack<int>* moves, char* board, int piece) {
+void get_bishop_moves(std::stack<int>* moves, int* board, int piece) {
 }
 
 /** Generates all legal moves on the board for the given rook
@@ -86,7 +86,7 @@ void get_bishop_moves(std::stack<int>* moves, char* board, int piece) {
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 */
-void get_rook_moves(std::stack<int>* moves, char* board, int piece) {
+void get_rook_moves(std::stack<int>* moves, int* board, int piece) {
 }
 
 /** Generates all legal moves on the board for the given queen
@@ -97,7 +97,7 @@ void get_rook_moves(std::stack<int>* moves, char* board, int piece) {
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 */
-void get_queen_moves(std::stack<int>* moves, char* board, int piece) {
+void get_queen_moves(std::stack<int>* moves, int* board, int piece) {
 }
 
 /** Generates all legal moves on the board for the given king
@@ -108,5 +108,5 @@ void get_queen_moves(std::stack<int>* moves, char* board, int piece) {
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 */
-void get_king_moves(std::stack<int>* moves, char* board, int piece) {
+void get_king_moves(std::stack<int>* moves, int* board, int piece) {
 }
