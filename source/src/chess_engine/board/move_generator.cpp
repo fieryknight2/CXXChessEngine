@@ -32,13 +32,12 @@
 * Determines which function to call based on the piece type, it may
 * be more efficient to call the appropriate function directly.
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
 
-std::stack<std::pair<int, int>> get_moves(char* board, int piece) {
- return std::stack<std::pair<int, int>>{};
+void get_moves(std::stack<std::pair<int, int>>* moves, char* board, int piece) {
 }
 
 
@@ -48,13 +47,11 @@ std::stack<std::pair<int, int>> get_moves(char* board, int piece) {
 * This function returns all possible moves, and does not check for
 * legality.
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
-std::stack<int> get_pawn_moves(char* board, int piece) {
-
- return std::stack<int>{};
+void get_pawn_moves(std::stack<int>* moves, char* board, int piece) {
 }
 
 
@@ -62,13 +59,11 @@ std::stack<int> get_pawn_moves(char* board, int piece) {
 *
 * See documentation for legal_knight_moves() for more information
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
-std::stack<int> get_knight_moves(char* board, int piece) {
-
- return std::stack<int>{};
+void get_knight_moves(std::stack<int>* moves, char* board, int piece) {
 }
 
 
@@ -76,50 +71,42 @@ std::stack<int> get_knight_moves(char* board, int piece) {
 *
 * See documentation for legal_bishop_moves() for more information
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
-std::stack<int> get_bishop_moves(char* board, int piece) {
-
- return std::stack<int>{};
+void get_bishop_moves(std::stack<int>* moves, char* board, int piece) {
 }
 
 /** Generates all legal moves on the board for the given rook
 *
 * See documentation for legal_rook_moves() for more information
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
-std::stack<int> get_rook_moves(char* board, int piece) {
-
- return std::stack<int>{};
+void get_rook_moves(std::stack<int>* moves, char* board, int piece) {
 }
 
 /** Generates all legal moves on the board for the given queen
 *
 * See documentation for legal_queen_moves() for more information
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
-std::stack<int> get_queen_moves(char* board, int piece) {
-
- return std::stack<int>{};
+void get_queen_moves(std::stack<int>* moves, char* board, int piece) {
 }
 
 /** Generates all legal moves on the board for the given king
 *
 * See documentation for legal_king_moves() for more information
 *
+* @param moves Stack of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
-* @return All possible legal moves for the given piece
 */
-std::stack<int> get_king_moves(char* board, int piece) {
-
- return std::stack<int>{};
+void get_king_moves(std::stack<int>* moves, char* board, int piece) {
 }

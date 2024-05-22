@@ -32,13 +32,12 @@
 * Loops through every piece on the board and returns all possible
 * legal moves for the given color.
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param color The color of pieces to generate legal moves for
 * @return All possible legal moves for the given color
 */
-std::stack<std::pair<int, int>> generate_legal_moves(char* board, bool color) {
-
- return std::stack<std::pair<int, int>>{};
+void generate_legal_moves(std::stack<std::pair<int, int>>* legal_moves, char* board, bool color) {
 }
 
 
@@ -47,12 +46,12 @@ std::stack<std::pair<int, int>> generate_legal_moves(char* board, bool color) {
 * Determines which function to call based on the piece type, it may
 * be more efficient to call the appropriate function directly.
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @return All possible legal moves for the given piece
 */
-std::stack<int> generate_legal_moves(char* board, int piece) {
- return std::stack<int>{};
+void generate_legal_moves(std::stack<int>* legal_moves, char* board, int piece) {
 }
 
 /** Generate the legal moves for a given pawn
@@ -62,6 +61,7 @@ std::stack<int> generate_legal_moves(char* board, int piece) {
 * forward two spaces if on its starting square. Though it isn't handled here, a pawn
 * can also promote at the end of the board.
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @param kingLoc The location of the King (optional)
@@ -69,8 +69,7 @@ std::stack<int> generate_legal_moves(char* board, int piece) {
 * @return A stack of all legal moves for the given piece
 */
 
-std::stack<int> legal_pawn_moves(char* board, int piece, int kingLoc, int enPassantSquare) {
- return std::stack<int>{};
+void legal_pawn_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc, int enPassantSquare) {
 }
 
 
@@ -79,14 +78,13 @@ std::stack<int> legal_pawn_moves(char* board, int piece, int kingLoc, int enPass
 * The knight can move in an L shape in any direction, jumping over
 * pieces as it goes.
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-std::stack<int> legal_knight_moves(char* board, int piece, int kingLoc) {
-
- return std::stack<int>{};
+void legal_knight_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
 }
 
 
@@ -94,54 +92,50 @@ std::stack<int> legal_knight_moves(char* board, int piece, int kingLoc) {
 *
 * The bishop can move diagonally in all four directions
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-std::stack<int> legal_bishop_moves(char* board, int piece, int kingLoc) {
-
- return std::stack<int>{};
+void legal_bishop_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
 }
 
 /** Generate the legal moves for a given rook
 *
 * The rook can move horizontally or vertically in any direction
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-std::stack<int> legal_rook_moves(char* board, int piece, int kingLoc) {
-
- return std::stack<int>{};
+void legal_rook_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
 }
 
 /** Generate the legal moves for a given queen
 *
 * The queen can move in the combined directions of a rook and a bishop
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-std::stack<int> legal_queen_moves(char* board, int piece, int kingLoc) {
-
- return std::stack<int>{};
+void legal_queen_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
 }
 
 /** Generate the legal moves for a given king
 *
 * The king can move one square in any direction
 *
+* @param legal_moves A list of moves to add to
 * @param board List of all pieces and their locations on the board
 * @param piece The piece to generate legal moves for
 * @param kingLoc The location of the King (optional)
 * @return A stack of all legal moves for the given piece
 */
-std::stack<int> legal_king_moves(char* board, int piece, int kingLoc) {
-
- return std::stack<int>{};
+void legal_king_moves(std::stack<int>* legal_moves, char* board, int piece, int kingLoc) {
 }
