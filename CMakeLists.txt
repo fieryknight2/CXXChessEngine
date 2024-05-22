@@ -3,7 +3,7 @@ project(ChessEngine)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_executable(ChessEngine
+add_library(ChessEngine
         source/src/main.cpp
         source/src/chess_engine/board/legal_move_generator.cpp
         source/include/chess_engine/constants.h
@@ -16,4 +16,11 @@ target_include_directories(ChessEngine PUBLIC
         source/include
 )
 
+add_executable(ChessEngineRun
+        source/src/main.cpp
+)
+
+target_link_libraries(ChessEngineRun ChessEngine)
+
 add_subdirectory(tests)
+target_link_libraries(tests ChessEngine)
