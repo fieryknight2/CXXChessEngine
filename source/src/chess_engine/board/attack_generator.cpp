@@ -271,20 +271,10 @@ void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
     int index = piece;
     const int rank_min = (piece / 8) * 8;
 
-    while (index - 8 >= 0) {
-        // Left
-        index -= 8;
-        attacks->push(index);
-
-        if (board[index] != EMPTY) {
-            break;
-        }
-    }
-
     index = piece;
-    while (index - 1 >= rank_min) {
+    while (index + 8 < 64) {
         // Right
-        index -= 1;
+        index += 8;
         attacks->push(index);
 
         if (board[index] != EMPTY) {
@@ -304,9 +294,19 @@ void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index + 8 < 64) {
+    while (index - 1 >= rank_min) {
         // Right
-        index += 8;
+        index -= 1;
+        attacks->push(index);
+
+        if (board[index] != EMPTY) {
+            break;
+        }
+    }
+
+    while (index - 8 >= 0) {
+        // Left
+        index -= 8;
         attacks->push(index);
 
         if (board[index] != EMPTY) {
@@ -329,20 +329,10 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
     const int rank_min = (piece / 8) * 8;
 
     // Rook Code
-    while (index - 8 >= 0) {
-        // Left
-        index -= 8;
-        attacks->push(index);
-
-        if (board[index] != EMPTY) {
-            break;
-        }
-    }
-
     index = piece;
-    while (index - 1 >= rank_min) {
+    while (index + 8 < 64) {
         // Right
-        index -= 1;
+        index += 8;
         attacks->push(index);
 
         if (board[index] != EMPTY) {
@@ -362,9 +352,9 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index + 8 < 64) {
+    while (index - 1 >= rank_min) {
         // Right
-        index += 8;
+        index -= 1;
         attacks->push(index);
 
         if (board[index] != EMPTY) {
@@ -372,23 +362,21 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
         }
     }
 
+    while (index - 8 >= 0) {
+        // Left
+        index -= 8;
+        attacks->push(index);
+
+        if (board[index] != EMPTY) {
+            break;
+        }
+    }
 
     // Bishop Code
     index = piece;
-    while (index - 9 >= 0 and index % 8 != 0) {
-        // Bottom Right
-        index -= 9;
-        attacks->push(index);
-
-        if (board[index] != EMPTY) {
-            break;
-        }
-    }
-
-    index = piece;
-    while (index - 7 >= 0 and index % 8 != 7) {
-        // Bottom Left
-        index -= 7;
+    while (index + 9 < 64 and index % 8 != 7) {
+        // Top Right
+        index += 9;
         attacks->push(index);
 
         if (board[index] != EMPTY) {
@@ -408,9 +396,20 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index + 9 < 64 and index % 8 != 7) {
-        // Top Right
-        index += 9;
+    while (index - 7 >= 0 and index % 8 != 7) {
+        // Bottom Left
+        index -= 7;
+        attacks->push(index);
+
+        if (board[index] != EMPTY) {
+            break;
+        }
+    }
+
+    index = piece;
+    while (index - 9 >= 0 and index % 8 != 0) {
+        // Bottom Right
+        index -= 9;
         attacks->push(index);
 
         if (board[index] != EMPTY) {
@@ -428,22 +427,17 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
  * @return All possible legal moves for the given piece
  */
 void get_king_attacks(std::stack<int> *attacks, int piece) {
-    if (piece > 7) {
-        // validate bottom
-        if (piece % 8 > 0) {
-            attacks->push(piece - 9); // bottom right corner
-        }
-
-        attacks->push(piece - 8); // bottom
-
+    // validate top
+    if (piece < 56) {
         if (piece % 8 < 7) {
-            attacks->push(piece - 7); // bottom left corner
+            attacks->push(piece + 9); // top left corner
         }
-    }
 
-    if (piece % 8 > 0) {
-        // validate right
-        attacks->push(piece - 1);
+        attacks->push(piece + 8); // top
+
+        if (piece % 8 > 0) {
+            attacks->push(piece + 7); // top right corner
+        }
     }
 
     if (piece % 8 < 7) {
@@ -451,16 +445,21 @@ void get_king_attacks(std::stack<int> *attacks, int piece) {
         attacks->push(piece + 1);
     }
 
-    // validate top
-    if (piece < 56) {
-        if (piece % 8 > 0) {
-            attacks->push(piece + 7); // top right corner
+    if (piece % 8 > 0) {
+        // validate right
+        attacks->push(piece - 1);
+    }
+
+    if (piece > 7) {
+        // validate bottom
+        if (piece % 8 < 7) {
+            attacks->push(piece - 7); // bottom left corner
         }
 
-        attacks->push(piece + 8); // top
+        attacks->push(piece - 8); // bottom
 
-        if (piece % 8 < 7) {
-            attacks->push(piece + 9); // top left corner
+        if (piece % 8 > 0) {
+            attacks->push(piece - 9); // bottom right corner
         }
     }
 }
