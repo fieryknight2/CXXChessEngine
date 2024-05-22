@@ -27,4 +27,29 @@
 #ifndef constants_H
 #define constants_H
 
+enum PieceType {
+    EMPTY = 0,
+    PAWN = 1,
+    KNIGHT = 2,
+    BISHOP = 3,
+    ROOK = 4,
+    QUEEN = 5,
+    KING = 6
+};
+
+enum ColorPieceType {
+    WHITE_PAWN = PAWN,
+    WHITE_KNIGHT = KNIGHT,
+    WHITE_BISHOP = BISHOP,
+    WHITE_ROOK = ROOK,
+    WHITE_QUEEN = QUEEN,
+    WHITE_KING = KING,
+    BLACK_PAWN = -PAWN,
+    BLACK_KNIGHT = -KNIGHT,
+    BLACK_BISHOP = -BISHOP,
+    BLACK_ROOK = -ROOK,
+    BLACK_QUEEN = -QUEEN,
+    BLACK_KING = -KING
+};
+
 #endif // constants_H
