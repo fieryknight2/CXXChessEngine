@@ -19,34 +19,34 @@ TEST(AttackGeneratorTest, get_pawn_attacks) {
 
  // Verify that the pawn attacks the correct squares
  std::stack<int> attacks = get_pawn_attacks(2);
- ASSERT_EQ(attacks.size(), 0);
+ EXPECT_EQ(attacks.size(), 0);
 
  attacks = get_pawn_attacks(8);
- ASSERT_EQ(attacks.size(), 1);
- ASSERT_EQ(attacks.top(), 17);
+ EXPECT_EQ(attacks.size(), 1);
+ EXPECT_EQ(attacks.top(), 17);
 
  attacks = get_pawn_attacks(10);
- ASSERT_EQ(attacks.size(), 2);
- ASSERT_EQ(attacks.top(), 17);
+ EXPECT_EQ(attacks.size(), 2);
+ EXPECT_EQ(attacks.top(), 17);
  attacks.pop();
- ASSERT_EQ(attacks.top(), 19);
+ EXPECT_EQ(attacks.top(), 19);
 
  attacks = get_pawn_attacks(31);
- ASSERT_EQ(attacks.size(), 1);
- ASSERT_EQ(attacks.top(), 38);
+ EXPECT_EQ(attacks.size(), 1);
+ EXPECT_EQ(attacks.top(), 38);
 
  attacks = get_pawn_attacks(33);
- ASSERT_EQ(attacks.size(), 2);
- ASSERT_EQ(attacks.top(), 40);
+ EXPECT_EQ(attacks.size(), 2);
+ EXPECT_EQ(attacks.top(), 40);
  attacks.pop();
- ASSERT_EQ(attacks.top(), 42);
+ EXPECT_EQ(attacks.top(), 42);
 
  attacks = get_pawn_attacks(53);
- ASSERT_EQ(attacks.size(), 1);
- ASSERT_EQ(attacks.top(), 60);
+ EXPECT_EQ(attacks.size(), 1);
+ EXPECT_EQ(attacks.top(), 60);
  attacks.pop();
- ASSERT_EQ(attacks.top(), 62);
+ EXPECT_EQ(attacks.top(), 62);
 
  attacks = get_pawn_attacks(63);
- ASSERT_EQ(attacks.size(), 0);
+ EXPECT_EQ(attacks.size(), 0);
 }
