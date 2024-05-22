@@ -21,39 +21,52 @@ TEST(AttackGeneratorTest, get_pawn_attacks) {
     std::stack<int> attacks;
     get_pawn_attacks(&attacks, false, 2);
     EXPECT_EQ(attacks.size(), 0);
-    while (!attacks.empty()) attacks.pop();
+    while (!attacks.empty())
+        attacks.pop();
 
     get_pawn_attacks(&attacks, false, 8);
     EXPECT_EQ(attacks.size(), 1);
     EXPECT_EQ(attacks.top(), 17);
-    while (!attacks.empty()) attacks.pop();
+    while (!attacks.empty())
+        attacks.pop();
 
     get_pawn_attacks(&attacks, false, 10);
     EXPECT_EQ(attacks.size(), 2);
     EXPECT_EQ(attacks.top(), 17);
     attacks.pop();
     EXPECT_EQ(attacks.top(), 19);
-    while (!attacks.empty()) attacks.pop();
+    while (!attacks.empty())
+        attacks.pop();
 
     get_pawn_attacks(&attacks, false, 31);
     EXPECT_EQ(attacks.size(), 1);
     EXPECT_EQ(attacks.top(), 38);
-    while (!attacks.empty()) attacks.pop();
+    while (!attacks.empty())
+        attacks.pop();
 
     get_pawn_attacks(&attacks, false, 33);
     EXPECT_EQ(attacks.size(), 2);
     EXPECT_EQ(attacks.top(), 40);
     attacks.pop();
     EXPECT_EQ(attacks.top(), 42);
-    while (!attacks.empty()) attacks.pop();
+    while (!attacks.empty())
+        attacks.pop();
 
     get_pawn_attacks(&attacks, false, 53);
     EXPECT_EQ(attacks.size(), 1);
     EXPECT_EQ(attacks.top(), 60);
     attacks.pop();
     EXPECT_EQ(attacks.top(), 62);
-    while (!attacks.empty()) attacks.pop();
+    while (!attacks.empty())
+        attacks.pop();
 
     get_pawn_attacks(&attacks, false, 63);
     EXPECT_EQ(attacks.size(), 0);
 }
+
+// Not necessary to use this, but if I do:
+// int main(int argc, char **argv) {
+//     testing::InitGoogleTest(&argc, argv);
+//
+//     return RUN_ALL_TESTS();
+// }
