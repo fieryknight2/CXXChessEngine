@@ -214,7 +214,7 @@ void get_knight_attacks(std::stack<int> *attacks, int piece) {
 void get_bishop_attacks(std::stack<int> *attacks, const int *board, int piece) {
     int index = piece;
 
-    while (index - 9 >= 0 and index % 8 != 0) {
+    while (index >= 9 and index % 8 != 0) {
         // Bottom Right
         index -= 9;
         attacks->push(index);
@@ -225,7 +225,7 @@ void get_bishop_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index - 7 >= 0 and index % 8 != 7) {
+    while (index >= 7 and index % 8 != 7) {
         // Bottom Left
         index -= 7;
         attacks->push(index);
@@ -236,7 +236,7 @@ void get_bishop_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index + 7 < 64 and index % 8 != 0) {
+    while (index < 57 and index % 8 != 0) {
         // Top Left
         index += 7;
         attacks->push(index);
@@ -247,7 +247,7 @@ void get_bishop_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index + 9 < 64 and index % 8 != 7) {
+    while (index < 55 and index % 8 != 7) {
         // Top Right
         index += 9;
         attacks->push(index);
@@ -271,7 +271,7 @@ void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
     int index = piece;
     const int rank_min = piece / 8 * 8;
 
-    while (index + 8 < 64) {
+    while (index < 56) {
         // Top
         index += 8;
         attacks->push(index);
@@ -293,7 +293,7 @@ void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index - 1 >= rank_min) {
+    while (index >= rank_min + 1) {
         // Right
         index -= 1;
         attacks->push(index);
@@ -304,7 +304,7 @@ void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
     }
 
     index = piece;
-    while (index - 8 >= 0) {
+    while (index >= 8) {
         // Bottom
         index -= 8;
         attacks->push(index);
@@ -329,7 +329,6 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
     const int rank_min = (piece / 8) * 8;
 
     // Rook Code
-    index = piece;
     while (index + 8 < 64) {
         // Right
         index += 8;
