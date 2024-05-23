@@ -269,11 +269,10 @@ void get_bishop_attacks(std::stack<int> *attacks, const int *board, int piece) {
  */
 void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
     int index = piece;
-    const int rank_min = (piece / 8) * 8;
+    const int rank_min = piece / 8 * 8;
 
-    index = piece;
     while (index + 8 < 64) {
-        // Right
+        // Top
         index += 8;
         attacks->push(index);
 
@@ -304,8 +303,9 @@ void get_rook_attacks(std::stack<int> *attacks, const int *board, int piece) {
         }
     }
 
+    index = piece;
     while (index - 8 >= 0) {
-        // Left
+        // Bottom
         index -= 8;
         attacks->push(index);
 
@@ -362,6 +362,7 @@ void get_queen_attacks(std::stack<int> *attacks, const int *board, int piece) {
         }
     }
 
+    index = piece;
     while (index - 8 >= 0) {
         // Left
         index -= 8;
