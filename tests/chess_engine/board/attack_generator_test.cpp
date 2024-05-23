@@ -79,31 +79,31 @@ TEST(AttackGeneratorTest, get_pawn_attacks) {
 
     // Verify that the pawn attacks the correct squares
     std::stack<int> attacks;
-    get_pawn_attacks(&attacks, false, 2);
+    get_pawn_attacks(&attacks, true, 2);
     EXPECT_TRUE(stack_is_equal(std::vector<int>{}, attacks)) << display_stack(attacks);
     empty_stack(&attacks);
 
-    get_pawn_attacks(&attacks, false, 8);
+    get_pawn_attacks(&attacks, true, 8);
     EXPECT_TRUE(stack_is_equal(std::vector{17}, attacks)) << display_stack(attacks);
     empty_stack(&attacks);
 
-    get_pawn_attacks(&attacks, false, 10);
+    get_pawn_attacks(&attacks, true, 10);
     EXPECT_TRUE(stack_is_equal(std::vector{17, 19}, attacks)) << display_stack(attacks);
     empty_stack(&attacks);
 
-    get_pawn_attacks(&attacks, false, 31);
+    get_pawn_attacks(&attacks, true, 31);
     EXPECT_TRUE(stack_is_equal(std::vector{38}, attacks)) << display_stack(attacks);
     empty_stack(&attacks);
 
-    get_pawn_attacks(&attacks, false, 33);
+    get_pawn_attacks(&attacks, true, 33);
     EXPECT_TRUE(stack_is_equal(std::vector{40, 42}, attacks)) << display_stack(attacks);
     empty_stack(&attacks);
 
-    get_pawn_attacks(&attacks, false, 53);
+    get_pawn_attacks(&attacks, true, 53);
     EXPECT_TRUE(stack_is_equal(std::vector{60, 62}, attacks)) << display_stack(attacks);
     empty_stack(&attacks);
 
-    get_pawn_attacks(&attacks, false, 63);
+    get_pawn_attacks(&attacks, true, 63);
     EXPECT_TRUE(stack_is_equal(std::vector<int>{}, attacks)) << display_stack(attacks);
 }
 

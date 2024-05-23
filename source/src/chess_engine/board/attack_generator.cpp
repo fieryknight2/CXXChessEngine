@@ -124,19 +124,19 @@ void get_pawn_attacks(std::stack<int> *attacks, bool color, int piece) {
         return;
     }
 
-    if (color) { // Black pawn
-        if (piece % 8 > 0) {
-            attacks->push(piece - 9); // Left side (white perspective)
-        }
-        if (piece % 8 < 7) {
-            attacks->push(piece - 7); // Right side
-        }
-    } else { // White pawn
+    if (color) { // White pawn
         if (piece % 8 > 0) {
             attacks->push(piece + 7); // Right side
         }
         if (piece % 8 < 7) {
             attacks->push(piece + 9); // Left side
+        }
+    } else { // Black pawn
+        if (piece % 8 > 0) {
+            attacks->push(piece - 9); // Left side (white perspective)
+        }
+        if (piece % 8 < 7) {
+            attacks->push(piece - 7); // Right side
         }
     }
 }
