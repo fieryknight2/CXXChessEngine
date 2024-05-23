@@ -15,10 +15,13 @@ add_executable(chess_engine_test
         chess_engine/board/legal_move_generator_test.cpp
         chess_engine/board/attack_generator_test.cpp
         chess_engine/board/move_generator_test.cpp
+        chess_engine/board/perft_test.cpp
+        chess_engine/low_level_test_functions.cpp
 )
 target_include_directories(chess_engine_test PUBLIC
         ${gtest_SOURCE_DIR}/include
         ${gtest_SOURCE_DIR}
+        include
         ../source/include
         ../source/src
 )
