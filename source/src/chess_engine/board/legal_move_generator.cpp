@@ -25,7 +25,22 @@
  * @date 05/21/2024
  *****************************************************************************/
 #include "chess_engine/board/move_generator.h"
+#include "chess_engine/constants.h"
 
+namespace {
+    enum KingDirection {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        UP_LEFT, // Diagonal
+        UP_RIGHT,
+        DOWN_LEFT,
+        DOWN_RIGHT,
+        SOMEWHERE_ELSE
+    };
+
+}
 
 /** Generates all legal moves on the board for the given color
  *
@@ -50,7 +65,7 @@ void generate_legal_moves(std::stack<std::pair<int, int>> *legal_moves, int *boa
  * @param piece The piece to generate legal moves for
  * @return All possible legal moves for the given piece
  */
-void generate_legal_moves(std::stack<int> *legal_moves, int *board, int piece) {}
+void generate_legal_moves(std::stack<int> *legal_moves, const int *board, int piece) {}
 
 /** Generate the legal moves for a given pawn
  *
@@ -66,8 +81,200 @@ void generate_legal_moves(std::stack<int> *legal_moves, int *board, int piece) {
  * @param enPassantSquare Square where en passant is possible (optional)
  * @return A stack of all legal moves for the given piece
  */
+void legal_pawn_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc, int enPassantSquare) {
+    if (piece < 7 or piece > 56) {
+        return;
+    }
 
-void legal_pawn_moves(std::stack<int> *legal_moves, int *board, int piece, int kingLoc, int enPassantSquare) {}
+    if (kingLoc == -1) {
+        // Find the king location manually
+        for (int i = 0; i < 64; i++) {
+            if (board[i] == KING) {
+                kingLoc = i;
+                break;
+            }
+        }
+    }
+
+    KingDirection direction = SOMEWHERE_ELSE;
+    int index = piece;
+
+    // Locate direction to the king for efficiency
+    // Position of the pawn: (xp, yp) where yp is piece / 8 and xp is piece % 8
+    // Position of the king: (xk, yk) where yk is kingLoc / 8 and xk is kingLoc % 8
+    // Vector math to find the direction, d = yp - yk / xp - xk
+    // Determine if the king is on a line requires (xp - xk) == 0, or d = 1, -1, or 0
+    // TODO: Determine if I want to simplify this and remove direction
+    if (piece / 8 - kingLoc % 8 == -1 and piece % 8 - kingLoc % 8 == 0) {
+        // Infinity or vector is vertical
+        direction = DOWN;
+    } else if (piece / 8 - kingLoc % 8 == 1 and piece % 8 - kingLoc % 8 == 0) {
+        direction = UP;
+    } else if (piece / 8 - kingLoc % 8 == 0 and piece % 8 - kingLoc % 8 == 1) {
+        direction = RIGHT;
+    } else if (piece / 8 - kingLoc % 8 == 0 and piece % 8 - kingLoc % 8 == -1) {
+        direction = LEFT;
+    } else if (piece / 8 - kingLoc % 8 == 1 and piece % 8 - kingLoc % 8 == 1) {
+        direction = UP_RIGHT;
+    } else if (piece / 8 - kingLoc % 8 == 1 and piece % 8 - kingLoc % 8 == -1) {
+        direction = UP_LEFT;
+    } else if (piece / 8 - kingLoc % 8 == -1 and piece % 8 - kingLoc % 8 == 1) {
+        direction = DOWN_RIGHT;
+    } else if (piece / 8 - kingLoc % 8 == -1 and piece % 8 - kingLoc % 8 == -1) {
+        direction = DOWN_LEFT;
+    }
+
+    bool canMove = true;
+    const int sign = board[piece] / abs(board[piece]);
+    if (direction == LEFT) {
+        // Rank min from rook is piece / 8 * 8
+        while (index < piece / 8 * 8 + 7) {
+            index += 1;
+            if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+        }
+    } else if (direction == RIGHT) {
+        // Right
+        while (index - 1 >= piece / 8 * 8) {
+            index -= 1;
+            if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY) {
+                break;
+            }
+        }
+    } else if (direction == UP_RIGHT) {
+        while (index + 9 < 64 and index % 8 != 7) {
+            index += 9;
+
+            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY) {
+                break;
+            }
+        }
+    } else if (direction == UP_LEFT) {
+        while (index + 7 < 64 and index % 8 != 0) {
+            index += 7;
+
+            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY) {
+                break;
+            }
+        }
+    } else if (direction == DOWN_RIGHT) {
+        while (index - 9 >= 0 and index % 8 != 0) {
+            index -= 9;
+
+            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY) {
+                break;
+            }
+        }
+    } else if (direction == DOWN_LEFT) {
+        while (index - 7 >= 0 and index % 8 != 7) {
+            index -= 7;
+
+            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY) {
+                break;
+            }
+        }
+    }
+
+    if (canMove) {
+        if (board[piece] > 0) { // White color
+            // Normal movement applies
+            if (board[piece + 8] == EMPTY) { // Normal move
+                legal_moves->push(piece + 8);
+            }
+
+            // Possible double move on first move
+            if (piece > 7 and piece < 16 and board[piece + 16] == EMPTY) {
+                legal_moves->push(piece + 16);
+            }
+
+        } else { // Black color
+            // Normal movement applies
+            if (board[piece - 8] == EMPTY) {
+                legal_moves->push(piece - 8);
+            }
+            if (piece > 47 and piece < 56 and board[piece - 16] == EMPTY) {
+                legal_moves->push(piece - 16);
+            }
+        }
+    }
+
+    // Attacks and en passant:
+    if (!(direction == LEFT and !canMove) and !(direction == RIGHT and !canMove)) {
+        if (direction == UP) {
+            // Verify we are not pinned
+            while (index >= 8 and index % 8 != 0) {
+                index -= 8;
+                if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+                    // Can't capture left or right
+                    return;
+                }
+                if (board[index] != EMPTY) {
+                    break;
+                }
+            }
+        } else if (direction == DOWN) {
+            // Verify we are not pinned
+            while (index < 56 and index % 8 != 7) {
+                index += 8;
+                if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+                    return;
+                }
+                if (board[index] != EMPTY) {
+                    break;
+                }
+            }
+        }
+
+        // Left capture
+        if (!(direction == UP_RIGHT and !canMove) and !(direction == DOWN_RIGHT and !canMove)) {
+            if (board[piece] > 0 and piece % 8 > 0 and board[piece + 7] < 0) { // White pawn
+                legal_moves->push(piece + 7);
+
+            } else if (board[piece] < 0 and piece % 8 < 7 and board[piece - 7] > 0) { // Black pawn
+                legal_moves->push(piece - 7);
+            }
+        }
+
+        // Right capture
+        if (!(direction == UP_LEFT and !canMove) and !(direction == DOWN_LEFT and !canMove)) {
+            if (board[piece] > 0 and piece % 8 < 7 and board[piece - 7] < 0) {
+                // White pawn
+                legal_moves->push(piece - 7); // Left side
+            } else if (board[piece] < 0 and piece % 8 > 0 and board[piece + 7] > 0) {
+                // Black pawn
+                legal_moves->push(piece + 7); // Right side
+            }
+        }
+    }
+}
 
 
 /** Generate the legal moves for a given knight
@@ -81,7 +288,7 @@ void legal_pawn_moves(std::stack<int> *legal_moves, int *board, int piece, int k
  * @param kingLoc The location of the King (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_knight_moves(std::stack<int> *legal_moves, int *board, int piece, int kingLoc) {}
+void legal_knight_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc) {}
 
 
 /** Generate the legal moves for a given bishop
@@ -94,7 +301,7 @@ void legal_knight_moves(std::stack<int> *legal_moves, int *board, int piece, int
  * @param kingLoc The location of the King (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_bishop_moves(std::stack<int> *legal_moves, int *board, int piece, int kingLoc) {}
+void legal_bishop_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc) {}
 
 /** Generate the legal moves for a given rook
  *
@@ -106,7 +313,7 @@ void legal_bishop_moves(std::stack<int> *legal_moves, int *board, int piece, int
  * @param kingLoc The location of the King (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_rook_moves(std::stack<int> *legal_moves, int *board, int piece, int kingLoc) {}
+void legal_rook_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc) {}
 
 /** Generate the legal moves for a given queen
  *
@@ -118,7 +325,7 @@ void legal_rook_moves(std::stack<int> *legal_moves, int *board, int piece, int k
  * @param kingLoc The location of the King (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_queen_moves(std::stack<int> *legal_moves, int *board, int piece, int kingLoc) {}
+void legal_queen_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc) {}
 
 /** Generate the legal moves for a given king
  *
@@ -130,4 +337,4 @@ void legal_queen_moves(std::stack<int> *legal_moves, int *board, int piece, int 
  * @param kingLoc The location of the King (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_king_moves(std::stack<int> *legal_moves, int *board, int piece, int kingLoc) {}
+void legal_king_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc) {}
