@@ -3,71 +3,11 @@
  * @author Matthew Brown
  * @brief Unit tests for the move generator class.
  */
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <string>
-
+#include "low_level_test_functions.h"
 #include "chess_engine/board/move_generator.h"
 #include "gtest/gtest.h"
 
-bool stack_contains(std::stack<int> stack, int value) {
-    while (!stack.empty()) {
-        if (stack.top() == value) {
-            return true;
-        }
-        stack.pop();
-    }
-
-    return false;
-}
-
-bool stack_is_equal(std::vector<int> stack1, const std::stack<int>& stack2) {
-    if (stack1.size() != stack2.size()) {
-        std::cout << "Diff stack sizes are not equal." << std::endl;
-        return false;
-    }
-
-    int index = static_cast<int>(stack1.size());
-    while (!stack1.empty()) {
-        --index;
-        if (!stack_contains(stack2, stack1.back())) {
-            std::cout << "Diff at index " << index << ", value: " << stack1.back() << " is not found." << std::endl;
-            return false;
-        }
-        stack1.pop_back();
-    }
-
-    return true;
-}
-
-void empty_stack(std::stack<int> *stack) {
-    while (!stack->empty()) {
-        stack->pop();
-    }
-}
-
-std::string display_stack(std::stack<int> stack) {
-    std::stringstream ss;
-    ss << "{";
-
-    const bool was_empty = stack.empty();
-    while (!stack.empty()) {
-        ss << stack.top() << ", ";
-        stack.pop();
-    }
-
-    if (!was_empty) {
-        ss << "\b";
-    }
-
-    ss << "}";
-
-    return ss.str();
-}
-
 TEST(AttackGeneratorTest, get_pawn_attacks) {
-
     //  0,  0,  1,  0,  0,  0, -1,  0,  // 0-7
     //  1,  1,  1,  1,  1,  1,  1, -1,  // 8-15
     //  0, -1,  0,  0,  0,  0,  0,  0,  // 16-23
