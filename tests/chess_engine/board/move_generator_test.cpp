@@ -1,5 +1,5 @@
 /**
-* @file move_generator_test.cpp
+ * @file move_generator_test.cpp
  * @author Matthew Brown
  * @brief Unit tests for the move generator class.
  */
