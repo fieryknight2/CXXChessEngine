@@ -27,18 +27,21 @@
 #include "chess_engine/board/move_generator.h"
 #include "chess_engine/constants.h"
 
-namespace {
-    enum KingDirection {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        UP_LEFT, // Diagonal
-        UP_RIGHT,
-        DOWN_LEFT,
-        DOWN_RIGHT,
-        SOMEWHERE_ELSE
-    };
+namespace
+{
+
+enum KingDirection
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP_LEFT, // Diagonal
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    SOMEWHERE_ELSE
+};
 
 }
 
@@ -74,22 +77,29 @@ void generate_legal_moves(std::stack<int> *legal_moves, const int *board, int pi
  * forward two spaces if on its starting square. Though it isn't handled here, a pawn
  * can also promote at the end of the board.
  *
- * @param legal_moves A list of moves to add to
+ * @param legalMoves A list of moves to add to
  * @param board List of all pieces and their locations on the board
  * @param piece The piece to generate legal moves for
  * @param kingLoc The location of the King (optional)
  * @param enPassantSquare Square where en passant is possible (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_pawn_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc, int enPassantSquare) {
-    if (piece < 7 or piece > 56) {
+void legal_pawn_moves(std::stack<int> *legalMoves, const int *board, int piece, int kingLoc, int enPassantSquare)
+{
+    // Validation
+    if (piece < 7 or piece > 56 or board[piece] == EMPTY)
+    {
         return;
     }
 
-    if (kingLoc == -1) {
+    // King location
+    if (kingLoc == -1)
+    {
         // Find the king location manually
-        for (int i = 0; i < 64; i++) {
-            if (board[i] == KING) {
+        for (int i = 0; i < 64; i++)
+        {
+            if (board[i] == KING)
+            {
                 kingLoc = i;
                 break;
             }
@@ -105,190 +115,482 @@ void legal_pawn_moves(std::stack<int> *legal_moves, const int *board, int piece,
     // Vector math to find the direction, d = yp - yk / xp - xk
     // Determine if the king is on a line requires (xp - xk) == 0, or d = 1, -1, or 0
     // TODO: Determine if I want to simplify this and remove direction
-    if (piece / 8 - kingLoc % 8 == -1 and piece % 8 - kingLoc % 8 == 0) {
+    if (piece / 8 - kingLoc / 8 < 0 and piece % 8 - kingLoc % 8 == 0)
+    {
         // Infinity or vector is vertical
         direction = DOWN;
-    } else if (piece / 8 - kingLoc % 8 == 1 and piece % 8 - kingLoc % 8 == 0) {
+    }
+    else if (piece / 8 - kingLoc / 8 > 0 and piece % 8 - kingLoc % 8 == 0)
+    {
         direction = UP;
-    } else if (piece / 8 - kingLoc % 8 == 0 and piece % 8 - kingLoc % 8 == 1) {
+    }
+    else if (piece / 8 - kingLoc / 8 == 0 and piece % 8 - kingLoc % 8 > 0)
+    {
         direction = RIGHT;
-    } else if (piece / 8 - kingLoc % 8 == 0 and piece % 8 - kingLoc % 8 == -1) {
+    }
+    else if (piece / 8 - kingLoc / 8 == 0 and piece % 8 - kingLoc % 8 < 0)
+    {
         direction = LEFT;
-    } else if (piece / 8 - kingLoc % 8 == 1 and piece % 8 - kingLoc % 8 == 1) {
-        direction = UP_RIGHT;
-    } else if (piece / 8 - kingLoc % 8 == 1 and piece % 8 - kingLoc % 8 == -1) {
+    }
+    else if (piece / 8 - kingLoc / 8 == piece % 8 - kingLoc % 8)
+    {
         direction = UP_LEFT;
-    } else if (piece / 8 - kingLoc % 8 == -1 and piece % 8 - kingLoc % 8 == 1) {
+    }
+    else if (piece / 8 - kingLoc / 8 == piece % 8 - kingLoc % 8)
+    {
         direction = DOWN_RIGHT;
-    } else if (piece / 8 - kingLoc % 8 == -1 and piece % 8 - kingLoc % 8 == -1) {
+    }
+    else if (piece / 8 - kingLoc / 8 == -(piece % 8 - kingLoc % 8) and piece % 8 - kingLoc % 8 < 0)
+    {
         direction = DOWN_LEFT;
+    }
+    else if (-(piece / 8 - kingLoc / 8) == piece % 8 - kingLoc % 8 and piece / 8 - kingLoc / 8 < 0)
+    {
+        direction = UP_RIGHT;
     }
 
     bool canMove = true;
     const int sign = board[piece] / abs(board[piece]);
-    if (direction == LEFT) {
-        // Rank min from rook is piece / 8 * 8
-        while (index < piece / 8 * 8 + 7) {
+    // Rank min from rook is piece / 8 * 8
+    // Process pins
+    if (direction == RIGHT)
+    {
+        while (index < piece / 8 * 8 + 7)
+        {
             index += 1;
-            if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+            if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+            {
                 // Can't move forward
                 canMove = false;
                 break;
             }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
         }
-    } else if (direction == RIGHT) {
-        // Right
-        while (index - 1 >= piece / 8 * 8) {
+    }
+    else if (direction == LEFT)
+    {
+        while (index - 1 >= piece / 8 * 8)
+        {
             index -= 1;
-            if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+            if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+            {
                 // Can't move forward
                 canMove = false;
                 break;
             }
-            if (board[index] != EMPTY) {
+            if (board[index] != EMPTY)
+            {
                 break;
             }
         }
-    } else if (direction == UP_RIGHT) {
-        while (index + 9 < 64 and index % 8 != 7) {
+    }
+    else if (direction == DOWN_RIGHT)
+    {
+        while (index + 9 < 64 and index % 8 != 7)
+        {
             index += 9;
 
-            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
                 // Can't move forward
                 canMove = false;
                 break;
             }
-            if (board[index] != EMPTY) {
+            if (board[index] != EMPTY)
+            {
                 break;
             }
         }
-    } else if (direction == UP_LEFT) {
-        while (index + 7 < 64 and index % 8 != 0) {
+    }
+    else if (direction == DOWN_LEFT)
+    {
+        while (index + 7 < 64 and index % 8 != 0)
+        {
             index += 7;
 
-            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
                 // Can't move forward
                 canMove = false;
                 break;
             }
-            if (board[index] != EMPTY) {
+            if (board[index] != EMPTY)
+            {
                 break;
             }
         }
-    } else if (direction == DOWN_RIGHT) {
-        while (index - 9 >= 0 and index % 8 != 0) {
+    }
+    else if (direction == UP_LEFT)
+    {
+        while (index - 9 >= 0 and index % 8 != 0)
+        {
             index -= 9;
 
-            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
                 // Can't move forward
                 canMove = false;
                 break;
             }
-            if (board[index] != EMPTY) {
+            if (board[index] != EMPTY)
+            {
                 break;
             }
         }
-    } else if (direction == DOWN_LEFT) {
-        while (index - 7 >= 0 and index % 8 != 7) {
+    }
+    else if (direction == UP_RIGHT)
+    {
+        while (index - 7 >= 0 and index % 8 != 7)
+        {
             index -= 7;
 
-            if (board[index] == sign * BISHOP or board[index] == sign * QUEEN) {
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
                 // Can't move forward
                 canMove = false;
                 break;
             }
-            if (board[index] != EMPTY) {
+            if (board[index] != EMPTY)
+            {
                 break;
             }
         }
     }
 
-    if (canMove) {
-        if (board[piece] > 0) { // White color
+    // Normal movement (1 or 2 squares forward)
+    if (canMove)
+    {
+        if (board[piece] > 0)
+        { // White color
             // Normal movement applies
-            if (board[piece + 8] == EMPTY) { // Normal move
-                legal_moves->push(piece + 8);
+            if (board[piece + 8] == EMPTY)
+            { // Normal move
+                legalMoves->push(piece + 8);
             }
 
             // Possible double move on first move
-            if (piece > 7 and piece < 16 and board[piece + 16] == EMPTY) {
-                legal_moves->push(piece + 16);
+            if (piece > 7 and piece < 16 and board[piece + 16] == EMPTY)
+            {
+                legalMoves->push(piece + 16);
             }
-
-        } else { // Black color
+        }
+        else
+        { // Black color
             // Normal movement applies
-            if (board[piece - 8] == EMPTY) {
-                legal_moves->push(piece - 8);
+            if (board[piece - 8] == EMPTY)
+            {
+                legalMoves->push(piece - 8);
             }
-            if (piece > 47 and piece < 56 and board[piece - 16] == EMPTY) {
-                legal_moves->push(piece - 16);
+            if (piece > 47 and piece < 56 and board[piece - 16] == EMPTY)
+            {
+                legalMoves->push(piece - 16);
             }
         }
     }
 
     // Attacks and en passant:
-    if (!(direction == LEFT and !canMove) and !(direction == RIGHT and !canMove)) {
-        if (direction == UP) {
+    if (!(direction == LEFT and !canMove) and !(direction == RIGHT and !canMove))
+    {
+        if (direction == UP)
+        {
             // Verify we are not pinned
-            while (index >= 8 and index % 8 != 0) {
+            while (index >= 8 and index % 8 != 0)
+            {
                 index -= 8;
-                if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+                if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+                {
                     // Can't capture left or right
                     return;
                 }
-                if (board[index] != EMPTY) {
+                if (board[index] != EMPTY)
+                {
                     break;
                 }
             }
-        } else if (direction == DOWN) {
+        }
+        else if (direction == DOWN)
+        {
             // Verify we are not pinned
-            while (index < 56 and index % 8 != 7) {
+            while (index < 56 and index % 8 != 7)
+            {
                 index += 8;
-                if (board[index] == sign * ROOK or board[index] == sign * QUEEN) {
+                if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+                {
                     return;
                 }
-                if (board[index] != EMPTY) {
+                if (board[index] != EMPTY)
+                {
                     break;
                 }
             }
         }
 
         // Left capture
-        if (!(direction == UP_RIGHT and !canMove) and !(direction == DOWN_RIGHT and !canMove)) {
-            if (board[piece] > 0 and piece % 8 > 0 and board[piece + 7] < 0) { // White pawn
-                legal_moves->push(piece + 7);
-
-            } else if (board[piece] < 0 and piece % 8 < 7 and board[piece - 7] > 0) { // Black pawn
-                legal_moves->push(piece - 7);
+        if (!(direction == UP_RIGHT and !canMove) and !(direction == DOWN_LEFT and !canMove))
+        {
+            if (board[piece] > 0 and piece % 8 > 0 and (board[piece + 7] < 0 or piece + 7 == enPassantSquare))
+            { // White pawn
+                legalMoves->push(piece + 9);
+            }
+            else if (board[piece] < 0 and piece % 8 < 7 and (board[piece - 7] > 0 or piece - 7 == enPassantSquare))
+            { // Black pawn
+                legalMoves->push(piece - 9);
             }
         }
 
         // Right capture
-        if (!(direction == UP_LEFT and !canMove) and !(direction == DOWN_LEFT and !canMove)) {
-            if (board[piece] > 0 and piece % 8 < 7 and board[piece - 7] < 0) {
+        if (!(direction == UP_LEFT and !canMove) and !(direction == DOWN_RIGHT and !canMove))
+        {
+            if (board[piece] > 0 and piece % 8 < 7 and board[piece - 7] < 0)
+            {
                 // White pawn
-                legal_moves->push(piece - 7); // Left side
-            } else if (board[piece] < 0 and piece % 8 > 0 and board[piece + 7] > 0) {
+                legalMoves->push(piece + 7); // Left side
+            }
+            else if (board[piece] < 0 and piece % 8 > 0 and board[piece + 7] > 0)
+            {
                 // Black pawn
-                legal_moves->push(piece + 7); // Right side
+                legalMoves->push(piece - 7); // Right side
             }
         }
     }
 }
-
 
 /** Generate the legal moves for a given knight
  *
  * The knight can move in an L shape in any direction, jumping over
  * pieces as it goes.
  *
- * @param legal_moves A list of moves to add to
+ * @param legalMoves A list of moves to add to
  * @param board List of all pieces and their locations on the board
  * @param piece The piece to generate legal moves for
  * @param kingLoc The location of the King (optional)
  * @return A stack of all legal moves for the given piece
  */
-void legal_knight_moves(std::stack<int> *legal_moves, const int *board, int piece, int kingLoc) {}
+void legal_knight_moves(std::stack<int> *legalMoves, const int *board, int piece, int kingLoc)
+{
+    // Knights are simple because if they are pinned, they can't move
+    // Validation
+    if (board[piece] == EMPTY)
+    {
+        return; // Avoid div by zero
+    }
+
+    // King location
+    if (kingLoc == -1)
+    {
+        // Find the king location manually
+        for (int i = 0; i < 64; i++)
+        {
+            if (board[i] == KING)
+            {
+                kingLoc = i;
+                break;
+            }
+        }
+    }
+
+    int index = piece;
+    bool canMove = true;
+    const int sign = board[piece] / abs(board[piece]);
+    // Process pins
+    if (piece / 8 - kingLoc / 8 < 0 and piece % 8 - kingLoc % 8 == 0)
+    {
+        // Direction is down
+        while (index < 56 and index % 8 != 7)
+        {
+            index += 8;
+            if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+            {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+    else if (piece / 8 - kingLoc / 8 > 1 and piece % 8 - kingLoc % 8 == 0)
+    {
+        // Direction is up
+        while (index >= 8 and index % 8 != 0)
+        {
+            index -= 8;
+            if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+            {
+                return;
+            }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+    else if (piece / 8 - kingLoc / 8 == 0 and piece % 8 - kingLoc % 8 > 0)
+    {
+        // Direction is right
+        while (index < piece / 8 * 8 + 7)
+        {
+            index += 1;
+            if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+            {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+    else if (piece / 8 - kingLoc / 8 == 0 and piece % 8 - kingLoc % 8 < 0)
+    {
+        // Direction is left
+        while (index - 1 >= piece / 8 * 8)
+        {
+            index -= 1;
+            if (board[index] == -sign * ROOK or board[index] == -sign * QUEEN)
+            {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+    else if (piece / 8 - kingLoc / 8 == piece % 8 - kingLoc % 8)
+    {
+        // Direction is up left
+        while (index - 9 >= 0 and index % 8 != 0)
+        {
+            index -= 9;
+
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+    else if (piece / 8 - kingLoc / 8 == piece % 8 - kingLoc % 8)
+    {
+        // Direction is down right
+    }
+    else if (piece / 8 - kingLoc / 8 == -(piece % 8 - kingLoc % 8) and piece % 8 - kingLoc % 8 < 0)
+    {
+        // Direction is down left
+        while (index + 7 < 64 and index % 8 != 0)
+        {
+            index += 7;
+
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+    else if (-(piece / 8 - kingLoc / 8) == piece % 8 - kingLoc % 8 and piece / 8 - kingLoc / 8 < 0)
+    {
+        // Direction is up right
+        while (index - 7 >= 0 and index % 8 != 7)
+        {
+            index -= 7;
+
+            if (board[index] == -sign * BISHOP or board[index] == -sign * QUEEN)
+            {
+                // Can't move forward
+                canMove = false;
+                break;
+            }
+            if (board[index] != EMPTY)
+            {
+                break;
+            }
+        }
+    }
+
+    // Make moves
+    if (canMove)
+    {
+        // Bottom Far
+        if (piece / 8 > 1)
+        {
+            // C++ automatically converts int / int to int, no integer division necessary
+            if (piece % 8 > 0 and board[piece - 17] * -sign >= 0)
+            {
+                // validate right close
+                legalMoves->push(piece - 17);
+            }
+            if (piece % 8 < 7 and board[piece - 15] * -sign >= 0)
+            {
+                // validate left close
+                legalMoves->push(piece - 15);
+            }
+        }
+        // Bottom Close
+        if (piece / 8 > 0)
+        {
+            if (piece % 8 > 1 and board[piece - 10] * -sign >= 0)
+            {
+                // validate right far
+                legalMoves->push(piece - 10);
+            }
+            if (piece % 8 < 6 and board[piece - 6] * -sign >= 0)
+            {
+                // validate left far
+                legalMoves->push(piece - 6);
+            }
+        }
+        // Top Close
+        if (piece / 8 < 7)
+        {
+            if (piece % 8 > 1 and board[piece + 6] * -sign >= 0)
+            {
+                // validate right far
+                legalMoves->push(piece + 6);
+            }
+            if (piece % 8 < 6 and board[piece + 10] * -sign >= 0)
+            {
+                // validate left far
+                legalMoves->push(piece + 10);
+            }
+        }
+        // Top Far
+        if (piece / 8 < 6)
+        {
+            if (piece % 8 > 0 and board[piece + 15] * -sign >= 0)
+            {
+                // validate right close
+                legalMoves->push(piece + 15);
+            }
+            if (piece % 8 < 7 and board[piece + 17] * -sign >= 0)
+            {
+                // validate left close
+                legalMoves->push(piece + 17);
+            }
+        }
+    }
+}
 
 
 /** Generate the legal moves for a given bishop
