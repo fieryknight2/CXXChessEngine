@@ -23,19 +23,28 @@ and 2 colors, only 1 bit is wasted.
 
 **Board Representation**
 
-The board is represented from 1, a to 8, h. The direction is down left
-Memory representation of the board is as follows: (of course a=0-h=7 and all numbers subtract 1)
-  a b c d e f g h
-1 x x x x x x x x
-2 x x x x x x x x
-3 x x x x x x x x
-4 x x x x x x x x
-5 x x x x x x x x
-6 x x x x x x x x
-7 x x x x x x x x
-8 x x x x x x x x
-
-
+The board is represented from 1, a to 8, h. The direction is down left.
+A would be equal to 0, b would be equal to 1, and so on until h would be equal to 7.
+Memory representation of the board is as follows:
++---+---+---+---+---+---+---+---+---+
+|   | a | b | c | d | e | f | g | h |
++---+---+---+---+---+---+---+---+---+
+| 0 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 1 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 2 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 3 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 4 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 5 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 6 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
+| 7 | x | x | x | x | x | x | x | x |
++---+---+---+---+---+---+---+---+---+
 
 **Move Representation**
 
@@ -59,4 +68,4 @@ Why I'm looking to use the minimum amount of memory. In general, the functions u
 representations are going to be run hundreds of thousands of times while analyzing a position. They
 need to be
 
-.. doxygenheader:: board_rep.h
+.. doxygenstruct:: Board
