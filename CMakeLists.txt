@@ -5,11 +5,8 @@ set(CMAKE_CXX_STANDARD 26)
 
 add_library(ChessEngine STATIC
         source/src/main.cpp
-        source/src/chess_engine/board/legal_move_generator.cpp
-        source/include/chess_engine/constants.h
-        source/include/chess_engine/board/move_generator.h
-        source/src/chess_engine/board/attack_generator.cpp
-        source/src/chess_engine/board/move_generator.cpp
+        source/include/chess_engine/board/board_rep.h
+        source/src/chess_engine/board/board_rep.cpp
 )
 
 target_include_directories(ChessEngine PUBLIC
