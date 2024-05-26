@@ -26,6 +26,7 @@ and 2 colors, only 1 bit is wasted.
 The board is represented from 1, a to 8, h. The direction is down left.
 A would be equal to 0, b would be equal to 1, and so on until h would be equal to 7.
 Memory representation of the board is as follows:
+
 +---+---+---+---+---+---+---+---+---+
 |   | a | b | c | d | e | f | g | h |
 +---+---+---+---+---+---+---+---+---+
@@ -69,3 +70,4 @@ representations are going to be run hundreds of thousands of times while analyzi
 need to be
 
 .. doxygenstruct:: Board
+    :members:
