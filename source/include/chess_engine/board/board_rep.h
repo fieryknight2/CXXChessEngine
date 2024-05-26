@@ -75,25 +75,21 @@ typedef uint16_t pieceRepSize;
  * The first method is a board of chars, each representing two squares.
  * The second method includes a piece representation
  *
- * @member whiteAttacks Bitboard representation of all attacks for white pieces
- * @member blackAttacks Bitboard representation of all attacks for black pieces
- * @member board Array of chars representing the board
- * @member whitePieces Array representing the white pieces and their locations
- * @member blackPieces Array representing the black pieces and their locations
  * @author Matthew Brown
  * @date 5/25/2024
  */
 struct Board
 {
-    /* Helper bitboards for move generation
-     */
+    /** Bitboard representation of all attacks for white pieces */
     bitboard whiteAttacks = EMPTY;
+    /** Bitboard representation of all attacks for black pieces */
     bitboard blackAttacks = EMPTY;
 
     /* Each element of the uint8_t array represents two squares.
      * The first square is 0x0f and the second is 0xf0
      * a1 is the first element of the array while h8 is the last
      */
+    /** 32-sized array of chars representing the board */
     boardRepSize board[32] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Each element represents 2 squares
 
@@ -104,15 +100,19 @@ struct Board
      * List layout:
      * pppppppp rnbqkbnr
      */
+    /** Array of uint16_ts representing the white pieces and their locations */
     pieceRepSize whitePieces[16] = {};
+    /** Array of uint16_ts representing the black pieces and their locations */
     pieceRepSize blackPieces[16] = {};
 
     /* 3 bits will be ignored (0b000 - ignored) 0 0000
      * The first bit is the side to move, the last four bits are the castling rights
      * 0 is for black, 1 is for white
      */
+    /** Single char representing the side to move and castling rights */
     uint8_t boardInfo = 0b00011111; // 0x1f
     // 0xff represents no en passant square, otherwise it represents the square, 2 bits will be wasted
+    /** Single char representing the en passant square */
     uint8_t enPassantSquare = 0xff;
 
     bool createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
