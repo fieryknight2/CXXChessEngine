@@ -7,7 +7,7 @@ I will remove them entirely in the future but they are here for reference.
 
 .. toctree::
     :maxdepth: 2
-    :caption: Old Stuff:
+    :caption: Old Stuff
 
     board/attack_generator
     board/legal_move_generator
