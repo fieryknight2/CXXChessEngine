@@ -66,8 +66,8 @@ int8_ts. This will allow representation piece type and location in the minimum a
 **Notes**
 
 Why I'm looking to use the minimum amount of memory. In general, the functions using these
-representations are going to be run hundreds of thousands of times while analyzing a position. They
-need to be
+representations are going to be run hundreds of thousands of times while analyzing a position, so they
+need to be as fast as possible.
 
 .. doxygenstruct:: Board
     :members:
