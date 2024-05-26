@@ -103,5 +103,13 @@ TEST(BoardRepTest, PrintBoard)
 
     EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     board.printBoard();
+
+    std::cout << std::endl;
+
+    // Random test position
+    EXPECT_TRUE(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12", nullptr,
+                                    nullptr));
+    board.printBoard();
+
     std::cout << "\n------------------------------------------------------" << std::endl;
 }
