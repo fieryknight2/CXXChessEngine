@@ -52,20 +52,21 @@ struct Board
     /** Bitboard representation of all attacks for black pieces */
     bitboard blackAttacks = EMPTY;
 
-    /** 64-bit representation of all locations of the pieces */
+    /** 64-bit representation of all locations of the pieces
+     *
+     * 64-bit representation of all locations of the pieces
+     * Order is: White (pawns, knights, bishops, rooks, queens, kings)
+     *           Black (pawns, knights, bishops, rooks, queens, kings)
+     */
     bitboard pieces[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    int kingLoc = -1;
-
-    /* 3 bits will be ignored (0b000 - ignored) 0 0000
-     * The first bit is the side to move, the last four bits are the castling rights
-     * 0 is for black, 1 is for white
-     */
-    /** Single char representing the side to move and castling rights */
-    bitboard boardInfo = 0b00011111; // 0x1f
+    /** Stored location of the king */
+    uint16_t kingLoc = -1;
+    /** Representing the side to move and castling rights */
+    uint16_t boardInfo = 0xf; // All castling rights enabled
     // 0xff represents no en passant square, otherwise it represents the square, 2 bits will be wasted
     /** Single char representing the en passant square */
-    uint8_t enPassantSquare = 0xff;
+    uint16_t enPassantSquare = 0;
 
     bool createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
     [[nodiscard]] std::string getFEN(int halfMoveClock = 0, int fullMoveClock = 0) const;

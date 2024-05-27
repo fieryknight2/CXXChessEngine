@@ -19,12 +19,15 @@ pieces and their colors.
 
 **Board Representation**
 
-TODO: Figure out
+I've decided to use a 64-bit integer to represent the board. This is because it
+will be the easiest and most efficient way to work with the board. The board is represented
+with 12 bitboards, one for each piece type and color. The first 6 bitboard represents
+the white pieces and the last 6 bitboard represents the black pieces.
 
 **Move Representation**
 
 My first idea for representing possible moves is based on
-the idea that a Queen has a maximum possible twenty-seven moves. I'll probably stick
+the idea that a Queen has a maximum possible twenty-seven moves but I'll probably stick
 with the standard bitboard representation for now.
 
 **Piece Representation**
