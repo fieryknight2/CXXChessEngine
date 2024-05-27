@@ -75,6 +75,7 @@ TEST(BoardRepTest, PrintBoard)
     std::cout << "------------------------------------------------------" << std::endl;
     std::cout << std::endl;
     Board board;
+    board.pieces[5] = 0x0000f0000000ff00;
 
     EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     board.printBoard();

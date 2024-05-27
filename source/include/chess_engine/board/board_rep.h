@@ -36,6 +36,9 @@
 /** Classic bitboard. One 64-bit integer representing boolean conditions for chess board */
 typedef uint64_t bitboard;
 
+// Simple unsigned integer for my convenience
+typedef uint64_t uint;
+
 /** Board Representation
  *
  * This is a representation of a chess board using a combination of several methods.
@@ -58,19 +61,39 @@ struct Board
      * Order is: White (pawns, knights, bishops, rooks, queens, kings)
      *           Black (pawns, knights, bishops, rooks, queens, kings)
      */
-    bitboard pieces[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    bitboard pieces[12];
 
-    /** Stored location of the king */
-    uint16_t kingLoc = -1;
-    /** Representing the side to move and castling rights */
-    uint16_t boardInfo = 0xf; // All castling rights enabled
-    // 0xff represents no en passant square, otherwise it represents the square, 2 bits will be wasted
+    /** Stored location of the pieces */
+    uint pieceLocation[32];
+
+    /** Representing the castling rights */
+    bool castlingRights[4] = {true, true, true, true};
+
     /** Single char representing the en passant square */
-    uint16_t enPassantSquare = 0;
+    uint enPassantSquare = 65; // No en passant square
 
+    // Access and creation methods
     bool createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
     [[nodiscard]] std::string getFEN(int halfMoveClock = 0, int fullMoveClock = 0) const;
+    [[nodiscard]] char *getDisplayBoard() const;
     void printBoard() const;
+
+    // Movement methods
+    void movePiece(int from, int to, int piece);
+
+    // Simple constructor
+    Board()
+    {
+        for (int i = 0; i < 12; ++i)
+        {
+            pieces[i] = EMPTY;
+        }
+
+        for (int i = 0; i < 32; ++i)
+        {
+            pieceLocation[i] = 65;
+        }
+    }
 };
 
 #endif // BOARD_REP_H

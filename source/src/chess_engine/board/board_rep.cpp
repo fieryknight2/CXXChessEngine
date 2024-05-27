@@ -45,7 +45,7 @@
  * @param fullMoveClock Optional pointer to an integer to store the full move clock
  * @return True if the board was created successfully
  */
-bool Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullMoveClock) {}
+bool Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullMoveClock) { return false; }
 
 /** Get the FEN string for the board
  *
@@ -56,11 +56,115 @@ bool Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullM
  * @param fullMoveClock Value of the full move clock
  * @return String representation of the board
  */
-std::string Board::getFEN(int halfMoveClock, int fullMoveClock) const {}
+std::string Board::getFEN(int halfMoveClock, int fullMoveClock) const { return ""; }
 
+
+/** Get the a visible representation of the board
+ *
+ * This function will return a string of characters that represent the current
+ * state of the board. The string will be 64 characters long.
+ *
+ * @return String representation of the board
+ */
+char *Board::getDisplayBoard() const
+{
+    auto *dBoard = new char[64];
+    for (int i = 0; i < 64; dBoard[i++] = '*')
+        ; // Fill the board with empty squares
+
+    // Generate display board
+    for (int i = 0; i < 12; ++i)
+    {
+        for (int j = 0; j < 64; ++j)
+        {
+            // 1 << j is the bit that represents the square
+            uint masked = pieces[i] & (0b1 << j); // Apply the bit mask
+            if (masked >> j) // Get the value of the bit
+            {
+                switch (i)
+                {
+                    case 0: // First element is white pawns
+                        dBoard[j] = 'P';
+                        break;
+                    case 1: // Second element is white knights
+                        dBoard[j] = 'N';
+                        break;
+                    case 2: // Third element is white bishops
+                        dBoard[j] = 'B';
+                        break;
+                    case 3: // Fourth element is white rooks
+                        dBoard[j] = 'R';
+                        break;
+                    case 4: // Fifth element is white queens
+                        dBoard[j] = 'Q';
+                        break;
+                    case 5: // Sixth element is white king
+                        dBoard[j] = 'K';
+                        break;
+                    case 6: // Seventh element is black pawns
+                        dBoard[j] = 'p';
+                        break;
+                    case 7: // Eighth element is black knights
+                        dBoard[j] = 'n';
+                        break;
+                    case 8: // Ninth element is black bishops
+                        dBoard[j] = 'b';
+                        break;
+                    case 9: // Tenth element is black rooks
+                        dBoard[j] = 'r';
+                        break;
+                    case 10: // Eleventh element is black queens
+                        dBoard[j] = 'q';
+                        break;
+                    case 11: // Twelfth element is black king
+                        dBoard[j] = 'k';
+                        break;
+                    default: // This is impossible
+                        break;
+                }
+            }
+        }
+    }
+
+    return dBoard;
+}
 
 /** Print the board to the console
  *
  * This function will print the board to the console in a human readable format.
  */
-void Board::printBoard() const {}
+void Board::printBoard() const
+{
+    const char *dBoard = getDisplayBoard();
+
+    // Display files on top and bottom
+    std::cout << "  a b c d e f g h  " << std::endl;
+
+    for (int i = 7; i >= 0; --i) // Rank
+    {
+        std::cout << i + 1 << " ";
+
+        for (int j = 0; j < 8; ++j) // File
+        {
+            std::cout << dBoard[(i * 8) + j];
+            std::cout << " ";
+        }
+
+        std::cout << std::endl;
+    }
+
+    std::cout << "  a b c d e f g h  " << std::endl;
+
+    delete[] dBoard;
+}
+
+/** Move a piece from one location to another
+ *
+ * This function will move a piece from one location to another while also updating
+ * anything referencing the old location.
+ *
+ * @param from Location of the piece to move
+ * @param to Location to move the piece to
+ * @param piece Which piece was moved
+ */
+void Board::movePiece(int from, int to, int piece) {}
