@@ -70,6 +70,8 @@ void generateLegalMoves(std::stack<std::pair<int, int>> *legal_moves, int *board
  */
 void generateLegalMoves(std::stack<int> *legal_moves, const int *board, int piece) {}
 
+
+
 /** Generate the legal moves for a given pawn
  *
  * The pawn can move forward one square if it is not blocked, and it can
@@ -89,6 +91,7 @@ void legalPawnMoves(std::stack<int> *legalMoves, const int *board, int piece, in
     // Validation
     if (piece < 7 or piece > 56 or board[piece] == EMPTY)
     {
+        throw std::runtime_error("Invalid move");
         return;
     }
 

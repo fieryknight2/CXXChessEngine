@@ -21,19 +21,8 @@ TEST(BoardRepTest, CreateFromFEN)
 TEST(BoardRepTest, GetFEN)
 {
     Board board;
-
     // Manually set the board
-    const uint8_t thing[32] = {
-            0b01000010, 0b00110101, 0b01100011, 0b00100100, 0b00010001, 0b00010001, 0b00010001, 0b00010001,
-            0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
-            0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
-            0b10011001, 0b10011001, 0b10011001, 0b10011001, 0b11001010, 0b10111101, 0b11101011, 0b10101100,
-    };
-    for (int i = 0; i < 32; ++i)
-    {
-        board.board[i] = thing[i];
-    }
-
+    // TODO: Implement
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
 }
 
@@ -86,20 +75,6 @@ TEST(BoardRepTest, PrintBoard)
     std::cout << "------------------------------------------------------" << std::endl;
     std::cout << std::endl;
     Board board;
-    // Bit representation of an initial chess board
-    const uint8_t thing[32] = {
-            0b01000010, 0b00110101, 0b01100011, 0b00100100, 0b00010001, 0b00010001, 0b00010001, 0b00010001,
-            0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
-            0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
-            0b10011001, 0b10011001, 0b10011001, 0b10011001, 0b11001010, 0b10111101, 0b11101011, 0b10101100,
-    };
-    for (int i = 0; i < 32; ++i)
-    {
-        board.board[i] = thing[i];
-    }
-    board.printBoard();
-
-    std::cout << std::endl;
 
     EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     board.printBoard();

@@ -8,8 +8,7 @@ to make it strong enough to beat beginners and hopefully me eventually.
 Board Representation
 ====================
 
-The board is represented in a 32-bit list of chars. Each char represents
-two squares, the piece that occupies each and the color of the piece. Attacks
+The board is represented in using a series of bitboards. Attacks
 will be represented using a bitboard and maybe a list, I'm not sure yet.
 
 .. toctree::
