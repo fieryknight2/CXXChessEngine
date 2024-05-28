@@ -35,11 +35,34 @@
 // Definitions for convienience
 #define EMPTY 0
 
-/** Classic bitboard. One 64-bit integer representing boolean conditions for chess board */
-typedef uint64_t bitboard;
-
 // Simple unsigned integer for my convenience
 typedef uint64_t u64int;
+
+/** Classic bitboard.
+ *
+ * One 64-bit integer representing boolean conditions for chess board
+ * @author Matthew Brown
+ * @date 5/28/2024
+ */
+struct Bitboard
+{
+    /** Constructors */
+    explicit Bitboard(u64int nvalue) : value(nvalue) {}
+    Bitboard() : value(0) {}
+
+    /** Stored value of the bitboard */
+    u64int value;
+
+    /** Count all the bits in the bitboard */
+    [[nodiscard]] int getBitCount() const;
+
+    /** Assignment operator for simplicity */
+    Bitboard &operator=(const u64int &nvalue)
+    {
+        value = nvalue;
+        return *this;
+    }
+};
 
 /** Board Representation
  *
@@ -53,9 +76,9 @@ typedef uint64_t u64int;
 struct Board
 {
     /** Bitboard representation of all attacks for white pieces */
-    bitboard whiteAttacks = EMPTY;
+    Bitboard whiteAttacks{0};
     /** Bitboard representation of all attacks for black pieces */
-    bitboard blackAttacks = EMPTY;
+    Bitboard blackAttacks{0};
 
     /** 64-bit representation of all locations of the pieces
      *
@@ -63,24 +86,39 @@ struct Board
      * Order is: White (pawns, knights, bishops, rooks, queens, kings)
      *           Black (pawns, knights, bishops, rooks, queens, kings)
      */
-    bitboard pieces[12];
+    Bitboard pieces[12];
 
     /** Stored information on all pieces*/
-    Piece *pieceInformation;
+    Piece *pieceInformation = nullptr;
     /** Number of pieces on the board */
     int pieceCount = 0;
 
-    /** Representing the castling rights */
+    /** Representing the castling rights
+     *
+     * Represents the castling rights for each side
+     * Order represented is: White King
+     *                       White Queen
+     *                       Black King
+     *                       Black Queen
+     */
     bool castlingRights[4] = {true, true, true, true};
 
     /** Single char representing the en passant square */
     u64int enPassantSquare = 65; // No en passant square
 
+    /** Boolean representing if white is to move */
+    bool whiteToMove = true;
+
+    static u64int getSquareFromAlgebraic(const std::string &square);
+    static std::string toAlgebraic(u64int square);
+
     // Access and creation methods
-    void createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
+    void createFromFEN(const std::string &fen, int *halfMoveClock = nullptr,
+                       int *fullMoveClock = nullptr) noexcept(false);
     [[nodiscard]] std::string getFEN(int halfMoveClock = 0, int fullMoveClock = 0) const;
     [[nodiscard]] char *getDisplayBoard() const;
     void printBoard() const;
+    void resetBoard();
 
     // Movement methods
     void movePiece(int from, int to, int piece);
@@ -88,14 +126,9 @@ struct Board
     // Simple constructor
     Board()
     {
-        for (int i = 0; i < 12; ++i)
+        for (auto &piece: pieces)
         {
-            pieces[i] = EMPTY;
-        }
-
-        for (int i = 0; i < 32; ++i)
-        {
-            pieceLocation[i] = 65;
+            piece = EMPTY;
         }
     }
 };

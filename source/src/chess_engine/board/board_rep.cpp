@@ -25,11 +25,104 @@
  * @date 05/25/2024
  *****************************************************************************/
 #include "chess_engine/board/board_rep.h"
+#include "chess_engine/ChessError.h"
 
-#include <exception>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+int Bitboard::getBitCount() const
+{
+    int count = 0;
+    for (u64int i = 0; i < 64; ++i)
+    {
+        if (value & (0b1ull << i))
+        {
+            ++count;
+        }
+    }
+    return count;
+}
+
+/** Get a square from a string in algebraic notation
+ *
+ * @param square String representation of the square
+ * @return Square number
+ */
+u64int Board::getSquareFromAlgebraic(const std::string &square)
+{
+    if (square.size() != 2)
+    {
+        throw ChessError("Invalid square size");
+    }
+
+    u64int squareNumber;
+
+    // First character is the file
+    if (square[0] >= 'a' and square[0] <= 'h')
+    {
+        squareNumber = square[0] - 'a';
+    }
+    else
+    {
+        throw ChessError("Invalid square notation");
+    }
+
+    // Second character is the rank
+    if (square[1] >= '1' and square[1] <= '8')
+    {
+        squareNumber += 8 * (square[1] - '1');
+    }
+    else
+    {
+        throw ChessError("Invalid square notation");
+    }
+
+    return squareNumber;
+}
+
+std::string Board::toAlgebraic(u64int square)
+{
+    if (square >= 64)
+    {
+        throw ChessError("Invalid square");
+    }
+    std::string squareString;
+
+    // First character is the file
+    // Sometimes I hate C++ and linting...
+    squareString = static_cast<char>(square % 8) + 'a'; // NOLINT(*-narrowing-conversions)
+
+    // Second character is the rank
+    squareString += static_cast<char>(square / 8) + '1'; // NOLINT(*-narrowing-conversions)
+
+    return squareString;
+}
+
+/** Reset the board to the starting position */
+void Board::resetBoard()
+{
+    // Reset the board
+    if (pieceCount)
+    {
+        pieceCount = 0;
+        delete[] pieceInformation;
+        pieceInformation = nullptr;
+    }
+
+    for (auto &board: pieces)
+    {
+        board.value = 0;
+    }
+
+    for (bool &castlingRight: castlingRights)
+    {
+        castlingRight = false;
+    }
+
+    enPassantSquare = 65; // No en passant square
+    whiteToMove = true;
+}
 
 /** Create a board from a FEN string
  *
@@ -48,14 +141,12 @@
  */
 void Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullMoveClock)
 {
-    // Reset the board
-    for (int i = 0; i < 12; ++i)
-    {
-        pieces[i] = 0;
-    }
+    // First reset the board
+    resetBoard();
 
-    int i = 0; // We need the leftover value
-    int r = 0, c = 0;
+    // Process the FEN string
+    u64int i = 0; // We need the leftover value
+    int r = 7, c = 0;
     for (; i < fen.size(); ++i)
     {
         if (fen[i] == ' ')
@@ -65,68 +156,200 @@ void Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullM
 
         if (fen[i] == '/')
         {
-            ++r;
+            --r;
             c = 0;
             continue;
         }
-        if (c > 7 or r > 7) // file index out of bounds
+        if (c > 7 or r < 0) // file index out of bounds
         {
-            throw std::exception("Ran out of bounds while processing FEN");
+            throw ChessError("Ran out of bounds while processing FEN");
         }
 
 
-        if (fen[i] >= '0' and fen[i] <= '9')
+        if (fen[i] > '0' and fen[i] < '9')
         {
-            c += fen[i] - '0' - 1;
+            c += fen[i] - '0';
             continue;
         }
 
-        // 8 * r + c is the index, so shift 1 bit that much to write the bit
-        uint64_t shift = 0b1 << (8 * r + c);
+        // (8 * r) + c is the index, so shift 1 bit that much to write the bit
+        uint64_t shifted = 0b1ull << (8 * r + c);
         switch (fen[i])
         {
-            case 'p':
-                pieces[0] |= shift;
-                break;
-            case 'n':
-                pieces[1] |= shift;
-                break;
-            case 'b':
-                pieces[2] |= shift;
-                break;
-            case 'r':
-                pieces[3] |= shift;
-                break;
-            case 'q':
-                pieces[4] |= shift;
-                break;
-            case 'k':
-                pieces[5] |= shift;
-                break;
             case 'P':
-                pieces[6] |= shift;
+                pieces[0].value |= shifted;
                 break;
             case 'N':
-                pieces[7] |= shift;
+                pieces[1].value |= shifted;
                 break;
             case 'B':
-                pieces[8] |= shift;
+                pieces[2].value |= shifted;
                 break;
             case 'R':
-                pieces[9] |= shift;
+                pieces[3].value |= shifted;
                 break;
             case 'Q':
-                pieces[10] |= shift;
+                pieces[4].value |= shifted;
                 break;
             case 'K':
-                pieces[11] |= shift;
+                pieces[5].value |= shifted;
+                break;
+            case 'p':
+                pieces[6].value |= shifted;
+                break;
+            case 'n':
+                pieces[7].value |= shifted;
+                break;
+            case 'b':
+                pieces[8].value |= shifted;
+                break;
+            case 'r':
+                pieces[9].value |= shifted;
+                break;
+            case 'q':
+                pieces[10].value |= shifted;
+                break;
+            case 'k':
+                pieces[11].value |= shifted;
                 break;
             default:
-                throw std::exception(("Invalid piece " + std::to_string(fen[i]) + "in FEN").c_str());
+                throw ChessError("Invalid piece " + std::to_string(fen[i]) + " in FEN");
         }
+        ++c;
     }
 
     // Process the rest of the information
+    if (fen.size() <= ++i)
+    {
+        throw ChessError("Invalid FEN string length");
+    }
+
+    switch (fen[i])
+    {
+        case 'w':
+            whiteToMove = true;
+            break;
+        case 'b':
+            whiteToMove = false;
+            break;
+        default:
+            throw ChessError("Invalid player turn in FEN string");
+    }
+
+    i += 2;
+    if (fen.size() <= i)
+    {
+        throw ChessError("Invalid FEN string length while parsing castling rights");
+    }
+    if (fen[i] != '-')
+    {
+        // Castling rights
+        for (int j = 0; j < 4; ++j, ++i)
+        {
+            if (fen.size() <= i)
+            {
+                throw ChessError("Invalid FEN string length while parsing castling rights");
+            }
+
+            if (fen[i] == ' ' and j != 0)
+            {
+                if (fen[i] == '-')
+                {
+                    ++i;
+                }
+
+                break;
+            }
+            if (fen[i] == ' ' and j == 0)
+            {
+                throw ChessError("Invalid white space in FEN string");
+            }
+
+            switch (fen[i])
+            {
+                case 'K':
+                    castlingRights[0] = true;
+                    break;
+                case 'Q':
+                    castlingRights[1] = true;
+                    break;
+                case 'k':
+                    castlingRights[2] = true;
+                    break;
+                case 'q':
+                    castlingRights[3] = true;
+                    break;
+                default:
+                    throw ChessError("Invalid castling option in FEN string");
+            }
+        }
+    }
+    else
+    {
+        ++i;
+    }
+
+    // En passant square
+    ++i;
+    if (fen.size() <= i)
+    {
+        throw ChessError("Invalid FEN string length while parsing en passant square");
+    }
+
+    if (fen[i] == '-')
+    {
+        enPassantSquare = 65; // No en passant square
+    }
+    else if (fen.size() < i + 1)
+    {
+        throw ChessError("Invalid FEN string length while parsing en passant square");
+    }
+    else
+    {
+        enPassantSquare = getSquareFromAlgebraic(fen.substr(i, 2));
+        ++i;
+    }
+
+    ++i;
+    // Half move clock and full move clock
+    if (fen.size() <= ++i)
+    {
+        throw ChessError("Invalid FEN string length while parsing half move clock");
+    }
+    while (fen[i] >= '0' and fen[i] <= '9')
+    {
+        if (halfMoveClock)
+        {
+            *halfMoveClock = std::stoi(fen.substr(i, 1));
+        }
+        ++i;
+        if (fen.size() <= i)
+        {
+            throw ChessError("Invalid FEN string length while parsing half move clock");
+        }
+    }
+
+    ++i;
+    if (fen.size() <= i)
+    {
+        throw ChessError("Invalid FEN string length while parsing full move clock");
+    }
+    while (fen[i] >= '0' and fen[i] <= '9')
+    {
+        if (fullMoveClock)
+        {
+            *fullMoveClock = std::stoi(fen.substr(i, 1));
+        }
+
+        ++i;
+        if (fen.size() <= i)
+        {
+            return; // We're done
+        }
+    }
+
+    // something went wrong
+    throw ChessError("Invalid full move clock in FEN string");
 }
 
 /** Get the FEN string for the board
@@ -138,7 +361,93 @@ void Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullM
  * @param fullMoveClock Value of the full move clock
  * @return String representation of the board
  */
-std::string Board::getFEN(int halfMoveClock, int fullMoveClock) const { return ""; }
+std::string Board::getFEN(int halfMoveClock, int fullMoveClock) const
+{
+    std::string fen;
+
+    // First process the board
+    std::string board = getDisplayBoard();
+    for (int i = 7; i >= 0; --i)
+    {
+        int emptySquares = 0;
+        for (int j = 0; j < 8; ++j)
+        {
+            if (board[i * 8 + j] == '*')
+            {
+                ++emptySquares;
+            }
+            else
+            {
+                if (emptySquares)
+                {
+                    fen += std::to_string(emptySquares);
+                    emptySquares = 0;
+                }
+
+                fen += board[i * 8 + j];
+            }
+        }
+
+        if (emptySquares)
+        {
+            fen += std::to_string(emptySquares);
+        }
+        if (i != 0)
+        {
+            fen += "/";
+        }
+    }
+
+    // Who to move?
+    if (whiteToMove)
+    {
+        fen += " w ";
+    }
+    else
+    {
+        fen += " b ";
+    }
+
+    // Castling rights
+    if (!(castlingRights[0] + castlingRights[1] + castlingRights[2] + castlingRights[3]))
+    {
+        fen += "-";
+    }
+    else
+    {
+        if (castlingRights[0])
+        {
+            fen += "K";
+        }
+        if (castlingRights[1])
+        {
+            fen += "Q";
+        }
+        if (castlingRights[2])
+        {
+            fen += "k";
+        }
+        if (castlingRights[3])
+        {
+            fen += "q";
+        }
+    }
+
+    // En passant square
+    if (enPassantSquare == 65)
+    {
+        fen += " - ";
+    }
+    else
+    {
+        fen += " " + toAlgebraic(enPassantSquare) + " ";
+    }
+
+    // Half move clock and full move clock
+    fen += std::to_string(halfMoveClock) + " " + std::to_string(fullMoveClock);
+
+    return fen;
+}
 
 
 /** Get the a visible representation of the board
@@ -157,10 +466,10 @@ char *Board::getDisplayBoard() const
     // Generate display board
     for (int i = 0; i < 12; ++i)
     {
-        for (int j = 0; j < 64; ++j)
+        for (u64int j = 0; j < 64; ++j)
         {
             // 1 << j is the bit that represents the square
-            uint masked = pieces[i] & (0b1 << j); // Apply the bit mask
+            u64int masked = pieces[i].value & (0b1ull << j); // Apply the bit mask
             if (masked >> j) // Get the value of the bit
             {
                 switch (i)
@@ -228,7 +537,7 @@ void Board::printBoard() const
 
         for (int j = 0; j < 8; ++j) // File
         {
-            std::cout << dBoard[(i * 8) + j];
+            std::cout << dBoard[i * 8 + j];
             std::cout << " ";
         }
 
