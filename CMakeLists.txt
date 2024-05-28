@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 26)
 
 add_library(ChessBoard STATIC
         # Header files
-        source/include/chess_engine/board/board_rep.h
+        source/include/chess_engine/board/chess_board.h
         source/include/chess_engine/board/piece.h
         source/include/chess_engine/board/pawn.h
         source/include/chess_engine/board/knight.h
@@ -13,15 +13,17 @@ add_library(ChessBoard STATIC
         source/include/chess_engine/board/rook.h
         source/include/chess_engine/board/queen.h
         source/include/chess_engine/board/king.h
+        source/include/chess_engine/board/bitboard.h
 
         # Source files
-        source/src/chess_engine/board/board_rep.cpp
+        source/src/chess_engine/board/chess_board.cpp
         source/src/chess_engine/board/pawn.cpp
         source/src/chess_engine/board/knight.cpp
         source/src/chess_engine/board/bishop.cpp
         source/src/chess_engine/board/rook.cpp
         source/src/chess_engine/board/queen.cpp
         source/src/chess_engine/board/king.cpp
+        source/src/chess_engine/board/bitboard.cpp
 )
 
 target_include_directories(ChessBoard PUBLIC

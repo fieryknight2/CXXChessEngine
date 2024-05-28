@@ -3,8 +3,8 @@
  * @author Matthew Brown
  * @brief Unit tests for the board representation class.
  */
-#include "chess_engine/board/board_rep.h"
 #include <gtest/gtest.h>
+#include "chess_engine/board/chess_board.h"
 
 TEST(BitboardTest, GetBitCount)
 {
@@ -20,7 +20,7 @@ TEST(BitboardTest, GetBitCount)
 
 TEST(BoardRepTest, CreateFromFEN)
 {
-    Board board;
+    ChessBoard board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
     // board.printBoard();
@@ -31,17 +31,9 @@ TEST(BoardRepTest, CreateFromFEN)
     // board.printBoard();
 }
 
-TEST(BoardRepTest, GetFEN)
-{
-    Board board;
-    // Manually set the board
-    // TODO: Implement
-    // EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
-}
-
 TEST(BoardRepTest, GetFENWithHalfMoveClock)
 {
-    Board board;
+    ChessBoard board;
     int halfMoveClock = 0;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0", &halfMoveClock));
     EXPECT_EQ(board.getFEN(halfMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0");
@@ -49,14 +41,14 @@ TEST(BoardRepTest, GetFENWithHalfMoveClock)
 
 TEST(BoardRepTest, GetFENWithCastlingRights)
 {
-    Board board;
+    ChessBoard board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0");
 }
 
 TEST(BoardRepTest, GetFENWithFullMoveClock)
 {
-    Board board;
+    ChessBoard board;
     int fullMoveClock = 0;
     EXPECT_NO_THROW(
             board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 5", nullptr, &fullMoveClock));
@@ -65,14 +57,14 @@ TEST(BoardRepTest, GetFENWithFullMoveClock)
 
 TEST(BoardRepTest, GetFENWithEnPassantSquare)
 {
-    Board board;
+    ChessBoard board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0");
 }
 
 TEST(BoardRepTest, GetFENWithEverything)
 {
-    Board board;
+    ChessBoard board;
     int fullMoveClock = 0;
     int halfMoveClock = 0;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 5 5", &halfMoveClock,
@@ -87,11 +79,7 @@ TEST(BoardRepTest, PrintBoard)
     std::cout << "  Results should look like an initial chess position" << std::endl;
     std::cout << "------------------------------------------------------" << std::endl;
     std::cout << std::endl;
-    Board board;
-    board.pieces[5] = 0x0001f0000000ff00;
-    board.printBoard();
-
-    std::cout << std::endl;
+    ChessBoard board;
 
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     board.printBoard();

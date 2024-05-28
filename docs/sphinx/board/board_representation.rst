@@ -40,5 +40,5 @@ Why I'm looking to use the minimum amount of memory. In general, the functions u
 representations are going to be run hundreds of thousands of times while analyzing a position, so they
 need to be as fast as possible.
 
-.. doxygenstruct:: Board
+.. doxygenstruct:: ChessBoard
     :members:
