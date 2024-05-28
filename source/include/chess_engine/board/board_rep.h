@@ -30,6 +30,8 @@
 #include <cstdint>
 #include <string>
 
+#include "chess_engine/board/piece.h"
+
 // Definitions for convienience
 #define EMPTY 0
 
@@ -63,8 +65,10 @@ struct Board
      */
     bitboard pieces[12];
 
-    /** Stored location of the pieces */
-    u64int pieceLocation[32];
+    /** Stored information on all pieces*/
+    Piece *pieceInformation;
+    /** Number of pieces on the board */
+    int pieceCount = 0;
 
     /** Representing the castling rights */
     bool castlingRights[4] = {true, true, true, true};
@@ -73,7 +77,7 @@ struct Board
     u64int enPassantSquare = 65; // No en passant square
 
     // Access and creation methods
-    bool createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
+    void createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
     [[nodiscard]] std::string getFEN(int halfMoveClock = 0, int fullMoveClock = 0) const;
     [[nodiscard]] char *getDisplayBoard() const;
     void printBoard() const;

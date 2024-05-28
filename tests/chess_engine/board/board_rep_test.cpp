@@ -9,10 +9,10 @@
 TEST(BoardRepTest, CreateFromFEN)
 {
     Board board;
-    EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"));
+    EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
 
-    EXPECT_TRUE(
+    EXPECT_NO_THROW(
             board.createFromFEN("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2", nullptr, nullptr));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 0 0");
     // board.printBoard();
@@ -30,14 +30,14 @@ TEST(BoardRepTest, GetFENWithHalfMoveClock)
 {
     Board board;
     int halfMoveClock = 0;
-    EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0", &halfMoveClock));
+    EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0", &halfMoveClock));
     EXPECT_EQ(board.getFEN(halfMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0");
 }
 
 TEST(BoardRepTest, GetFENWithCastlingRights)
 {
     Board board;
-    EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0"));
+    EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0");
 }
 
@@ -45,7 +45,7 @@ TEST(BoardRepTest, GetFENWithFullMoveClock)
 {
     Board board;
     int fullMoveClock = 0;
-    EXPECT_TRUE(
+    EXPECT_NO_THROW(
             board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 5", nullptr, &fullMoveClock));
     EXPECT_EQ(board.getFEN(0, fullMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 5");
 }
@@ -53,7 +53,7 @@ TEST(BoardRepTest, GetFENWithFullMoveClock)
 TEST(BoardRepTest, GetFENWithEnPassantSquare)
 {
     Board board;
-    EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0"));
+    EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0");
 }
 
@@ -62,8 +62,8 @@ TEST(BoardRepTest, GetFENWithEverything)
     Board board;
     int fullMoveClock = 0;
     int halfMoveClock = 0;
-    EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 5 5", &halfMoveClock,
-                                    &fullMoveClock));
+    EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 5 5", &halfMoveClock,
+                                        &fullMoveClock));
     EXPECT_EQ(board.getFEN(halfMoveClock, fullMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 5 5");
 }
 
@@ -77,7 +77,7 @@ TEST(BoardRepTest, PrintBoard)
     Board board;
     board.pieces[5] = 0x0000f0000000ff00;
 
-    EXPECT_TRUE(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+    EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     board.printBoard();
 
     std::cout << std::endl;
@@ -86,8 +86,8 @@ TEST(BoardRepTest, PrintBoard)
     std::cout << "------------------------------------------------------\n" << std::endl;
 
     // Random test position
-    EXPECT_TRUE(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12", nullptr,
-                                    nullptr));
+    EXPECT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12",
+                                        nullptr, nullptr));
     board.printBoard();
 
     std::cout << "\n------------------------------------------------------" << std::endl;

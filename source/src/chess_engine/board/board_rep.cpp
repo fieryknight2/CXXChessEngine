@@ -26,8 +26,10 @@
  *****************************************************************************/
 #include "chess_engine/board/board_rep.h"
 
+#include <exception>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 /** Create a board from a FEN string
  *
@@ -43,9 +45,89 @@
  * @param fen String representation of the board
  * @param halfMoveClock Optional pointer to an integer to store the half move clock
  * @param fullMoveClock Optional pointer to an integer to store the full move clock
- * @return True if the board was created successfully
  */
-bool Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullMoveClock) { return false; }
+void Board::createFromFEN(const std::string &fen, int *halfMoveClock, int *fullMoveClock)
+{
+    // Reset the board
+    for (int i = 0; i < 12; ++i)
+    {
+        pieces[i] = 0;
+    }
+
+    int i = 0; // We need the leftover value
+    int r = 0, c = 0;
+    for (; i < fen.size(); ++i)
+    {
+        if (fen[i] == ' ')
+        {
+            break;
+        }
+
+        if (fen[i] == '/')
+        {
+            ++r;
+            c = 0;
+            continue;
+        }
+        if (c > 7 or r > 7) // file index out of bounds
+        {
+            throw std::exception("Ran out of bounds while processing FEN");
+        }
+
+
+        if (fen[i] >= '0' and fen[i] <= '9')
+        {
+            c += fen[i] - '0' - 1;
+            continue;
+        }
+
+        // 8 * r + c is the index, so shift 1 bit that much to write the bit
+        uint64_t shift = 0b1 << (8 * r + c);
+        switch (fen[i])
+        {
+            case 'p':
+                pieces[0] |= shift;
+                break;
+            case 'n':
+                pieces[1] |= shift;
+                break;
+            case 'b':
+                pieces[2] |= shift;
+                break;
+            case 'r':
+                pieces[3] |= shift;
+                break;
+            case 'q':
+                pieces[4] |= shift;
+                break;
+            case 'k':
+                pieces[5] |= shift;
+                break;
+            case 'P':
+                pieces[6] |= shift;
+                break;
+            case 'N':
+                pieces[7] |= shift;
+                break;
+            case 'B':
+                pieces[8] |= shift;
+                break;
+            case 'R':
+                pieces[9] |= shift;
+                break;
+            case 'Q':
+                pieces[10] |= shift;
+                break;
+            case 'K':
+                pieces[11] |= shift;
+                break;
+            default:
+                throw std::exception(("Invalid piece " + std::to_string(fen[i]) + "in FEN").c_str());
+        }
+    }
+
+    // Process the rest of the information
+}
 
 /** Get the FEN string for the board
  *

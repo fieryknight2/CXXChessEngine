@@ -3,15 +3,44 @@ project(ChessEngine)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_library(ChessEngine STATIC
-        source/src/main.cpp
+add_library(ChessBoard STATIC
+        # Header files
         source/include/chess_engine/board/board_rep.h
+        source/include/chess_engine/board/piece.h
+        source/include/chess_engine/board/pawn.h
+        source/include/chess_engine/board/knight.h
+        source/include/chess_engine/board/bishop.h
+        source/include/chess_engine/board/rook.h
+        source/include/chess_engine/board/queen.h
+        source/include/chess_engine/board/king.h
+
+        # Source files
         source/src/chess_engine/board/board_rep.cpp
+        source/src/chess_engine/board/pawn.cpp
+        source/src/chess_engine/board/knight.cpp
+        source/src/chess_engine/board/bishop.cpp
+        source/src/chess_engine/board/rook.cpp
+        source/src/chess_engine/board/queen.cpp
+        source/src/chess_engine/board/king.cpp
+)
+
+target_include_directories(ChessBoard PUBLIC
+        source/include
+)
+
+add_library(ChessEngine STATIC
+        # Header files
+        source/include/chess_engine/chess_engine.h
+
+        # Source files
+        source/src/chess_engine/chess_engine.cpp
 )
 
 target_include_directories(ChessEngine PUBLIC
         source/include
 )
+
+target_link_libraries(ChessEngine ChessBoard)
 
 add_executable(ChessEngineRun
         source/src/main.cpp
