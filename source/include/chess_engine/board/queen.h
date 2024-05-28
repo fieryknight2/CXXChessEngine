@@ -23,8 +23,27 @@
  * queen.h - <Brief description>
  * @author Matthew Brown
  * @date 05/27/2024
-*****************************************************************************/
+ *****************************************************************************/
 #ifndef queen_H
 #define queen_H
+
+#include "chess_engine/board/piece.h"
+
+/** Queen class
+ *
+ * @author Matthew Brown
+ * @date 05/28/2024
+ */
+class Queen final : public Piece
+{
+public:
+    Queen(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    ~Queen() override = default;
+
+    void makeMove(int to) override;
+    [[nodiscard]] char getType() const override;
+    void getAttacks(uint64_t &attacks) const override;
+    void getLegalMoves(uint64_t &moves) const override;
+};
 
 #endif // queen_H

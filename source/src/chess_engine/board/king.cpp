@@ -23,4 +23,38 @@
  * king.cpp - <Brief description>
  * @author Matthew Brown
  * @date 05/27/2024
-*****************************************************************************/
+ *****************************************************************************/
+#include "chess_engine/board/king.h"
+
+/** Make a move on the board
+ *
+ * @param to Location to move the piece to
+ */
+void King::makeMove(int to)
+{
+    // TODO: Implement
+}
+
+/** Get the type of the piece
+ *
+ * @return Type of the piece
+ */
+char King::getType() const { return 'k'; }
+
+/** Get the legal moves for the piece
+ *
+ * @param moves Pointer to a 64-bit integer to store the legal moves
+ */
+void King::getLegalMoves(uint64_t &moves) const
+{
+    // TODO: Implement
+}
+
+/** Get the possible attacks for the piece
+ *
+ * @param attacks Pointer to a 64-bit integer to store the legal attacks
+ */
+void King::getAttacks(uint64_t &attacks) const
+{
+    // TODO: Implement
+}

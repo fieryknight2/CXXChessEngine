@@ -23,8 +23,27 @@
  * knight.h - <Brief description>
  * @author Matthew Brown
  * @date 05/27/2024
-*****************************************************************************/
+ *****************************************************************************/
 #ifndef knight_H
 #define knight_H
+
+#include "chess_engine/board/piece.h"
+
+/** Knight class
+ *
+ * @author Matthew Brown
+ * @date 05/28/2024
+ */
+class Knight final : public Piece
+{
+public:
+    Knight(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    ~Knight() override = default;
+
+    void makeMove(int to) override;
+    [[nodiscard]] char getType() const override;
+    void getAttacks(uint64_t &attacks) const override;
+    void getLegalMoves(uint64_t &moves) const override;
+};
 
 #endif // knight_H

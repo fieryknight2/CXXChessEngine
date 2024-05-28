@@ -35,6 +35,7 @@
 #endif // WHITE
 
 #include <cstdint>
+#include "bitboard.h"
 
 /** Possible types of chess pieces
  *
@@ -62,22 +63,22 @@ protected:
     /** Boolean representation of the color of the piece, true for white, false for black */
     bool m_color = WHITE;
     /** Reference to the board that the piece is on */
-    uint64_t *m_board;
+    Board *m_board = nullptr;
 
 public:
     // Constructor
-    Piece(bool color, uint64_t *board, unsigned int location) : m_location(location), m_color(color), m_board(board) {}
-    virtual ~Piece() {}
+    Piece(bool color, Board *boards, unsigned int location) : m_location(location), m_color(color), m_board(boards) {}
+    virtual ~Piece() = default;
 
     // Getters
-    int getColor() const { return m_color; }
-    uint64_t *getBoard() const { return m_board; }
+    [[nodiscard]] int getColor() const { return m_color; }
+    [[nodiscard]] Board *getBoards() const { return m_board; }
 
     // Virtual methods
     virtual void makeMove(int to) { m_location = to; }
-    virtual char getType() const = 0;
-    virtual void getAttacks(uint64_t *attacks) const = 0;
-    virtual void getLegalMoves(uint64_t *moves) const = 0;
+    [[nodiscard]] virtual char getType() const = 0;
+    virtual void getAttacks(uint64_t &attacks) const = 0;
+    virtual void getLegalMoves(uint64_t &moves) const = 0;
 };
 
 #endif // piece_H

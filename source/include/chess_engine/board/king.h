@@ -23,8 +23,27 @@
  * king.h - <Brief description>
  * @author Matthew Brown
  * @date 05/27/2024
-*****************************************************************************/
+ *****************************************************************************/
 #ifndef king_H
 #define king_H
+
+#include "chess_engine/board/piece.h"
+
+/** King class
+ *
+ * @author Matthew Brown
+ * @date 05/28/2024
+ */
+class King final : public Piece
+{
+public:
+    King(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    ~King() override = default;
+
+    void makeMove(int to) override;
+    [[nodiscard]] char getType() const override;
+    void getAttacks(uint64_t &attacks) const override;
+    void getLegalMoves(uint64_t &moves) const override;
+};
 
 #endif // king_H

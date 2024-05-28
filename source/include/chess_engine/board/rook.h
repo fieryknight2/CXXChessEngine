@@ -23,8 +23,27 @@
  * rook.h - <Brief description>
  * @author Matthew Brown
  * @date 05/27/2024
-*****************************************************************************/
+ *****************************************************************************/
 #ifndef rook_H
 #define rook_H
+
+#include "chess_engine/board/piece.h"
+
+/** Rook class
+ *
+ * @author Matthew Brown
+ * @date 05/28/2024
+ */
+class Rook final : public Piece
+{
+public:
+    Rook(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    ~Rook() override = default;
+
+    void makeMove(int to) override;
+    [[nodiscard]] char getType() const override;
+    void getAttacks(uint64_t &attacks) const override;
+    void getLegalMoves(uint64_t &moves) const override;
+};
 
 #endif // rook_H
