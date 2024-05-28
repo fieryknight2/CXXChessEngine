@@ -31,6 +31,7 @@ target_include_directories(ChessBoard PUBLIC
 add_library(ChessEngine STATIC
         # Header files
         source/include/chess_engine/chess_engine.h
+        source/include/chess_engine/ChessError.h
 
         # Source files
         source/src/chess_engine/chess_engine.cpp

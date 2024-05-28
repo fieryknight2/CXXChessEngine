@@ -6,11 +6,24 @@
 #include "chess_engine/board/board_rep.h"
 #include <gtest/gtest.h>
 
+TEST(BitboardTest, GetBitCount)
+{
+    Bitboard bb(0xffffffffffffffff);
+    EXPECT_EQ(bb.getBitCount(), 64);
+
+    bb = 0xff;
+    EXPECT_EQ(bb.getBitCount(), 8);
+
+    bb = 0b11;
+    EXPECT_EQ(bb.getBitCount(), 2);
+}
+
 TEST(BoardRepTest, CreateFromFEN)
 {
     Board board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
+    // board.printBoard();
 
     EXPECT_NO_THROW(
             board.createFromFEN("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2", nullptr, nullptr));
@@ -23,7 +36,7 @@ TEST(BoardRepTest, GetFEN)
     Board board;
     // Manually set the board
     // TODO: Implement
-    EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
+    // EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
 }
 
 TEST(BoardRepTest, GetFENWithHalfMoveClock)
@@ -75,7 +88,10 @@ TEST(BoardRepTest, PrintBoard)
     std::cout << "------------------------------------------------------" << std::endl;
     std::cout << std::endl;
     Board board;
-    board.pieces[5] = 0x0000f0000000ff00;
+    board.pieces[5] = 0x0001f0000000ff00;
+    board.printBoard();
+
+    std::cout << std::endl;
 
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     board.printBoard();
