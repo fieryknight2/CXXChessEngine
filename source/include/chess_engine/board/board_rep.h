@@ -37,7 +37,7 @@
 typedef uint64_t bitboard;
 
 // Simple unsigned integer for my convenience
-typedef uint64_t uint;
+typedef uint64_t u64int;
 
 /** Board Representation
  *
@@ -64,13 +64,13 @@ struct Board
     bitboard pieces[12];
 
     /** Stored location of the pieces */
-    uint pieceLocation[32];
+    u64int pieceLocation[32];
 
     /** Representing the castling rights */
     bool castlingRights[4] = {true, true, true, true};
 
     /** Single char representing the en passant square */
-    uint enPassantSquare = 65; // No en passant square
+    u64int enPassantSquare = 65; // No en passant square
 
     // Access and creation methods
     bool createFromFEN(const std::string &fen, int *halfMoveClock = nullptr, int *fullMoveClock = nullptr);
