@@ -2,11 +2,9 @@ Chess Board Documentation
 =========================
 
 .. toctree::
-    :maxdepth: 2
-    :caption: Board
-    chessboard
+    :caption: Board and Pieces
 
-    :caption: Pieces
+    chessboard
     pieces/piece
     pieces/king
     pieces/queen
