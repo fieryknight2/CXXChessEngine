@@ -13,9 +13,10 @@ will be represented using a bitboard and maybe a list, I'm not sure yet.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Board Representation:
+   :caption: Chess Board:
 
    board/board_representation
+   board/board_docs
 
 Engine Function
 ===============
@@ -30,8 +31,7 @@ These are planned for the future, and will allow the engine to be connected to
 any popular GUI that implements the UCI protocol.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 5
    :caption: Other Stuff:
 
    board/old
-   board/board_docs
