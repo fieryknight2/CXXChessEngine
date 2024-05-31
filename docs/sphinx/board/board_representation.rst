@@ -42,4 +42,5 @@ need to be as fast as possible.
 
 .. toctree::
     :maxdepth: 1
+
     board_docs

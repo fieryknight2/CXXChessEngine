@@ -1,6 +1,8 @@
-:orphan:
 404 Not Found
 =============
 
 It looks like you've followed a broken link or entered a URL that doesn't exist.
 Try using the navigation bar on the side to find what you're looking for.
+
+.. toctree::
+    :orphan:
