@@ -59,7 +59,7 @@ class Piece
 {
 protected:
     /** Location of the piece on the board */
-    unsigned int m_location;
+    uint64_t m_location;
     /** Boolean representation of the color of the piece, true for white, false for black */
     bool m_color = WHITE;
     /** Reference to the board that the piece is on */
@@ -68,7 +68,7 @@ protected:
 
 public:
     /** Constructor */
-    Piece(bool color, Board *boards, unsigned int location) : m_location(location), m_color(color), m_board(boards) {}
+    Piece(bool color, Board *boards, uint64_t location) : m_location(location), m_color(color), m_board(boards) {}
     /** Destructor */
     virtual ~Piece() = default;
 
@@ -77,6 +77,8 @@ public:
     [[nodiscard]] int getColor() const { return m_color; }
     /** Get the referenced boards that the piece is on */
     [[nodiscard]] Board *getBoards() const { return m_board; }
+    /** Get the current location of the piece */
+    [[nodiscard]] uint64_t getSquare() const { return m_location; }
 
     // Virtual methods
     /** Make a move on the board, to be overridden for special behavior */
