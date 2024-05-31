@@ -15,6 +15,7 @@ add_executable(chess_engine_test
         chess_engine/board/perft_test.cpp
         chess_engine/low_level_test_functions.cpp
         chess_engine/board/board_rep_test.cpp
+        chess_engine/board/pawn_test.cpp
 )
 target_include_directories(chess_engine_test PUBLIC
         ${gtest_SOURCE_DIR}/include
