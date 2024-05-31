@@ -12,7 +12,6 @@ The board is represented in using a series of bitboards. Attacks
 will be represented using a bitboard and maybe a list, I'm not sure yet.
 
 .. toctree::
-   :maxdepth: 2
    :caption: Chess Board:
 
    board/board_representation

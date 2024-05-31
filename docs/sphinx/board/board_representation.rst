@@ -41,5 +41,5 @@ representations are going to be run hundreds of thousands of times while analyzi
 need to be as fast as possible.
 
 .. toctree::
-
+    :maxdepth: 1
     board_docs

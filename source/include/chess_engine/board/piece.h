@@ -67,22 +67,31 @@ protected:
     Piece *m_king = nullptr;
 
 public:
-    // Constructor
+    /** Constructor */
     Piece(bool color, Board *boards, unsigned int location) : m_location(location), m_color(color), m_board(boards) {}
+    /** Destructor */
     virtual ~Piece() = default;
 
     // Getters
+    /** Get the represented color of the piece */
     [[nodiscard]] int getColor() const { return m_color; }
+    /** Get the referenced boards that the piece is on */
     [[nodiscard]] Board *getBoards() const { return m_board; }
 
     // Virtual methods
+    /** Make a move on the board, to be overridden for special behavior */
     virtual void makeMove(int to) { m_location = to; }
+    /** Get the type of the piece */
     [[nodiscard]] virtual char getType() const = 0;
+    /** Retrieve all possible attacks for the piece */
     virtual void getAttacks(uint64_t &attacks) const = 0;
+    /** Retrieve all possible legal moves for the piece */
     virtual void getLegalMoves(uint64_t &moves) const = 0;
 
     // Setters
+    /** Set the referenced king for the piece. Should be used in getLegalMoves() */
     void setKing(Piece *king) { m_king = king; }
+    /** Access the referenced king for the piece */
     [[nodiscard]] Piece *getKing() const { return m_king; }
 };
 
