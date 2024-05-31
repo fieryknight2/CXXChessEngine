@@ -1,0 +1,5 @@
+Knight
+======
+
+.. doxygenclass:: Knight
+   :members:

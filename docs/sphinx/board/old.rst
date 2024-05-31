@@ -9,6 +9,6 @@ I will remove them entirely in the future but they are here for reference.
     :maxdepth: 2
     :caption: Old Stuff
 
-    attack_generator
-    legal_move_generator
-    move_generator
+    old_gen/legal_move_generator
+    old_gen/attack_generator
+    old_gen/move_generator

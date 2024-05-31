@@ -1,0 +1,5 @@
+Bishop
+======
+
+.. doxygenclass:: Bishop
+   :members:

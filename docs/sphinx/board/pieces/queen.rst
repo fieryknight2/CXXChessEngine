@@ -1,0 +1,5 @@
+Queen
+=====
+
+.. doxygenclass:: Queen
+   :members:

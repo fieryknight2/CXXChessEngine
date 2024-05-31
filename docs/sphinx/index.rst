@@ -34,3 +34,4 @@ any popular GUI that implements the UCI protocol.
    :caption: Other Stuff:
 
    board/old
+   board/board_docs

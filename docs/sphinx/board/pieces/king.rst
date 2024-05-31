@@ -1,0 +1,5 @@
+King
+====
+
+.. doxygenclass:: King
+   :members:

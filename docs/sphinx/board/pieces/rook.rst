@@ -1,0 +1,5 @@
+Rook
+====
+
+.. doxygenclass:: Rook
+   :members:
