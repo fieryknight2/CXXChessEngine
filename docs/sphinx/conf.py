@@ -36,9 +36,9 @@ copyright = '2024, Matthew Brown'
 author = 'Matthew Brown'
 release = 'v0.0.1'
 
-
 extensions = [
-    'breathe'
+    'breathe',
+    'notfound.extension'
 ]
 
 templates_path = ['_templates']
@@ -50,4 +50,3 @@ breathe_projects = {
 }
 
 breathe_default_project = "ChessEngine"
-
