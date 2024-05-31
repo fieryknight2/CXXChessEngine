@@ -25,13 +25,13 @@
  * @date 05/25/2024
  *****************************************************************************/
 #include "chess_engine/board/chess_board.h"
-#include "chess_engine/ChessError.h"
 #include "chess_engine/board/bishop.h"
 #include "chess_engine/board/king.h"
 #include "chess_engine/board/knight.h"
 #include "chess_engine/board/pawn.h"
 #include "chess_engine/board/queen.h"
 #include "chess_engine/board/rook.h"
+#include "chess_engine/chess_error.h"
 
 #include <iostream>
 #include <sstream>
@@ -96,11 +96,11 @@ std::string ChessBoard::toAlgebraic(uint64_t square)
 void ChessBoard::resetBoard()
 {
     // Reset the board
-    if (pieceCount)
+    if (m_pieceCount)
     {
-        pieceCount = 0;
-        delete[] pieceInformation;
-        pieceInformation = nullptr;
+        m_pieceCount = 0;
+        delete[] m_pieceInformation;
+        m_pieceInformation = nullptr;
     }
 
     for (auto &board: m_board.data)
@@ -211,8 +211,8 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
         ++c;
     }
 
-    pieceCount = m_board.getTotalValue().getBitCount();
-    pieceInformation = new Piece *[pieceCount];
+    m_pieceCount = m_board.getTotalValue().getBitCount();
+    m_pieceInformation = new Piece *[m_pieceCount];
     for (int j = 0, elem = 0; j < 12; ++j)
     {
         for (int k = 0; k < 64; ++k)
@@ -222,42 +222,42 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
                 switch (j)
                 {
                     case 0: // First element is white pawns
-                        pieceInformation[elem] = new Pawn(WHITE, &m_board, k);
+                        m_pieceInformation[elem] = new Pawn(WHITE, &m_board, k);
                         break;
                     case 1: // Second element is white knights
-                        pieceInformation[elem] = new Knight(WHITE, &m_board, k);
+                        m_pieceInformation[elem] = new Knight(WHITE, &m_board, k);
                         break;
                     case 2: // Third element is white bishops
-                        pieceInformation[elem] = new Bishop(WHITE, &m_board, k);
+                        m_pieceInformation[elem] = new Bishop(WHITE, &m_board, k);
                         break;
                     case 3: // Fourth element is white rooks
-                        pieceInformation[elem] = new Rook(WHITE, &m_board, k);
+                        m_pieceInformation[elem] = new Rook(WHITE, &m_board, k);
                         break;
                     case 4: // Fifth element is white queens
-                        pieceInformation[elem] = new Queen(WHITE, &m_board, k);
+                        m_pieceInformation[elem] = new Queen(WHITE, &m_board, k);
                         break;
                     case 5: // Sixth element is white king
-                        pieceInformation[elem] = new King(WHITE, &m_board, k);
-                        m_whiteKing = pieceInformation[elem];
+                        m_pieceInformation[elem] = new King(WHITE, &m_board, k);
+                        m_whiteKing = m_pieceInformation[elem];
                         break;
                     case 6: // Seventh element is black pawns
-                        pieceInformation[elem] = new Pawn(BLACK, &m_board, k);
+                        m_pieceInformation[elem] = new Pawn(BLACK, &m_board, k);
                         break;
                     case 7: // Eighth element is black knights
-                        pieceInformation[elem] = new Knight(BLACK, &m_board, k);
+                        m_pieceInformation[elem] = new Knight(BLACK, &m_board, k);
                         break;
                     case 8: // Ninth element is black bishops
-                        pieceInformation[elem] = new Bishop(BLACK, &m_board, k);
+                        m_pieceInformation[elem] = new Bishop(BLACK, &m_board, k);
                         break;
                     case 9: // Tenth element is black rooks
-                        pieceInformation[elem] = new Rook(BLACK, &m_board, k);
+                        m_pieceInformation[elem] = new Rook(BLACK, &m_board, k);
                         break;
                     case 10: // Eleventh element is black queens
-                        pieceInformation[elem] = new Queen(BLACK, &m_board, k);
+                        m_pieceInformation[elem] = new Queen(BLACK, &m_board, k);
                         break;
                     case 11: // Twelfth element is black king
-                        pieceInformation[elem] = new King(BLACK, &m_board, k);
-                        m_blackKing = pieceInformation[elem];
+                        m_pieceInformation[elem] = new King(BLACK, &m_board, k);
+                        m_blackKing = m_pieceInformation[elem];
                         break;
                     default:
                         break; // This is impossible
@@ -267,15 +267,15 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
             }
         }
     }
-    for (int j = 0; j < pieceCount; ++j)
+    for (int j = 0; j < m_pieceCount; ++j)
     {
-        if (pieceInformation[j]->getColor() == WHITE)
+        if (m_pieceInformation[j]->getColor() == WHITE)
         {
-            pieceInformation[j]->setKing(m_whiteKing);
+            m_pieceInformation[j]->setKing(m_whiteKing);
         }
         else // Black
         {
-            pieceInformation[j]->setKing(m_blackKing);
+            m_pieceInformation[j]->setKing(m_blackKing);
         }
     }
 
@@ -633,3 +633,25 @@ Piece *ChessBoard::getWhiteKing() const { return m_whiteKing; }
  * @return Pointer to the black king
  */
 Piece *ChessBoard::getBlackKing() const { return m_blackKing; }
+
+int ChessBoard::getPieceCount() const { return m_pieceCount; }
+
+Piece **ChessBoard::getPieces() const { return m_pieceInformation; }
+
+Piece *ChessBoard::getPiece(uint64_t square) const
+{
+    if (square >= 64)
+    {
+        throw ChessError("Invalid square");
+    }
+
+    for (int i = 0; i < m_pieceCount; ++i)
+    {
+        if (m_pieceInformation[i]->getSquare() == square)
+        {
+            return m_pieceInformation[i];
+        }
+    }
+
+    return nullptr;
+}
