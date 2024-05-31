@@ -96,3 +96,18 @@ TEST(BoardRepTest, PrintBoard)
 
     std::cout << "\n------------------------------------------------------" << std::endl;
 }
+
+TEST(BoardRepTest, GetPiece)
+{
+    ChessBoard board;
+    ASSERT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12",
+                                        nullptr, nullptr));
+
+    EXPECT_EQ(board.getPieceCount(), 30);
+
+    ASSERT_NE(board.getPiece(0), nullptr);
+    EXPECT_EQ(board.getPiece(0)->getType(), PieceType::ROOK);
+    EXPECT_EQ(board.getPiece(0)->getColor(), WHITE);
+
+    EXPECT_NE(board.getPiece(1), nullptr);
+}
