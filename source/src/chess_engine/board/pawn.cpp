@@ -30,10 +30,7 @@
  *
  * @param to Location to move the piece to
  */
-void Pawn::makeMove(int to)
-{
-    // TODO: Implement
-}
+void Pawn::makeMove(int to) { m_location = to; }
 
 /** Get the type of the piece
  *
@@ -56,5 +53,43 @@ void Pawn::getLegalMoves(uint64_t &moves) const
  */
 void Pawn::getAttacks(uint64_t &attacks) const
 {
-    // TODO: Implement
+    if (m_location > 55 or m_location < 8)
+    {
+        return;
+    }
+
+    /* White pawn attacks:
+     * Loc: 0
+     *
+     *       P
+     *  +7 X   X +9
+     *
+     *      Loc: 63
+     */
+    if (m_color) // White
+    {
+        if (m_location % 8 > 0)
+        {
+            // Left side
+            attacks |= 1ull << (m_location + 9);
+        }
+        if (m_location % 8 < 7)
+        {
+            // Right side
+            attacks |= 1ull << (m_location + 7);
+        }
+    }
+    else // Black
+    {
+        if (m_location % 8 > 0)
+        {
+            // Right side
+            attacks |= 1ull << (m_location - 9);
+        }
+        if (m_location % 8 < 7)
+        {
+            // Left side
+            attacks |= 1ull << (m_location - 7);
+        }
+    }
 }
