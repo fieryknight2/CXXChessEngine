@@ -61,9 +61,9 @@ class ChessBoard
     Board m_board;
 
     /** Stored information on all pieces*/
-    Piece **pieceInformation = nullptr;
+    Piece **m_pieceInformation = nullptr;
     /** Number of pieces on the board */
-    int pieceCount = 0;
+    int m_pieceCount = 0;
     /** Pointer to the white king */
     Piece *m_whiteKing = nullptr;
     /** Pointer to the black king */
@@ -104,6 +104,10 @@ public:
     // Getters
     [[nodiscard]] Piece *getWhiteKing() const;
     [[nodiscard]] Piece *getBlackKing() const;
+
+    [[nodiscard]] int getPieceCount() const;
+    [[nodiscard]] Piece **getPieces() const;
+    [[nodiscard]] Piece *getPiece(uint64_t square) const;
 
     // Simple constructor
     ChessBoard() = default;
