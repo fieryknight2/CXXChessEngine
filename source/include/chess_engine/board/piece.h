@@ -64,6 +64,7 @@ protected:
     bool m_color = WHITE;
     /** Reference to the board that the piece is on */
     Board *m_board = nullptr;
+    Piece *m_king = nullptr;
 
 public:
     // Constructor
@@ -79,6 +80,10 @@ public:
     [[nodiscard]] virtual char getType() const = 0;
     virtual void getAttacks(uint64_t &attacks) const = 0;
     virtual void getLegalMoves(uint64_t &moves) const = 0;
+
+    // Setters
+    void setKing(Piece *king) { m_king = king; }
+    [[nodiscard]] Piece *getKing() const { return m_king; }
 };
 
 #endif // piece_H

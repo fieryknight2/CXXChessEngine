@@ -64,6 +64,10 @@ class ChessBoard
     Piece **pieceInformation = nullptr;
     /** Number of pieces on the board */
     int pieceCount = 0;
+    /** Pointer to the white king */
+    Piece *m_whiteKing = nullptr;
+    /** Pointer to the black king */
+    Piece *m_blackKing = nullptr;
 
     /** Representing the castling rights
      *
@@ -96,6 +100,10 @@ public:
 
     // Movement methods
     void movePiece(int from, int to, int piece);
+
+    // Getters
+    [[nodiscard]] Piece *getWhiteKing() const;
+    [[nodiscard]] Piece *getBlackKing() const;
 
     // Simple constructor
     ChessBoard() = default;

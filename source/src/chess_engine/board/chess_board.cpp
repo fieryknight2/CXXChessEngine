@@ -238,6 +238,7 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
                         break;
                     case 5: // Sixth element is white king
                         pieceInformation[elem] = new King(WHITE, &m_board, k);
+                        m_whiteKing = pieceInformation[elem];
                         break;
                     case 6: // Seventh element is black pawns
                         pieceInformation[elem] = new Pawn(BLACK, &m_board, k);
@@ -256,6 +257,7 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
                         break;
                     case 11: // Twelfth element is black king
                         pieceInformation[elem] = new King(BLACK, &m_board, k);
+                        m_blackKing = pieceInformation[elem];
                         break;
                     default:
                         break; // This is impossible
@@ -263,6 +265,17 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
 
                 ++elem;
             }
+        }
+    }
+    for (int j = 0; j < pieceCount; ++j)
+    {
+        if (pieceInformation[j]->getColor() == WHITE)
+        {
+            pieceInformation[j]->setKing(m_whiteKing);
+        }
+        else // Black
+        {
+            pieceInformation[j]->setKing(m_blackKing);
         }
     }
 
@@ -608,3 +621,15 @@ void ChessBoard::printBoard() const
  * @param piece Which piece was moved
  */
 void ChessBoard::movePiece(int from, int to, int piece) {}
+
+/** Retrieve a pointer to the white king
+ *
+ * @return Pointer to the white king
+ */
+Piece *ChessBoard::getWhiteKing() const { return m_whiteKing; }
+
+/** Retrieve a pointer to the black king
+ *
+ * @return Pointer to the black king
+ */
+Piece *ChessBoard::getBlackKing() const { return m_blackKing; }
