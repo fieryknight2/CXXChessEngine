@@ -58,17 +58,20 @@ enum PieceType
 class Piece
 {
 protected:
-    /** Location of the piece on the board */
     uint64_t m_location;
-    /** Boolean representation of the color of the piece, true for white, false for black */
-    bool m_color = WHITE;
-    /** Reference to the board that the piece is on */
-    ChessBoard *m_board = nullptr;
-    Piece *m_king = nullptr;
+    /* Boolean representation of the color of the piece, true for white, false for black */
+    bool m_color;
+
+    ChessBoard *m_board;
+
+    /* References to the white and black kings */
+    Piece *m_blackKing = nullptr;
+    Piece *m_whiteKing = nullptr;
 
 public:
     /** Constructor */
     Piece(bool color, ChessBoard *board, uint64_t location) : m_location(location), m_color(color), m_board(board) {}
+
     /** Destructor */
     virtual ~Piece() = default;
 
@@ -79,9 +82,13 @@ public:
     [[nodiscard]] ChessBoard *getBoard() const { return m_board; }
     /** Get the current location of the piece */
     [[nodiscard]] uint64_t getSquare() const { return m_location; }
+    /** Get the current reference to the white/black king */
+    [[nodiscard]] Piece *getKing(int color) const { return color == WHITE ? m_whiteKing : m_blackKing; }
 
     /** Return if the piece is valid */
     [[nodiscard]] bool isValid() const { return m_location < 65; }
+
+    void setKing(int color, Piece *king) { color == WHITE ? m_whiteKing = king : m_blackKing = king; }
 
     // Virtual methods
     /** Make a move on the board, to be overridden for special behavior */
