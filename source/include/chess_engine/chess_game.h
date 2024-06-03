@@ -41,7 +41,7 @@
 class ChessGame
 {
     /* Stored information on all pieces */
-    Piece **m_pieceInformation = nullptr;
+    Piece *m_pieceInformation = nullptr;
     int m_pieceCount = 0;
 
     Piece *whiteKing = nullptr;
@@ -55,7 +55,7 @@ class ChessGame
 
 public:
     [[nodiscard]] int getPieceCount() const;
-    [[nodiscard]] Piece **getPieces() const;
+    [[nodiscard]] Piece *getPieces() const;
     [[nodiscard]] Piece *getPiece(uint64_t square) const;
 
     // Getters

@@ -24,11 +24,11 @@
  * @author Matthew Brown
  * @date 06/02/2024
  *****************************************************************************/
-#include "chess_game.h"
+#include "chess_engine/chess_game.h"
 
 /* Temporary ripped out information
     m_pieceCount = board.getTotalValue().getBitCount();
-    m_pieceInformation = new Piece *[m_pieceCount];
+    m_pieceInformation = new Piece[m_pieceCount];
     for (int j = 0, elem = 0; j < 12; ++j)
     {
         for (int k = 0; k < 64; ++k)
@@ -114,7 +114,7 @@ int ChessGame::getPieceCount() const { return m_pieceCount; }
  *
  * @return The pieces in the game
  */
-Piece **ChessGame::getPieces() const { return m_pieceInformation; }
+Piece *ChessGame::getPieces() const { return m_pieceInformation; }
 
 /** Get a piece from the game
  *
@@ -130,9 +130,9 @@ Piece *ChessGame::getPiece(uint64_t square) const
 
     for (int j = 0; j < m_pieceCount; ++j)
     {
-        if (m_pieceInformation[j]->getSquare() == square)
+        if (m_pieceInformation[j].getSquare() == square)
         {
-            return m_pieceInformation[j];
+            return &m_pieceInformation[j];
         }
     }
 
