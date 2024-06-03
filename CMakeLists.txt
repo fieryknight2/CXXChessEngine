@@ -14,6 +14,7 @@ add_library(ChessBoard STATIC
         source/include/chess_engine/board/queen.h
         source/include/chess_engine/board/king.h
         source/include/chess_engine/board/bitboard.h
+        source/include/chess_engine/chess_game.h
 
         # Source files
         source/src/chess_engine/board/chess_board.cpp
@@ -24,8 +25,7 @@ add_library(ChessBoard STATIC
         source/src/chess_engine/board/queen.cpp
         source/src/chess_engine/board/king.cpp
         source/src/chess_engine/board/bitboard.cpp
-        source/include/chess_engine/chess_game.cpp
-        source/include/chess_engine/chess_game.h
+        source/src/chess_engine/chess_game.cpp
 )
 
 target_include_directories(ChessBoard PUBLIC
