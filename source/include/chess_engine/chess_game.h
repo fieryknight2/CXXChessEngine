@@ -41,11 +41,11 @@
 class ChessGame
 {
     /* Stored information on all pieces */
-    Piece *m_pieceInformation = nullptr;
+    Piece **m_pieceInformation = nullptr;
     int m_pieceCount = 0;
 
-    Piece *whiteKing = nullptr;
-    Piece *blackKing = nullptr;
+    Piece *m_whiteKing = nullptr;
+    Piece *m_blackKing = nullptr;
 
     /* Game information */
     int m_halfMoveClock = 0;
@@ -53,14 +53,24 @@ class ChessGame
 
     // std::vector<ChessMove> m_moveHistory;
 
+    ChessBoard m_board;
+
 public:
     [[nodiscard]] int getPieceCount() const;
-    [[nodiscard]] Piece *getPieces() const;
+    [[nodiscard]] Piece **getPieces() const;
     [[nodiscard]] Piece *getPiece(uint64_t square) const;
 
     // Getters
     [[nodiscard]] Piece *getWhiteKing() const;
     [[nodiscard]] Piece *getBlackKing() const;
+
+    void resetGame();
+
+    void createFromFEN(const std::string &fen) noexcept(false);
+    [[nodiscard]] std::string getFEN() const;
+
+    [[nodiscard]] int getHalfMoveClock() const { return m_halfMoveClock; }
+    [[nodiscard]] int getFullMoveClock() const { return m_fullMoveClock; }
 };
 
 
