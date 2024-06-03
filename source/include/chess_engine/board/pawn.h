@@ -37,7 +37,7 @@
 class Pawn final : public Piece
 {
 public:
-    Pawn(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    Pawn(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Pawn() override = default;
 
     void makeMove(int to) override;

@@ -37,7 +37,7 @@
 class Knight final : public Piece
 {
 public:
-    Knight(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    Knight(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Knight() override = default;
 
     void makeMove(int to) override;

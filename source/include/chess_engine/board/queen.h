@@ -37,7 +37,7 @@
 class Queen final : public Piece
 {
 public:
-    Queen(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    Queen(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Queen() override = default;
 
     void makeMove(int to) override;

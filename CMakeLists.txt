@@ -24,6 +24,8 @@ add_library(ChessBoard STATIC
         source/src/chess_engine/board/queen.cpp
         source/src/chess_engine/board/king.cpp
         source/src/chess_engine/board/bitboard.cpp
+        source/include/chess_engine/chess_game.cpp
+        source/include/chess_engine/chess_game.h
 )
 
 target_include_directories(ChessBoard PUBLIC

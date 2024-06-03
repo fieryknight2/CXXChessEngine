@@ -20,30 +20,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * rook.h - <Brief description>
+ * chess_game.h - Class definition for a chess game
  * @author Matthew Brown
- * @date 05/27/2024
+ * @date 6/02/2024
  *****************************************************************************/
-#ifndef rook_H
-#define rook_H
+#ifndef chess_game_H
+#define chess_game_H
 
+#include "chess_engine/board/chess_board.h"
 #include "chess_engine/board/piece.h"
 
-/** Rook class
+/** Chess Game
+ *
+ * This class represents a chess game.
+ * It is a collection of chess boards.
  *
  * @author Matthew Brown
- * @date 05/28/2024
+ * @date 6/02/2024
  */
-class Rook final : public Piece
+class ChessGame
 {
-public:
-    Rook(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
-    ~Rook() override = default;
+    /* Stored information on all pieces */
+    Piece **m_pieceInformation = nullptr;
+    int m_pieceCount = 0;
 
-    void makeMove(int to) override;
-    [[nodiscard]] char getType() const override;
-    void getAttacks(uint64_t &attacks) const override;
-    void getLegalMoves(uint64_t &moves) const override;
+    Piece *whiteKing = nullptr;
+    Piece *blackKing = nullptr;
+
+    /* Game information */
+    int m_halfMoveClock = 0;
+    int m_fullMoveClock = 0;
+
+    // std::vector<ChessMove> m_moveHistory;
+
+public:
+    [[nodiscard]] int getPieceCount() const;
+    [[nodiscard]] Piece **getPieces() const;
+    [[nodiscard]] Piece *getPiece(uint64_t square) const;
+
+    // Getters
+    [[nodiscard]] Piece *getWhiteKing() const;
+    [[nodiscard]] Piece *getBlackKing() const;
 };
 
-#endif // rook_H
+
+#endif // chess_game_H

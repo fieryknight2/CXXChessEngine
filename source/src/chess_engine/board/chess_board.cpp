@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * board_rep.cpp - Implementation of board methods
+ * chess_board.cpp - Implementation of board methods
  * @author Matthew Brown
  * @date 05/25/2024
  *****************************************************************************/
@@ -95,15 +95,7 @@ std::string ChessBoard::toAlgebraic(uint64_t square)
 /** Reset the board to the starting position */
 void ChessBoard::resetBoard()
 {
-    // Reset the board
-    if (m_pieceCount)
-    {
-        m_pieceCount = 0;
-        delete[] m_pieceInformation;
-        m_pieceInformation = nullptr;
-    }
-
-    for (auto &board: m_board.data)
+    for (auto &board: board.data)
     {
         board.value = 0;
     }
@@ -170,113 +162,45 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
         switch (fen[i])
         {
             case 'P':
-                m_board.data[0].value |= shifted;
+                board.data[0].value |= shifted;
                 break;
             case 'N':
-                m_board.data[1].value |= shifted;
+                board.data[1].value |= shifted;
                 break;
             case 'B':
-                m_board.data[2].value |= shifted;
+                board.data[2].value |= shifted;
                 break;
             case 'R':
-                m_board.data[3].value |= shifted;
+                board.data[3].value |= shifted;
                 break;
             case 'Q':
-                m_board.data[4].value |= shifted;
+                board.data[4].value |= shifted;
                 break;
             case 'K':
-                m_board.data[5].value |= shifted;
+                board.data[5].value |= shifted;
                 break;
             case 'p':
-                m_board.data[6].value |= shifted;
+                board.data[6].value |= shifted;
                 break;
             case 'n':
-                m_board.data[7].value |= shifted;
+                board.data[7].value |= shifted;
                 break;
             case 'b':
-                m_board.data[8].value |= shifted;
+                board.data[8].value |= shifted;
                 break;
             case 'r':
-                m_board.data[9].value |= shifted;
+                board.data[9].value |= shifted;
                 break;
             case 'q':
-                m_board.data[10].value |= shifted;
+                board.data[10].value |= shifted;
                 break;
             case 'k':
-                m_board.data[11].value |= shifted;
+                board.data[11].value |= shifted;
                 break;
             default:
                 throw ChessError("Invalid piece " + std::to_string(fen[i]) + " in FEN");
         }
         ++c;
-    }
-
-    m_pieceCount = m_board.getTotalValue().getBitCount();
-    m_pieceInformation = new Piece *[m_pieceCount];
-    for (int j = 0, elem = 0; j < 12; ++j)
-    {
-        for (int k = 0; k < 64; ++k)
-        {
-            if (m_board.data[j].value & (0b1ull << k))
-            {
-                switch (j)
-                {
-                    case 0: // First element is white pawns
-                        m_pieceInformation[elem] = new Pawn(WHITE, &m_board, k);
-                        break;
-                    case 1: // Second element is white knights
-                        m_pieceInformation[elem] = new Knight(WHITE, &m_board, k);
-                        break;
-                    case 2: // Third element is white bishops
-                        m_pieceInformation[elem] = new Bishop(WHITE, &m_board, k);
-                        break;
-                    case 3: // Fourth element is white rooks
-                        m_pieceInformation[elem] = new Rook(WHITE, &m_board, k);
-                        break;
-                    case 4: // Fifth element is white queens
-                        m_pieceInformation[elem] = new Queen(WHITE, &m_board, k);
-                        break;
-                    case 5: // Sixth element is white king
-                        m_pieceInformation[elem] = new King(WHITE, &m_board, k);
-                        m_whiteKing = m_pieceInformation[elem];
-                        break;
-                    case 6: // Seventh element is black pawns
-                        m_pieceInformation[elem] = new Pawn(BLACK, &m_board, k);
-                        break;
-                    case 7: // Eighth element is black knights
-                        m_pieceInformation[elem] = new Knight(BLACK, &m_board, k);
-                        break;
-                    case 8: // Ninth element is black bishops
-                        m_pieceInformation[elem] = new Bishop(BLACK, &m_board, k);
-                        break;
-                    case 9: // Tenth element is black rooks
-                        m_pieceInformation[elem] = new Rook(BLACK, &m_board, k);
-                        break;
-                    case 10: // Eleventh element is black queens
-                        m_pieceInformation[elem] = new Queen(BLACK, &m_board, k);
-                        break;
-                    case 11: // Twelfth element is black king
-                        m_pieceInformation[elem] = new King(BLACK, &m_board, k);
-                        m_blackKing = m_pieceInformation[elem];
-                        break;
-                    default:
-                        break; // This is impossible
-                }
-
-                ++elem;
-            }
-        }
-    }
-    for (int j = 0; j < m_pieceCount; ++j)
-    {
-        if (m_pieceInformation[j]->getColor() == WHITE)
-        {
-            m_pieceInformation[j]->setKing(m_whiteKing);
-        }
-        else // Black
-        {
-            m_pieceInformation[j]->setKing(m_blackKing);
-        }
     }
 
 
@@ -532,7 +456,7 @@ char *ChessBoard::getDisplayBoard() const
         {
             // 1 << j is the bit that represents the square
             // Initialize and apply the bit mask
-            if (uint64_t val = m_board.data[i].value & (0b1ull << j); val >> j)
+            if (uint64_t val = board.data[i].value & (0b1ull << j); val >> j)
             {
                 switch (i)
                 {
@@ -609,49 +533,4 @@ void ChessBoard::printBoard() const
     std::cout << "  a b c d e f g h  " << std::endl;
 
     delete[] dBoard;
-}
-
-/** Move a piece from one location to another
- *
- * This function will move a piece from one location to another while also updating
- * anything referencing the old location.
- *
- * @param from Location of the piece to move
- * @param to Location to move the piece to
- * @param piece Which piece was moved
- */
-void ChessBoard::movePiece(int from, int to, int piece) {}
-
-/** Retrieve a pointer to the white king
- *
- * @return Pointer to the white king
- */
-Piece *ChessBoard::getWhiteKing() const { return m_whiteKing; }
-
-/** Retrieve a pointer to the black king
- *
- * @return Pointer to the black king
- */
-Piece *ChessBoard::getBlackKing() const { return m_blackKing; }
-
-int ChessBoard::getPieceCount() const { return m_pieceCount; }
-
-Piece **ChessBoard::getPieces() const { return m_pieceInformation; }
-
-Piece *ChessBoard::getPiece(uint64_t square) const
-{
-    if (square >= 64)
-    {
-        throw ChessError("Invalid square");
-    }
-
-    for (int i = 0; i < m_pieceCount; ++i)
-    {
-        if (m_pieceInformation[i]->getSquare() == square)
-        {
-            return m_pieceInformation[i];
-        }
-    }
-
-    return nullptr;
 }

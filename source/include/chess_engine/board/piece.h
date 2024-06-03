@@ -35,7 +35,7 @@
 #endif // WHITE
 
 #include <cstdint>
-#include "bitboard.h"
+#include "chess_board.h"
 
 /** Possible types of chess pieces
  *
@@ -63,12 +63,12 @@ protected:
     /** Boolean representation of the color of the piece, true for white, false for black */
     bool m_color = WHITE;
     /** Reference to the board that the piece is on */
-    Board *m_board = nullptr;
+    ChessBoard *m_board = nullptr;
     Piece *m_king = nullptr;
 
 public:
     /** Constructor */
-    Piece(bool color, Board *boards, uint64_t location) : m_location(location), m_color(color), m_board(boards) {}
+    Piece(bool color, ChessBoard *board, uint64_t location) : m_location(location), m_color(color), m_board(board) {}
     /** Destructor */
     virtual ~Piece() = default;
 
@@ -76,9 +76,12 @@ public:
     /** Get the represented color of the piece */
     [[nodiscard]] int getColor() const { return m_color; }
     /** Get the referenced boards that the piece is on */
-    [[nodiscard]] Board *getBoards() const { return m_board; }
+    [[nodiscard]] ChessBoard *getBoard() const { return m_board; }
     /** Get the current location of the piece */
     [[nodiscard]] uint64_t getSquare() const { return m_location; }
+
+    /** Return if the piece is valid */
+    [[nodiscard]] bool isValid() const { return m_location < 65; }
 
     // Virtual methods
     /** Make a move on the board, to be overridden for special behavior */
@@ -89,12 +92,6 @@ public:
     virtual void getAttacks(uint64_t &attacks) const = 0;
     /** Retrieve all possible legal moves for the piece */
     virtual void getLegalMoves(uint64_t &moves) const = 0;
-
-    // Setters
-    /** Set the referenced king for the piece. Should be used in getLegalMoves() */
-    void setKing(Piece *king) { m_king = king; }
-    /** Access the referenced king for the piece */
-    [[nodiscard]] Piece *getKing() const { return m_king; }
 };
 
 #endif // piece_H

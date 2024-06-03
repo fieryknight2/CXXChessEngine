@@ -1,5 +1,5 @@
 Chess Board
 ===========
 
-.. doxygenclass:: ChessBoard
+.. doxygenstruct:: ChessBoard
    :members:

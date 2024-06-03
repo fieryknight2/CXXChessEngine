@@ -26,6 +26,7 @@
  *****************************************************************************/
 #ifndef bishop_H
 #define bishop_H
+
 #include "chess_engine/board/piece.h"
 
 /** Bishop class
@@ -36,7 +37,7 @@
 class Bishop final : public Piece
 {
 public:
-    Bishop(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    Bishop(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Bishop() override = default;
 
     void makeMove(int to) override;

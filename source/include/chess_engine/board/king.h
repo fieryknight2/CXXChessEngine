@@ -37,7 +37,7 @@
 class King final : public Piece
 {
 public:
-    King(bool color, Board *board, unsigned int location) : Piece(color, board, location) {}
+    King(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~King() override = default;
 
     void makeMove(int to) override;

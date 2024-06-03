@@ -24,14 +24,13 @@
  * @author Matthew Brown
  * @date 5/25/2024
  *****************************************************************************/
-#ifndef BOARD_REP_H
-#define BOARD_REP_H
+#ifndef chess_board_H
+#define chess_board_H
 
 #include <cstdint>
 #include <string>
 
 #include "chess_engine/board/bitboard.h"
-#include "chess_engine/board/piece.h"
 
 // Definitions for convienience
 #define EMPTY 0
@@ -45,31 +44,21 @@
  * @author Matthew Brown
  * @date 5/25/2024
  */
-class ChessBoard
+struct ChessBoard
 {
-    /** Bitboard representation of all attacks for white pieces */
+    /* Bitboard representation of all attacks */
     Bitboard whiteAttacks{0};
-    /** Bitboard representation of all attacks for black pieces */
     Bitboard blackAttacks{0};
 
-    /** 64-bit representation of all locations of the pieces
+    /* 64-bit representation of all locations of the pieces
      *
      * 64-bit representation of all locations of the pieces
      * Order is: White (pawns, knights, bishops, rooks, queens, kings)
      *           Black (pawns, knights, bishops, rooks, queens, kings)
      */
-    Board m_board;
+    Board board;
 
-    /** Stored information on all pieces*/
-    Piece **m_pieceInformation = nullptr;
-    /** Number of pieces on the board */
-    int m_pieceCount = 0;
-    /** Pointer to the white king */
-    Piece *m_whiteKing = nullptr;
-    /** Pointer to the black king */
-    Piece *m_blackKing = nullptr;
-
-    /** Representing the castling rights
+    /* Representing the castling rights
      *
      * Represents the castling rights for each side
      * Order represented is: White King
@@ -79,40 +68,24 @@ class ChessBoard
      */
     bool castlingRights[4] = {true, true, true, true};
 
-    /** Single char representing the en passant square */
     uint64_t enPassantSquare = 65; // No en passant square
-
-    /** Boolean representing if white is to move */
     bool whiteToMove = true;
 
+    // ---------------------------------- Methods ----------------------------------
+
+    // Convenience methods
     static uint64_t getSquareFromAlgebraic(const std::string &square);
     static std::string toAlgebraic(uint64_t square);
 
     [[nodiscard]] char *getDisplayBoard() const;
 
-public:
     // Access and creation methods
     void createFromFEN(const std::string &fen, int *halfMoveClock = nullptr,
                        int *fullMoveClock = nullptr) noexcept(false);
     [[nodiscard]] std::string getFEN(int halfMoveClock = 0, int fullMoveClock = 0) const;
+
     void printBoard() const;
     void resetBoard();
-
-    // Movement methods
-    void movePiece(int from, int to, int piece);
-
-    // Getters
-    [[nodiscard]] Piece *getWhiteKing() const;
-    [[nodiscard]] Piece *getBlackKing() const;
-
-    [[nodiscard]] int getPieceCount() const;
-    [[nodiscard]] Piece **getPieces() const;
-    [[nodiscard]] Piece *getPiece(uint64_t square) const;
-
-    // Simple constructor
-    ChessBoard() = default;
-    // Simple destructor
-    ~ChessBoard() = default;
 };
 
-#endif // BOARD_REP_H
+#endif // chess_board_H
