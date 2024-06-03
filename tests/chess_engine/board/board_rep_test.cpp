@@ -97,18 +97,19 @@ TEST(BoardRepTest, PrintBoard)
     std::cout << "\n------------------------------------------------------" << std::endl;
 }
 
-// TODO: Fix this test
-// TEST(BoardRepTest, GetPiece)
-// {
-//     ChessBoard board;
-//     ASSERT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12",
-//                                         nullptr, nullptr));
-//
-//     EXPECT_EQ(board.getPieceCount(), 30);
-//
-//     ASSERT_NE(board.getPiece(0), nullptr);
-//     EXPECT_EQ(board.getPiece(0)->getType(), PieceType::ROOK);
-//     EXPECT_EQ(board.getPiece(0)->getColor(), WHITE);
-//
-//     EXPECT_NE(board.getPiece(1), nullptr);
-// }
+// TODO: Move to game test file
+#include "chess_engine/chess_game.h"
+
+TEST(ChessGameTest, GetPiece)
+{
+    ChessGame game;
+    ASSERT_NO_THROW(game.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
+
+    EXPECT_EQ(game.getPieceCount(), 30);
+
+    ASSERT_NE(game.getPiece(0), nullptr);
+    EXPECT_EQ(game.getPiece(0)->getType(), PieceType::ROOK);
+    EXPECT_EQ(game.getPiece(0)->getColor(), WHITE);
+
+    EXPECT_NE(game.getPiece(1), nullptr);
+}
