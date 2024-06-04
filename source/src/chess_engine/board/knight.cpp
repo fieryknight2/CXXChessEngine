@@ -56,5 +56,64 @@ void Knight::getLegalMoves(uint64_t &moves) const
  */
 void Knight::getAttacks(uint64_t &attacks) const
 {
-    // TODO: Implement
+    if (m_location / 8 > 1)
+    {
+        // C++ automatically converts int / int to int, no integer division necessary
+        // validate bottom far
+        if (m_location % 8 > 0)
+        {
+            // validate right close
+            attacks |= 1ull << (m_location - 17);
+        }
+        if (m_location % 8 < 7)
+        {
+            // validate left close
+            attacks |= 1ull << (m_location - 15);
+        }
+    }
+
+    if (m_location / 8 > 0)
+    {
+        // validate bottom close
+        if (m_location % 8 > 1)
+        {
+            // validate right far
+            attacks |= 1ull << (m_location - 10);
+        }
+        if (m_location % 8 < 6)
+        {
+            // validate left far
+            attacks |= 1ull << (m_location - 6);
+        }
+    }
+
+    if (m_location / 8 < 7)
+    {
+        // validate top close
+        if (m_location % 8 > 1)
+        {
+            // validate right far
+            attacks |= 1ull << (m_location + 6);
+        }
+        if (m_location % 8 < 6)
+        {
+            // validate left far
+            attacks |= 1ull << (m_location + 10);
+        }
+    }
+
+    if (m_location / 8 < 6)
+    {
+        // validate top far
+        if (m_location % 8 > 0)
+        {
+            // validate right close
+            attacks |= 1ull << (m_location + 15);
+        }
+        if (m_location % 8 < 7)
+        {
+            // validate left close
+            attacks |= 1ull << (m_location + 17);
+        }
+    }
 }
