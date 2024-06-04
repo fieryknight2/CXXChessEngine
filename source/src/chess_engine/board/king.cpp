@@ -56,5 +56,47 @@ void King::getLegalMoves(uint64_t &moves) const
  */
 void King::getAttacks(uint64_t &attacks) const
 {
-    // TODO: Implement
+    // validate top
+    if (m_location < 56)
+    {
+        if (m_location % 8 < 7)
+        {
+            attacks |= 1ull << (m_location + 9); // top left corner
+        }
+
+        attacks |= 1ull << (m_location + 8); // top
+
+        if (m_location % 8 > 0)
+        {
+            attacks |= 1ull << (m_location + 7); // top right corner
+        }
+    }
+
+    if (m_location % 8 < 7)
+    {
+        // validate left
+        attacks |= 1ull << (m_location + 1);
+    }
+
+    if (m_location % 8 > 0)
+    {
+        // validate right
+        attacks |= 1ull << (m_location - 1);
+    }
+
+    if (m_location > 7)
+    {
+        // validate bottom
+        if (m_location % 8 < 7)
+        {
+            attacks |= 1ull << (m_location - 7); // bottom left corner
+        }
+
+        attacks |= 1ull << (m_location - 8); // bottom
+
+        if (m_location % 8 > 0)
+        {
+            attacks |= 1ull << (m_location - 9); // bottom right corner
+        }
+    }
 }

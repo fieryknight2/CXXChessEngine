@@ -56,5 +56,56 @@ void Bishop::getLegalMoves(uint64_t &moves) const
  */
 void Bishop::getAttacks(uint64_t &attacks) const
 {
-    // TODO: Implement
+    unsigned int index = m_location;
+
+    while (index >= 9 and index % 8 != 0)
+    {
+        // Bottom Right
+        index -= 9;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
+
+    index = m_location;
+    while (index >= 7 and index % 8 != 7)
+    {
+        // Bottom Left
+        index -= 7;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
+
+    index = m_location;
+    while (index < 57 and index % 8 != 0)
+    {
+        // Top Left
+        index += 7;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
+
+    index = m_location;
+    while (index < 55 and index % 8 != 7)
+    {
+        // Top Right
+        index += 9;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
 }

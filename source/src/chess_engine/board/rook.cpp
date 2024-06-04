@@ -56,5 +56,57 @@ void Rook::getLegalMoves(uint64_t &moves) const
  */
 void Rook::getAttacks(uint64_t &attacks) const
 {
-    // TODO: Implement
+    unsigned int index = m_location;
+    const unsigned int rank_min = (m_location / 8) * 8;
+
+    while (index < 56)
+    {
+        // Top
+        index += 8;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
+
+    index = m_location;
+    while (index < rank_min + 7)
+    {
+        // Left
+        index += 1;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
+
+    index = m_location;
+    while (index >= rank_min + 1)
+    {
+        // Right
+        index -= 1;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
+
+    index = m_location;
+    while (index >= 8)
+    {
+        // Bottom
+        index -= 8;
+        attacks |= 1ull << index;
+
+        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        {
+            break;
+        }
+    }
 }
