@@ -57,6 +57,12 @@ struct Bitboard
 
 struct Board
 {
+    /* 64-bit representation of all locations of the pieces
+     *
+     * 64-bit representation of all locations of the pieces
+     * Order is: White (pawns, knights, bishops, rooks, queens, kings)
+     *           Black (pawns, knights, bishops, rooks, queens, kings)
+     */
     Bitboard data[12];
 
     [[nodiscard]] Bitboard getTotalValue() const;

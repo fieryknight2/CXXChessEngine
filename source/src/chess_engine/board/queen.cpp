@@ -39,7 +39,7 @@ void Queen::makeMove(int to)
  *
  * @return Type of the piece
  */
-char Queen::getType() const { return 'q'; }
+char Queen::getType() const { return PieceType::QUEEN; }
 
 /** Get the legal moves for the piece
  *
@@ -57,7 +57,8 @@ void Queen::getLegalMoves(uint64_t &moves) const
 void Queen::getAttacks(uint64_t &attacks) const
 {
     unsigned int index = m_location;
-    const unsigned int rank_min = (m_location / 8) * 8;
+    const unsigned int rankMin = (m_location / 8) * 8;
+    uint64_t totalValue = m_board->board.getTotalValue().value;
 
     // Rook Code
     while (index < 56)
@@ -66,33 +67,33 @@ void Queen::getAttacks(uint64_t &attacks) const
         index += 8;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
     }
 
     index = m_location;
-    while (index < rank_min + 7)
+    while (index < rankMin + 7)
     {
         // Left
         index += 1;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
     }
 
     index = m_location;
-    while (index >= rank_min + 1)
+    while (index >= rankMin + 1)
     {
         // Right
         index -= 1;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -105,7 +106,7 @@ void Queen::getAttacks(uint64_t &attacks) const
         index -= 8;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -118,7 +119,7 @@ void Queen::getAttacks(uint64_t &attacks) const
         index -= 9;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -131,7 +132,7 @@ void Queen::getAttacks(uint64_t &attacks) const
         index -= 7;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -144,7 +145,7 @@ void Queen::getAttacks(uint64_t &attacks) const
         index += 7;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -157,7 +158,7 @@ void Queen::getAttacks(uint64_t &attacks) const
         index += 9;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }

@@ -39,7 +39,7 @@ void King::makeMove(int to)
  *
  * @return Type of the piece
  */
-char King::getType() const { return 'k'; }
+char King::getType() const { return PieceType::KING; }
 
 /** Get the legal moves for the piece
  *

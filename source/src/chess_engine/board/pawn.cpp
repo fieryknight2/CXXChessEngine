@@ -36,7 +36,7 @@ void Pawn::makeMove(int to) { m_location = to; }
  *
  * @return Type of the piece
  */
-char Pawn::getType() const { return 'p'; }
+char Pawn::getType() const { return PieceType::PAWN; }
 
 /** Get the legal moves for the piece
  *

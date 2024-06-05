@@ -27,6 +27,8 @@
 #ifndef chess_game_H
 #define chess_game_H
 
+#include <vector>
+
 #include "chess_engine/board/chess_board.h"
 #include "chess_engine/board/piece.h"
 
@@ -41,8 +43,7 @@
 class ChessGame
 {
     /* Stored information on all pieces */
-    Piece **m_pieceInformation = nullptr;
-    int m_pieceCount = 0;
+    std::vector<Piece *> m_pieceInformation;
 
     Piece *m_whiteKing = nullptr;
     Piece *m_blackKing = nullptr;
@@ -56,8 +57,8 @@ class ChessGame
     ChessBoard m_board;
 
 public:
-    [[nodiscard]] int getPieceCount() const;
-    [[nodiscard]] Piece **getPieces() const;
+    [[nodiscard]] uint64_t getPieceCount() const;
+    [[nodiscard]] std::vector<Piece *> getPieces() const;
     [[nodiscard]] Piece *getPiece(uint64_t square) const;
 
     // Getters

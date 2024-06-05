@@ -50,12 +50,6 @@ struct ChessBoard
     Bitboard whiteAttacks{0};
     Bitboard blackAttacks{0};
 
-    /* 64-bit representation of all locations of the pieces
-     *
-     * 64-bit representation of all locations of the pieces
-     * Order is: White (pawns, knights, bishops, rooks, queens, kings)
-     *           Black (pawns, knights, bishops, rooks, queens, kings)
-     */
     Board board;
 
     /* Representing the castling rights

@@ -39,7 +39,7 @@ void Bishop::makeMove(int to)
  *
  * @return Type of the piece
  */
-char Bishop::getType() const { return 'B'; }
+char Bishop::getType() const { return PieceType::BISHOP; }
 
 /** Get the legal moves for the piece
  *
@@ -57,6 +57,7 @@ void Bishop::getLegalMoves(uint64_t &moves) const
 void Bishop::getAttacks(uint64_t &attacks) const
 {
     unsigned int index = m_location;
+    uint64_t totalValue = m_board->board.getTotalValue().value;
 
     while (index >= 9 and index % 8 != 0)
     {
@@ -64,7 +65,7 @@ void Bishop::getAttacks(uint64_t &attacks) const
         index -= 9;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -77,7 +78,7 @@ void Bishop::getAttacks(uint64_t &attacks) const
         index -= 7;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -90,7 +91,7 @@ void Bishop::getAttacks(uint64_t &attacks) const
         index += 7;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }
@@ -103,7 +104,7 @@ void Bishop::getAttacks(uint64_t &attacks) const
         index += 9;
         attacks |= 1ull << index;
 
-        if (!(m_board->board.getTotalValue().value & (1ull << index)))
+        if (!(totalValue & (1ull << index)))
         {
             break;
         }

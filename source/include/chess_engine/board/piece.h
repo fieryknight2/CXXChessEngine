@@ -88,7 +88,13 @@ public:
     /** Return if the piece is valid */
     [[nodiscard]] bool isValid() const { return m_location < 65; }
 
-    void setKing(int color, Piece *king) { color == WHITE ? m_whiteKing = king : m_blackKing = king; }
+    void setKing(Piece *king)
+    {
+        if (king == nullptr)
+            return;
+
+        king->getColor() ? m_whiteKing = king : m_blackKing = king;
+    }
 
     // Virtual methods
     /** Make a move on the board, to be overridden for special behavior */

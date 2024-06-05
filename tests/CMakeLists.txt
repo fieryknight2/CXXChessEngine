@@ -16,6 +16,11 @@ add_executable(chess_engine_test
         chess_engine/low_level_test_functions.cpp
         chess_engine/board/board_rep_test.cpp
         chess_engine/board/pawn_test.cpp
+        chess_engine/board/knight_test.cpp
+        chess_engine/board/bishop_test.cpp
+        chess_engine/board/rook_test.cpp
+        chess_engine/board/queen_test.cpp
+        chess_engine/board/king_test.cpp
 )
 target_include_directories(chess_engine_test PUBLIC
         ${gtest_SOURCE_DIR}/include

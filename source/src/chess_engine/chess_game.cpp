@@ -33,17 +33,20 @@
 #include "chess_engine/board/queen.h"
 #include "chess_engine/board/rook.h"
 
+// For debugging
+#include <iostream>
+
 /** Get the number of pieces in the game
  *
  * @return The number of pieces in the game
  */
-int ChessGame::getPieceCount() const { return m_pieceCount; }
+uint64_t ChessGame::getPieceCount() const { return m_pieceInformation.size(); }
 
 /** Get the pieces in the game
  *
  * @return The pieces in the game
  */
-Piece **ChessGame::getPieces() const { return m_pieceInformation; }
+std::vector<Piece *> ChessGame::getPieces() const { return m_pieceInformation; }
 
 /** Get a piece from the game
  *
@@ -52,13 +55,17 @@ Piece **ChessGame::getPieces() const { return m_pieceInformation; }
  */
 Piece *ChessGame::getPiece(uint64_t square) const
 {
-    if (!m_pieceInformation or m_pieceCount == 0)
+    if (m_pieceInformation.empty())
     {
         return nullptr;
     }
 
-    for (int j = 0; j < m_pieceCount; ++j)
+    for (int j = 0; j < m_pieceInformation.size(); ++j)
     {
+        std::cout << j << ": "
+                  << (m_pieceInformation[j]->getColor() > 1 ? m_pieceInformation[j]->getType()
+                                                            : static_cast<char>(m_pieceInformation[j]->getType() - ' '))
+                  << " " << m_pieceInformation[j]->getSquare() << std::endl;
         if (m_pieceInformation[j]->getSquare() == square)
         {
             return m_pieceInformation[j];
@@ -74,9 +81,8 @@ Piece *ChessGame::getPiece(uint64_t square) const
  */
 Piece *ChessGame::getWhiteKing() const
 {
-    if (!m_pieceInformation or m_pieceCount == 0)
+    if (m_pieceInformation.empty() or m_whiteKing == nullptr)
     {
-        // TODO: Implement more checks / validations
         return nullptr;
     }
 
@@ -89,7 +95,7 @@ Piece *ChessGame::getWhiteKing() const
  */
 Piece *ChessGame::getBlackKing() const
 {
-    if (!m_pieceInformation or m_pieceCount == 0)
+    if (m_pieceInformation.empty() or m_blackKing == nullptr)
     {
         return nullptr;
     }
@@ -102,12 +108,15 @@ void ChessGame::resetGame()
 {
     m_board.resetBoard();
 
-    if (m_pieceCount)
+    if (!m_pieceInformation.empty())
     {
-        m_pieceCount = 0;
-        delete[] m_pieceInformation;
+        for (auto &elem: m_pieceInformation)
+        {
+            delete elem;
+            elem = nullptr;
+        }
 
-        m_pieceInformation = nullptr;
+        m_pieceInformation.clear();
     }
 }
 
@@ -122,67 +131,77 @@ void ChessGame::createFromFEN(const std::string &fen) noexcept(false)
 
     m_board.createFromFEN(fen);
 
-    m_pieceCount = m_board.board.getTotalValue().getBitCount();
-    m_pieceInformation = new Piece *[m_pieceCount];
-    for (int j = 0, elem = 0; j < 12; ++j)
+    for (int i = 0; i < m_board.board.getTotalValue().getBitCount(); ++i)
     {
-        for (int k = 0; k < 64; ++k)
-        {
-            if (m_board.board.data[j].value & (0b1ull << k))
-            {
-                switch (j)
-                {
-                    case 0: // First element is white pawns
-                        m_pieceInformation[elem] = new Pawn(WHITE, &m_board, k);
-                        break;
-                    case 1: // Second element is white knights
-                        m_pieceInformation[elem] = new Knight(WHITE, &m_board, k);
-                        break;
-                    case 2: // Third element is white bishops
-                        m_pieceInformation[elem] = new Bishop(WHITE, &m_board, k);
-                        break;
-                    case 3: // Fourth element is white rooks
-                        m_pieceInformation[elem] = new Rook(WHITE, &m_board, k);
-                        break;
-                    case 4: // Fifth element is white queens
-                        m_pieceInformation[elem] = new Queen(WHITE, &m_board, k);
-                        break;
-                    case 5: // Sixth element is white king
-                        m_pieceInformation[elem] = new King(WHITE, &m_board, k);
-                        m_whiteKing = m_pieceInformation[elem];
-                        break;
-                    case 6: // Seventh element is black pawns
-                        m_pieceInformation[elem] = new Pawn(BLACK, &m_board, k);
-                        break;
-                    case 7: // Eighth element is black knights
-                        m_pieceInformation[elem] = new Knight(BLACK, &m_board, k);
-                        break;
-                    case 8: // Ninth element is black bishops
-                        m_pieceInformation[elem] = new Bishop(BLACK, &m_board, k);
-                        break;
-                    case 9: // Tenth element is black rooks
-                        m_pieceInformation[elem] = new Rook(BLACK, &m_board, k);
-                        break;
-                    case 10: // Eleventh element is black queens
-                        m_pieceInformation[elem] = new Queen(BLACK, &m_board, k);
-                        break;
-                    case 11: // Twelfth element is black king
-                        m_pieceInformation[elem] = new King(BLACK, &m_board, k);
-                        m_blackKing = m_pieceInformation[elem];
-                        break;
-                    default:
-                        break; // This is impossible
-                }
+        m_pieceInformation.push_back(nullptr);
+    }
 
-                ++elem;
+    for (int j = 0; j < 12; ++j)
+    {
+        for (int r = 7; r > 0; --r)
+        {
+            for (int c = 0; c < 7; ++c)
+            {
+                if (m_board.board.data[j].value & 0b1ull << r * 8 + c)
+                {
+                    switch (j)
+                    {
+                        case 0: // First element is white pawns
+                            m_pieceInformation.push_back(new Pawn(WHITE, &m_board, (r * 8) + c));
+                            break;
+                        case 1: // Second element is white knights
+                            m_pieceInformation.push_back(new Knight(WHITE, &m_board, (r * 8) + c));
+                            break;
+                        case 2: // Third element is white bishops
+                            m_pieceInformation.push_back(new Bishop(WHITE, &m_board, (r * 8) + c));
+                            break;
+                        case 3: // Fourth element is white rooks
+                            m_pieceInformation.push_back(new Rook(WHITE, &m_board, (r * 8) + c));
+                            break;
+                        case 4: // Fifth element is white queens
+                            m_pieceInformation.push_back(new Queen(WHITE, &m_board, (r * 8) + c));
+                            break;
+                        case 5: // Sixth element is white king
+                            m_pieceInformation.push_back(new King(WHITE, &m_board, (r * 8) + c));
+                            m_whiteKing = m_pieceInformation.back();
+                            break;
+                        case 6: // Seventh element is black pawns
+                            m_pieceInformation.push_back(new Pawn(BLACK, &m_board, (r * 8) + c));
+                            break;
+                        case 7: // Eighth element is black knights
+                            m_pieceInformation.push_back(new Knight(BLACK, &m_board, (r * 8) + c));
+                            break;
+                        case 8: // Ninth element is black bishops
+                            m_pieceInformation.push_back(new Bishop(BLACK, &m_board, (r * 8) + c));
+                            break;
+                        case 9: // Tenth element is black rooks
+                            m_pieceInformation.push_back(new Rook(BLACK, &m_board, (r * 8) + c));
+                            break;
+                        case 10: // Eleventh element is black queens
+                            m_pieceInformation.push_back(new Queen(BLACK, &m_board, (r * 8) + c));
+                            break;
+                        case 11: // Twelfth element is black king
+                            m_pieceInformation.push_back(new King(BLACK, &m_board, (r * 8) + c));
+                            m_blackKing = m_pieceInformation.back();
+                            break;
+                        default:
+                            break; // This is impossible
+                    }
+                }
             }
         }
     }
 
-    for (int j = 0; j < m_pieceCount; ++j)
+    if (m_whiteKing == nullptr or m_blackKing == nullptr)
     {
-        m_pieceInformation[j]->setKing(true, m_whiteKing);
-        m_pieceInformation[j]->setKing(false, m_blackKing);
+        throw std::runtime_error("Could not find kings in the FEN string");
+        return;
+    }
+
+    for (auto &j: m_pieceInformation)
+    {
+        j->setKing(m_whiteKing);
+        j->setKing(m_blackKing);
     }
 }
 
