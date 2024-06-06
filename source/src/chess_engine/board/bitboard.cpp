@@ -51,3 +51,21 @@ Bitboard Board::getTotalValue() const
 
     return total;
 }
+
+void Board::getTotalValue(Bitboard &total) const
+{
+    for (auto &board: data)
+    {
+        total.value |= board.value;
+    }
+}
+
+void Board::getWhitePieces(Bitboard &pieces) const
+{
+    pieces.value = data[0].value | data[1].value | data[2].value | data[3].value | data[4].value | data[5].value;
+}
+
+void Board::getBlackPieces(Bitboard &pieces) const
+{
+    pieces.value = data[6].value | data[7].value | data[8].value | data[9].value | data[10].value | data[11].value;
+}
