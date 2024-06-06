@@ -47,7 +47,190 @@ char Knight::getType() const { return 'n'; }
  */
 void Knight::getLegalMoves(uint64_t &moves) const
 {
-    // TODO: Implement
+    // The knight cannot move if it is pinned, so go through every possible
+    // pin and return if it is.
+    // Same column
+    unsigned int index = m_location;
+    Bitboard pieces = m_board->board.getTotalValue();
+    int pieceOffset = m_color ? 0 : 6; // Black offset is 6
+
+    if (Piece *king = m_color ? m_whiteKing : m_blackKing;
+        m_location / 8 - king->getSquare() / 8 > 0 and m_location % 8 - king->getSquare() % 8 == 0)
+    {
+        // King is below the knight
+        while (index < 56) // Not on the 8th rank
+        {
+            index += 8; // Move up 1 rank
+
+            // Is pinned
+            if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                return;
+            }
+
+            if (pieces.value & (0b1ull << index))
+            {
+                break;
+            }
+        }
+    }
+    else if (m_location / 8 - king->getSquare() / 8 < 0 and m_location % 8 - king->getSquare() % 8 == 0)
+    {
+        while (index > 7) // Not on the 1st rank
+        {
+            index -= 8; // Move down 1 rank
+
+            // Is pinned
+            if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                return;
+            }
+
+            if (pieces.value & (0b1ull << index))
+            {
+                break;
+            }
+        }
+    }
+
+    // Same rank
+    else if (m_location / 8 - king->getSquare() / 8 == 0 and m_location % 8 - king->getSquare() % 8 < 0)
+    {
+        while (index % 8 < 7)
+        {
+            ++index; // Move left 1 column
+
+            if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                return;
+            }
+
+            if (pieces.value & (0b1ull << index))
+            {
+                break;
+            }
+        }
+    }
+    else if (m_location / 8 - king->getSquare() / 8 == 0 and m_location % 8 - king->getSquare() % 8 > 0)
+    {
+        while (index % 8 > 0)
+        {
+            --index;
+
+            if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                return;
+            }
+
+            if (pieces.value & (0b1ull << index))
+            {
+                break;
+            }
+        }
+    }
+
+    // Diagonal
+    else if ((m_location / 8 - king->getSquare() / 8) == (m_location % 8 - king->getSquare() % 8))
+    {
+        // Positive means right
+        if (m_location % 8 - king->getSquare() % 8 > 0)
+        {
+            while (index % 8 < 7 and index > 7)
+            {
+                index -= 7;
+
+                if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    return;
+                }
+
+                if (pieces.value & (0b1ull << index))
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            while (index % 8 > 0 and index < 56)
+            {
+                index += 7;
+
+                if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    return;
+                }
+
+                if (pieces.value & (0b1ull << index))
+                {
+                    break;
+                }
+            }
+        }
+    }
+    else if ((m_location / 8 - king->getSquare() / 8) == -(m_location % 8 - king->getSquare() % 8))
+    {
+        // Positive means right
+        if (m_location % 8 - king->getSquare() % 8 > 0)
+        {
+            // Pin has to come from bottom right
+            while (index % 8 > 0 and index > 7)
+            {
+                index -= 9;
+
+                if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    return;
+                }
+
+                if (pieces.value & (0b1ull << index))
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            while (index % 8 < 7 and index < 56)
+            {
+                index += 9;
+
+                if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    return;
+                }
+
+                if (pieces.value & (0b1ull << index))
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    // Possible moves:
+    Bitboard cant_go;
+    uint64_t attacks;
+    if (m_color)
+    {
+        m_board->board.getWhitePieces(cant_go);
+    }
+    else
+    {
+        m_board->board.getBlackPieces(cant_go);
+    }
+    getAttacks(attacks);
+
+    // Get possible moves
+    moves |= ~cant_go.value & attacks;
 }
 
 /** Get attacks for the piece
