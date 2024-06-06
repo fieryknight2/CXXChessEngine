@@ -72,6 +72,8 @@ public:
 
     [[nodiscard]] int getHalfMoveClock() const { return m_halfMoveClock; }
     [[nodiscard]] int getFullMoveClock() const { return m_fullMoveClock; }
+
+    [[nodiscard]] ChessBoard *getBoard() { return &m_board; }
 };
 
 
