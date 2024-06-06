@@ -62,10 +62,6 @@ Piece *ChessGame::getPiece(uint64_t square) const
 
     for (int j = 0; j < m_pieceInformation.size(); ++j)
     {
-        std::cout << j << ": "
-                  << (m_pieceInformation[j]->getColor() > 1 ? m_pieceInformation[j]->getType()
-                                                            : static_cast<char>(m_pieceInformation[j]->getType() - ' '))
-                  << " " << m_pieceInformation[j]->getSquare() << std::endl;
         if (m_pieceInformation[j]->getSquare() == square)
         {
             return m_pieceInformation[j];
@@ -131,62 +127,57 @@ void ChessGame::createFromFEN(const std::string &fen) noexcept(false)
 
     m_board.createFromFEN(fen);
 
-    for (int i = 0; i < m_board.board.getTotalValue().getBitCount(); ++i)
-    {
-        m_pieceInformation.push_back(nullptr);
-    }
-
     for (int j = 0; j < 12; ++j)
     {
-        for (int r = 7; r > 0; --r)
+        for (int i = 0; i < 64; ++i)
         {
-            for (int c = 0; c < 7; ++c)
+            int vsqr = i; // (i / 8) * 8 + (7 - i % 8);
+            int sqr = i;
+
+            if (m_board.board.data[j].value & 0b1ull << vsqr)
             {
-                if (m_board.board.data[j].value & 0b1ull << r * 8 + c)
+                switch (j)
                 {
-                    switch (j)
-                    {
-                        case 0: // First element is white pawns
-                            m_pieceInformation.push_back(new Pawn(WHITE, &m_board, (r * 8) + c));
-                            break;
-                        case 1: // Second element is white knights
-                            m_pieceInformation.push_back(new Knight(WHITE, &m_board, (r * 8) + c));
-                            break;
-                        case 2: // Third element is white bishops
-                            m_pieceInformation.push_back(new Bishop(WHITE, &m_board, (r * 8) + c));
-                            break;
-                        case 3: // Fourth element is white rooks
-                            m_pieceInformation.push_back(new Rook(WHITE, &m_board, (r * 8) + c));
-                            break;
-                        case 4: // Fifth element is white queens
-                            m_pieceInformation.push_back(new Queen(WHITE, &m_board, (r * 8) + c));
-                            break;
-                        case 5: // Sixth element is white king
-                            m_pieceInformation.push_back(new King(WHITE, &m_board, (r * 8) + c));
-                            m_whiteKing = m_pieceInformation.back();
-                            break;
-                        case 6: // Seventh element is black pawns
-                            m_pieceInformation.push_back(new Pawn(BLACK, &m_board, (r * 8) + c));
-                            break;
-                        case 7: // Eighth element is black knights
-                            m_pieceInformation.push_back(new Knight(BLACK, &m_board, (r * 8) + c));
-                            break;
-                        case 8: // Ninth element is black bishops
-                            m_pieceInformation.push_back(new Bishop(BLACK, &m_board, (r * 8) + c));
-                            break;
-                        case 9: // Tenth element is black rooks
-                            m_pieceInformation.push_back(new Rook(BLACK, &m_board, (r * 8) + c));
-                            break;
-                        case 10: // Eleventh element is black queens
-                            m_pieceInformation.push_back(new Queen(BLACK, &m_board, (r * 8) + c));
-                            break;
-                        case 11: // Twelfth element is black king
-                            m_pieceInformation.push_back(new King(BLACK, &m_board, (r * 8) + c));
-                            m_blackKing = m_pieceInformation.back();
-                            break;
-                        default:
-                            break; // This is impossible
-                    }
+                    case 0: // First element is white pawns
+                        m_pieceInformation.push_back(new Pawn(WHITE, &m_board, sqr));
+                        break;
+                    case 1: // Second element is white knights
+                        m_pieceInformation.push_back(new Knight(WHITE, &m_board, sqr));
+                        break;
+                    case 2: // Third element is white bishops
+                        m_pieceInformation.push_back(new Bishop(WHITE, &m_board, sqr));
+                        break;
+                    case 3: // Fourth element is white rooks
+                        m_pieceInformation.push_back(new Rook(WHITE, &m_board, sqr));
+                        break;
+                    case 4: // Fifth element is white queens
+                        m_pieceInformation.push_back(new Queen(WHITE, &m_board, sqr));
+                        break;
+                    case 5: // Sixth element is white king
+                        m_pieceInformation.push_back(new King(WHITE, &m_board, sqr));
+                        m_whiteKing = m_pieceInformation.back();
+                        break;
+                    case 6: // Seventh element is black pawns
+                        m_pieceInformation.push_back(new Pawn(BLACK, &m_board, sqr));
+                        break;
+                    case 7: // Eighth element is black knights
+                        m_pieceInformation.push_back(new Knight(BLACK, &m_board, sqr));
+                        break;
+                    case 8: // Ninth element is black bishops
+                        m_pieceInformation.push_back(new Bishop(BLACK, &m_board, sqr));
+                        break;
+                    case 9: // Tenth element is black rooks
+                        m_pieceInformation.push_back(new Rook(BLACK, &m_board, sqr));
+                        break;
+                    case 10: // Eleventh element is black queens
+                        m_pieceInformation.push_back(new Queen(BLACK, &m_board, sqr));
+                        break;
+                    case 11: // Twelfth element is black king
+                        m_pieceInformation.push_back(new King(BLACK, &m_board, sqr));
+                        m_blackKing = m_pieceInformation.back();
+                        break;
+                    default:
+                        break; // This is impossible
                 }
             }
         }

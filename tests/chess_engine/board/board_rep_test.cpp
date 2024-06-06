@@ -29,6 +29,10 @@ TEST(BoardRepTest, CreateFromFEN)
             board.createFromFEN("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2", nullptr, nullptr));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 0 0");
     // board.printBoard();
+
+    EXPECT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12",
+                                        nullptr, nullptr));
+    EXPECT_EQ(board.getFEN(), "r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 0 0");
 }
 
 TEST(BoardRepTest, GetFENWithHalfMoveClock)
@@ -107,9 +111,9 @@ TEST(ChessGameTest, GetPiece)
 
     EXPECT_EQ(game.getPieceCount(), 30);
 
-    ASSERT_NE(game.getPiece(0), nullptr);
-    EXPECT_EQ(game.getPiece(0)->getType(), PieceType::ROOK);
-    EXPECT_EQ(game.getPiece(0)->getColor(), WHITE);
+    ASSERT_NE(game.getPiece(7), nullptr);
+    EXPECT_EQ(game.getPiece(7)->getType(), PieceType::ROOK);
+    EXPECT_EQ(game.getPiece(7)->getColor(), WHITE);
 
     EXPECT_NE(game.getPiece(1), nullptr);
 }

@@ -24,6 +24,73 @@ will be the easiest and most efficient way to work with the board. The board is 
 with 12 bitboards, one for each piece type and color. The first 6 bitboard represents
 the white pieces and the last 6 bitboard represents the black pieces.
 
+**Direction and Bitoard Structure**
+The reason I've wanted to avoid bitboards is because of the difficulty of
+getting the directions and values correct for a beginning programmer like me.
+
+Theoretical Board:                        Actual Board:
+
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+|   | A | B | C | D | E | F | G | H |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 8 | r | n | b | q | k | b | n | r |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 7 | p | p | p | p | p | p | p | p |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 6 |   |   |   |   |   |   |   |   |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 5 |   |   |   |   |   |   |   |   |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 4 |   |   |   |   |   |   |   |   |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 3 |   |   |   |   |   |   |   |   |      | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+      +---+---+---+---+---+---+---+---+---+
+| 2 | P | P | P | P | P | P | P | P | ^    | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++---+---+---+---+---+---+---+---+---+ |    +---+---+---+---+---+---+---+---+---+      ^
+| 1 | R | N | B | Q | K | B | N | R | |    | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |      |
++---+---+---+---+---+---+---+---+---+  --> +---+---+---+---+---+---+---+---+---+  <-- |
+
+Ideally, the first board square would be A1 and increase from left to right,
+unfortunately, the start square for a bitboard would be H1 decreasing from right to left.
+The resulting plan currently is to follow the bitboard representation, example code:
+To iterate through the board, use
+
+.. code-block:: c++
+    :linenos:
+
+    for (int i = 0; i < 64; i++)
+    {
+        // Access a square with a mask
+        unsigned int mask = 1 << i;
+        uint64_t square = board & mask;
+        if (square)
+        {
+            // There is a piece on square i
+        }
+
+        //
+    }
+
+To use rows and columns, use (note not tested yet)
+
+.. code-block:: c++
+    :linenos:
+
+    for (int r = 0; r < 8; r++)
+    {
+        for (int c = 0; c < 8; c++)
+        {
+            // Access a square with a mask
+            unsigned int mask = 1 << (r * 8 + c);
+
+            uint64_t square = board & mask;
+            if (square)
+            {
+                // There is a piece on square (c, r)
+            }
+        }
+    }
+
 **Move Representation**
 
 My first idea for representing possible moves is based on

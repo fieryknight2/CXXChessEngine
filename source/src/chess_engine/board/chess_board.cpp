@@ -131,7 +131,7 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
 
     // Process the FEN string
     uint64_t i = 0; // We need the leftover value
-    int r = 7, c = 0;
+    int piece = 63;
     for (; i < fen.size(); ++i)
     {
         if (fen[i] == ' ')
@@ -141,11 +141,9 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
 
         if (fen[i] == '/')
         {
-            --r;
-            c = 0;
             continue;
         }
-        if (c > 7 or r < 0) // file index out of bounds
+        if (piece < 0) // file index out of bounds
         {
             throw ChessError("Ran out of bounds while processing FEN");
         }
@@ -153,12 +151,11 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
 
         if (fen[i] > '0' and fen[i] < '9')
         {
-            c += fen[i] - '0';
+            piece -= fen[i] - '0';
             continue;
         }
 
-        // (8 * r) + c is the index, so shift 1 bit that much to write the bit
-        uint64_t shifted = 0b1ull << (8 * r + c);
+        uint64_t shifted = 0b1ull << piece;
         switch (fen[i])
         {
             case 'P':
@@ -200,7 +197,7 @@ void ChessBoard::createFromFEN(const std::string &fen, int *halfMoveClock, int *
             default:
                 throw ChessError("Invalid piece " + std::to_string(fen[i]) + " in FEN");
         }
-        ++c;
+        --piece;
     }
 
 
@@ -356,7 +353,7 @@ std::string ChessBoard::getFEN(int halfMoveClock, int fullMoveClock) const
     for (int i = 7; i >= 0; --i)
     {
         int emptySquares = 0;
-        for (int j = 0; j < 8; ++j)
+        for (int j = 7; j >= 0; --j)
         {
             if (board[i * 8 + j] == '*')
             {
@@ -456,7 +453,7 @@ char *ChessBoard::getDisplayBoard() const
         {
             // 1 << j is the bit that represents the square
             // Initialize and apply the bit mask
-            if (uint64_t val = board.data[i].value & (0b1ull << j); val >> j)
+            if (board.data[i].value & (0b1ull << j))
             {
                 switch (i)
                 {
@@ -521,7 +518,7 @@ void ChessBoard::printBoard() const
     {
         std::cout << i + 1 << " ";
 
-        for (int j = 0; j < 8; ++j) // File
+        for (int j = 7; j >= 0; --j) // File
         {
             std::cout << dBoard[i * 8 + j];
             std::cout << " ";

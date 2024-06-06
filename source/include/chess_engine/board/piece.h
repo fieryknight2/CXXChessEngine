@@ -77,7 +77,7 @@ public:
 
     // Getters
     /** Get the represented color of the piece */
-    [[nodiscard]] int getColor() const { return m_color; }
+    [[nodiscard]] bool getColor() const { return m_color; }
     /** Get the referenced boards that the piece is on */
     [[nodiscard]] ChessBoard *getBoard() const { return m_board; }
     /** Get the current location of the piece */

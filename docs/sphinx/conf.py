@@ -50,3 +50,5 @@ breathe_projects = {
 }
 
 breathe_default_project = "ChessEngine"
+
+pygments_style = 'sphinx'

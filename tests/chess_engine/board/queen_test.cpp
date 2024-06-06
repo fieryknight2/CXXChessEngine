@@ -17,7 +17,7 @@ TEST(QueenTest, TestQueenGetAttacks)
     ChessGame game;
     ASSERT_NO_THROW(game.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
 
-    auto queen = dynamic_cast<Queen *>(game.getPiece(3));
+    auto queen = dynamic_cast<Queen *>(game.getPiece(4));
     ASSERT_NE(queen, nullptr);
 
     uint64_t attacks = 0;
