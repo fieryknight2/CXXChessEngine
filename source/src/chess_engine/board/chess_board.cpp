@@ -457,40 +457,40 @@ char *ChessBoard::getDisplayBoard() const
             {
                 switch (i)
                 {
-                    case 0: // First element is white pawns
+                    case PieceLoc::WHITE_PAWN:
                         dBoard[j] = 'P';
                         break;
-                    case 1: // Second element is white knights
+                    case PieceLoc::WHITE_KNIGHT:
                         dBoard[j] = 'N';
                         break;
-                    case 2: // Third element is white bishops
+                    case PieceLoc::WHITE_BISHOP:
                         dBoard[j] = 'B';
                         break;
-                    case 3: // Fourth element is white rooks
+                    case PieceLoc::WHITE_ROOK:
                         dBoard[j] = 'R';
                         break;
-                    case 4: // Fifth element is white queens
+                    case PieceLoc::WHITE_QUEEN:
                         dBoard[j] = 'Q';
                         break;
-                    case 5: // Sixth element is white king
+                    case PieceLoc::WHITE_KING:
                         dBoard[j] = 'K';
                         break;
-                    case 6: // Seventh element is black pawns
+                    case PieceLoc::BLACK_PAWN:
                         dBoard[j] = 'p';
                         break;
-                    case 7: // Eighth element is black knights
+                    case PieceLoc::BLACK_KNIGHT:
                         dBoard[j] = 'n';
                         break;
-                    case 8: // Ninth element is black bishops
+                    case PieceLoc::BLACK_BISHOP:
                         dBoard[j] = 'b';
                         break;
-                    case 9: // Tenth element is black rooks
+                    case PieceLoc::BLACK_ROOK:
                         dBoard[j] = 'r';
                         break;
-                    case 10: // Eleventh element is black queens
+                    case PieceLoc::BLACK_QUEEN:
                         dBoard[j] = 'q';
                         break;
-                    case 11: // Twelfth element is black king
+                    case PieceLoc::BLACK_KING:
                         dBoard[j] = 'k';
                         break;
                     default: // This is impossible

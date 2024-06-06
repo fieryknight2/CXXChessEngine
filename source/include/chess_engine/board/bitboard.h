@@ -29,6 +29,28 @@
 
 #include <cstdint>
 
+/** Locations of the pieces in the board's array
+ *
+ *
+ * @author Matthew Brown
+ * @date 6/6/2024
+ */
+enum PieceLoc
+{
+    WHITE_PAWN = 0,
+    WHITE_KNIGHT = 1,
+    WHITE_BISHOP = 2,
+    WHITE_ROOK = 3,
+    WHITE_QUEEN = 4,
+    WHITE_KING = 5,
+    BLACK_PAWN = 6,
+    BLACK_KNIGHT = 7,
+    BLACK_BISHOP = 8,
+    BLACK_ROOK = 9,
+    BLACK_QUEEN = 10,
+    BLACK_KING = 11
+};
+
 /** Classic bitboard.
  *
  * One 64-bit integer representing boolean conditions for chess board
@@ -66,6 +88,10 @@ struct Board
     Bitboard data[12];
 
     [[nodiscard]] Bitboard getTotalValue() const;
+    void getTotalValue(Bitboard &total) const;
+
+    void getWhitePieces(Bitboard &pieces) const;
+    void getBlackPieces(Bitboard &pieces) const;
 };
 
 #endif // bitboard_H
