@@ -89,7 +89,7 @@ void generateLegalMoves(std::stack<int> *legal_moves, const int *board, int piec
 void legalPawnMoves(std::stack<int> *legalMoves, const int *board, int piece, int kingLoc, int enPassantSquare)
 {
     // Validation
-    if (piece < 7 or piece > 56 or board[piece] == EMPTY)
+    if (piece < 7 or piece > 55 or board[piece] == EMPTY)
     {
         throw std::runtime_error("Invalid move");
         return;
