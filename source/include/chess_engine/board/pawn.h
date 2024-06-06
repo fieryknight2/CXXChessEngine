@@ -44,6 +44,8 @@ public:
     [[nodiscard]] char getType() const override;
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
+    void getAllMoves(uint64_t &moves) const;
+    void getForwardMoves(uint64_t &moves, const Bitboard &pieces) const;
 };
 
 #endif // pawn_H
