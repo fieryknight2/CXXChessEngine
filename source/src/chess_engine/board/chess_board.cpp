@@ -54,7 +54,7 @@ uint64_t ChessBoard::getSquareFromAlgebraic(const std::string &square)
     // First character is the file
     if (square[0] >= 'a' and square[0] <= 'h')
     {
-        squareNumber = square[0] - 'a';
+        squareNumber = 7 - (square[0] - 'a');
     }
     else
     {
@@ -84,7 +84,7 @@ std::string ChessBoard::toAlgebraic(uint64_t square)
 
     // First character is the file
     // Sometimes I hate C++ and linting...
-    squareString = static_cast<char>(square % 8) + 'a'; // NOLINT(*-narrowing-conversions)
+    squareString = static_cast<char>(7 - square % 8) + 'a'; // NOLINT(*-narrowing-conversions)
 
     // Second character is the rank
     squareString += static_cast<char>(square / 8) + '1'; // NOLINT(*-narrowing-conversions)
