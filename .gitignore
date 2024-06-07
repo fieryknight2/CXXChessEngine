@@ -12,3 +12,5 @@ _deps
 cmake-build-*
 
 docs/build/*
+/.vs/
+/out/

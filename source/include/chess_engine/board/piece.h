@@ -40,23 +40,14 @@
 /** Possible types of chess pieces
  *
  */
-enum PieceType
-{
-    PAWN = 'p',
-    KNIGHT = 'n',
-    BISHOP = 'b',
-    ROOK = 'r',
-    QUEEN = 'q',
-    KING = 'k'
-};
+enum PieceType { PAWN = 'p', KNIGHT = 'n', BISHOP = 'b', ROOK = 'r', QUEEN = 'q', KING = 'k' };
 
 /** Representation of a chess piece
  *
  * @author Matthew Brown
  * @date 05/27/2024
  */
-class Piece
-{
+class Piece {
 protected:
     uint64_t m_location;
     /* Boolean representation of the color of the piece, true for white, false for black */
@@ -83,13 +74,12 @@ public:
     /** Get the current location of the piece */
     [[nodiscard]] uint64_t getSquare() const { return m_location; }
     /** Get the current reference to the white/black king */
-    [[nodiscard]] Piece *getKing(int color) const { return color == WHITE ? m_whiteKing : m_blackKing; }
+    [[nodiscard]] Piece *getKing(int color) const { return color ? m_whiteKing : m_blackKing; }
 
     /** Return if the piece is valid */
     [[nodiscard]] bool isValid() const { return m_location < 65; }
 
-    void setKing(Piece *king)
-    {
+    void setKing(Piece *king) {
         if (king == nullptr)
             return;
 
