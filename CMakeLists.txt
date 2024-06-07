@@ -18,7 +18,7 @@ add_library(ChessBoard STATIC
 
         # Source files
         source/src/chess_engine/board/chess_board.cpp
-        source/src/chess_engine/board/pawn.cpp
+        "source/src/chess_engine/board/white_pawn.cpp"
         source/src/chess_engine/board/knight.cpp
         source/src/chess_engine/board/bishop.cpp
         source/src/chess_engine/board/rook.cpp
@@ -26,6 +26,7 @@ add_library(ChessBoard STATIC
         source/src/chess_engine/board/king.cpp
         source/src/chess_engine/board/bitboard.cpp
         source/src/chess_engine/chess_game.cpp
+        source/src/chess_engine/board/black_pawn.cpp
 )
 
 target_include_directories(ChessBoard PUBLIC
@@ -39,7 +40,7 @@ add_library(ChessEngine STATIC
 
         # Source files
         source/src/chess_engine/chess_engine.cpp
-)
+ "source/src/chess_engine/board/black_pawn.cpp")
 
 target_include_directories(ChessEngine PUBLIC
         source/include
@@ -49,7 +50,7 @@ target_link_libraries(ChessEngine ChessBoard)
 
 add_executable(ChessEngineRun
         source/src/main.cpp
-)
+ "source/src/chess_engine/board/black_pawn.cpp")
 
 target_link_libraries(ChessEngineRun ChessEngine)
 

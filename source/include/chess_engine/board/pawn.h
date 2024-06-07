@@ -34,14 +34,41 @@
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Pawn final : public Piece
-{
+class Pawn : public Piece {
 public:
     Pawn(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
-    ~Pawn() override = default;
 
     void makeMove(int to) override;
-    [[nodiscard]] char getType() const override;
+    [[nodiscard]] char getType() const override { return PieceType::PAWN; }
+};
+
+/** White pawn class
+ *
+ * @author Matthew Brown
+ * @date 06/7/2024
+ *
+ */
+class WhitePawn : public Pawn {
+public:
+    WhitePawn(ChessBoard *board, unsigned int location) : Pawn(true, board, location) {}
+    ~WhitePawn() override = default;
+
+    void getAttacks(uint64_t &attacks) const override;
+    void getLegalMoves(uint64_t &moves) const override;
+    void getAllMoves(uint64_t &moves) const;
+    void getForwardMoves(uint64_t &moves, const Bitboard &pieces) const;
+};
+
+/** Black pawn class
+ *
+ * @author Matthew Brown
+ * @date 06/7/2024
+ */
+class BlackPawn : public Pawn {
+public:
+    BlackPawn(ChessBoard *board, unsigned int location) : Pawn(false, board, location) {}
+    ~BlackPawn() override = default;
+
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
     void getAllMoves(uint64_t &moves) const;
