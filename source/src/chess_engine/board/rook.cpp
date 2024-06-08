@@ -30,8 +30,7 @@
  *
  * @param to Location to move the piece to
  */
-void Rook::makeMove(int to)
-{
+void Rook::makeMove(int to) {
     // TODO: Implement
 }
 
@@ -45,8 +44,7 @@ char Rook::getType() const { return PieceType::ROOK; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void Rook::getLegalMoves(uint64_t &moves) const
-{
+void Rook::getLegalMoves(uint64_t &moves) const {
     // TODO: Implement
 }
 
@@ -54,59 +52,49 @@ void Rook::getLegalMoves(uint64_t &moves) const
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void Rook::getAttacks(uint64_t &attacks) const
-{
+void Rook::getAttacks(uint64_t &attacks) const {
     unsigned int index = m_location;
-    const unsigned int rankMin = (m_location / 8) * 8;
     uint64_t totalValue = m_board->board.getTotalValue().value;
 
-    while (index < 56)
-    {
+    while (index < 56) {
         // Top
         index += 8;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index < rankMin + 7)
-    {
+    while (index % 8 < 7) {
         // Left
         index += 1;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index >= rankMin + 1)
-    {
+    while (index % 8 > 0) {
         // Right
         index -= 1;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index >= 8)
-    {
+    while (index >= 8) {
         // Bottom
         index -= 8;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }

@@ -30,10 +30,7 @@
  *
  * @param to Location to move the piece to
  */
-void King::makeMove(int to)
-{
-    // TODO: Implement
-}
+void King::makeMove(int to) { m_location = to; }
 
 /** Get the type of the piece
  *
@@ -45,57 +42,58 @@ char King::getType() const { return PieceType::KING; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void King::getLegalMoves(uint64_t &moves) const
-{
-    // TODO: Implement
+void King::getLegalMoves(uint64_t &moves, const uint64_t &otherSideAttacks) const {
+    uint64_t attacks = 0;
+    Bitboard side;
+
+    if (m_color) {
+        m_board->board.getWhitePieces(side);
+    } else {
+        m_board->board.getBlackPieces(side);
+    }
+
+    getAttacks(attacks);
+
+    moves |= attacks & (~side.value) & (~otherSideAttacks);
 }
 
 /** Get the possible attacks for the piece
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void King::getAttacks(uint64_t &attacks) const
-{
+void King::getAttacks(uint64_t &attacks) const {
     // validate top
-    if (m_location < 56)
-    {
-        if (m_location % 8 < 7)
-        {
+    if (m_location < 56) {
+        if (m_location % 8 < 7) {
             attacks |= 1ull << (m_location + 9); // top left corner
         }
 
         attacks |= 1ull << (m_location + 8); // top
 
-        if (m_location % 8 > 0)
-        {
+        if (m_location % 8 > 0) {
             attacks |= 1ull << (m_location + 7); // top right corner
         }
     }
 
-    if (m_location % 8 < 7)
-    {
+    if (m_location % 8 < 7) {
         // validate left
         attacks |= 1ull << (m_location + 1);
     }
 
-    if (m_location % 8 > 0)
-    {
+    if (m_location % 8 > 0) {
         // validate right
         attacks |= 1ull << (m_location - 1);
     }
 
-    if (m_location > 7)
-    {
+    if (m_location > 7) {
         // validate bottom
-        if (m_location % 8 < 7)
-        {
+        if (m_location % 8 < 7) {
             attacks |= 1ull << (m_location - 7); // bottom left corner
         }
 
         attacks |= 1ull << (m_location - 8); // bottom
 
-        if (m_location % 8 > 0)
-        {
+        if (m_location % 8 > 0) {
             attacks |= 1ull << (m_location - 9); // bottom right corner
         }
     }

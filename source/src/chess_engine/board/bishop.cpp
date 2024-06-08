@@ -30,8 +30,7 @@
  *
  * @param to Location to move the piece to
  */
-void Bishop::makeMove(int to)
-{
+void Bishop::makeMove(int to) {
     // TODO: Implement
 }
 
@@ -45,8 +44,7 @@ char Bishop::getType() const { return PieceType::BISHOP; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void Bishop::getLegalMoves(uint64_t &moves) const
-{
+void Bishop::getLegalMoves(uint64_t &moves) const {
     // TODO: Implement
 }
 
@@ -54,58 +52,49 @@ void Bishop::getLegalMoves(uint64_t &moves) const
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void Bishop::getAttacks(uint64_t &attacks) const
-{
+void Bishop::getAttacks(uint64_t &attacks) const {
     unsigned int index = m_location;
     uint64_t totalValue = m_board->board.getTotalValue().value;
 
-    while (index >= 9 and index % 8 != 0)
-    {
+    while (index > 7 and index % 8 > 0) {
         // Bottom Right
         index -= 9;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index >= 7 and index % 8 != 7)
-    {
+    while (index > 7 and index % 8 < 7) {
         // Bottom Left
         index -= 7;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index < 57 and index % 8 != 0)
-    {
+    while (index < 57 and index % 8 > 0) {
         // Top Left
         index += 7;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index < 55 and index % 8 != 7)
-    {
+    while (index < 57 and index % 8 < 7) {
         // Top Right
         index += 9;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }

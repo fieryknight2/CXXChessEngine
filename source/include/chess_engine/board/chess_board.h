@@ -44,12 +44,7 @@
  * @author Matthew Brown
  * @date 5/25/2024
  */
-struct ChessBoard
-{
-    /* Bitboard representation of all attacks */
-    Bitboard whiteAttacks{0};
-    Bitboard blackAttacks{0};
-
+struct ChessBoard {
     Board board;
 
     /* Representing the castling rights

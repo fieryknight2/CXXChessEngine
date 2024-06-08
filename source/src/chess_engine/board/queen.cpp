@@ -30,8 +30,7 @@
  *
  * @param to Location to move the piece to
  */
-void Queen::makeMove(int to)
-{
+void Queen::makeMove(int to) {
     // TODO: Implement
 }
 
@@ -45,8 +44,7 @@ char Queen::getType() const { return PieceType::QUEEN; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void Queen::getLegalMoves(uint64_t &moves) const
-{
+void Queen::getLegalMoves(uint64_t &moves) const {
     // TODO: Implement
 }
 
@@ -54,112 +52,95 @@ void Queen::getLegalMoves(uint64_t &moves) const
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void Queen::getAttacks(uint64_t &attacks) const
-{
+void Queen::getAttacks(uint64_t &attacks) const {
     unsigned int index = m_location;
-    const unsigned int rankMin = (m_location / 8) * 8;
     uint64_t totalValue = m_board->board.getTotalValue().value;
 
     // Rook Code
-    while (index < 56)
-    {
+    while (index < 56) {
         // Top
         index += 8;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index < rankMin + 7)
-    {
+    while (index % 8 < 7) {
         // Left
         index += 1;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index >= rankMin + 1)
-    {
+    while (index % 8 > 0) {
         // Right
         index -= 1;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index >= 8)
-    {
+    while (index >= 8) {
         // Bottom
         index -= 8;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     // Bishop Code
-    while (index >= 9 and index % 8 != 0)
-    {
+    index = m_location;
+    while (index > 7 and index % 8 > 0) {
         // Bottom Right
         index -= 9;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index >= 7 and index % 8 != 7)
-    {
+    while (index > 7 and index % 8 < 7) {
         // Bottom Left
         index -= 7;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index < 57 and index % 8 != 0)
-    {
+    while (index < 57 and index % 8 > 0) {
         // Top Left
         index += 7;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
 
     index = m_location;
-    while (index < 55 and index % 8 != 7)
-    {
+    while (index < 57 and index % 8 < 7) {
         // Top Right
         index += 9;
         attacks |= 1ull << index;
 
-        if (!(totalValue & (1ull << index)))
-        {
+        if (totalValue & (1ull << index)) {
             break;
         }
     }
