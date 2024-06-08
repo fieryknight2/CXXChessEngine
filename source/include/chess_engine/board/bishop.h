@@ -34,8 +34,7 @@
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Bishop final : public Piece
-{
+class Bishop final : public Piece {
 public:
     Bishop(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Bishop() override = default;
@@ -44,6 +43,9 @@ public:
     [[nodiscard]] char getType() const override;
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
+
+    void getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
 };
 
 #endif // bishop_H

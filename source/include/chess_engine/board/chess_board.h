@@ -66,7 +66,7 @@ struct ChessBoard {
     static uint64_t getSquareFromAlgebraic(const std::string &square);
     static std::string toAlgebraic(uint64_t square);
 
-    [[nodiscard]] char *getDisplayBoard() const;
+    [[nodiscard]] std::string getDisplayBoard() const;
 
     // Access and creation methods
     void createFromFEN(const std::string &fen, int *halfMoveClock = nullptr,

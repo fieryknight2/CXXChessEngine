@@ -152,8 +152,7 @@ void BlackPawn::getLegalMoves(uint64_t &moves) const {
                 return;
             }
         }
-    } else if (m_location / 8 - m_blackKing->getSquare() / 8 == 0 and
-               m_location % 8 - m_blackKing->getSquare() % 8 > 0) {
+    } else if (m_location / 8 - m_blackKing->getSquare() / 8 == 0 and m_location % 8 > m_blackKing->getSquare() % 8) {
         /** King is on the left of the pawn,
          * Pin direction can be from right */
         while (index % 8 > 0) {

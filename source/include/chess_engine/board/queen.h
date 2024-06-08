@@ -34,8 +34,7 @@
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Queen final : public Piece
-{
+class Queen final : public Piece {
 public:
     Queen(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Queen() override = default;
@@ -44,6 +43,12 @@ public:
     [[nodiscard]] char getType() const override;
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
+
+    void getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getAllMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
 };
 
 #endif // queen_H

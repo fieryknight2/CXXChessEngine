@@ -184,3 +184,14 @@ void ChessGame::createFromFEN(const std::string &fen) noexcept(false) {
  * @return The FEN string
  */
 std::string ChessGame::getFEN() const { return m_board.getFEN(m_halfMoveClock, m_fullMoveClock); }
+
+ChessGame::~ChessGame() {
+    if (!m_pieceInformation.empty()) {
+        for (auto &elem: m_pieceInformation) {
+            delete elem;
+            elem = nullptr;
+        }
+
+        m_pieceInformation.clear();
+    }
+}

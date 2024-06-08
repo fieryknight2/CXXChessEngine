@@ -4,6 +4,7 @@ Chess Board Documentation
 .. toctree::
     :caption: Board and Pieces
 
+    legal_moves
     chessboard
     pieces/piece
     pieces/king

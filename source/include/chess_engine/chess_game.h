@@ -40,8 +40,7 @@
  * @author Matthew Brown
  * @date 6/02/2024
  */
-class ChessGame
-{
+class ChessGame {
     /* Stored information on all pieces */
     std::vector<Piece *> m_pieceInformation;
 
@@ -51,6 +50,9 @@ class ChessGame
     /* Game information */
     int m_halfMoveClock = 0;
     int m_fullMoveClock = 0;
+
+    /* For keeping track of the fifty-move rule */
+    int reversibleMoves = 0;
 
     // std::vector<ChessMove> m_moveHistory;
 
@@ -74,6 +76,8 @@ public:
     [[nodiscard]] int getFullMoveClock() const { return m_fullMoveClock; }
 
     [[nodiscard]] ChessBoard *getBoard() { return &m_board; }
+
+    ~ChessGame();
 };
 
 
