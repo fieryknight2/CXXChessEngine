@@ -6,7 +6,7 @@ these move generators don't address if the king is already in check. I plan to i
 that while creating the general legal move generator in the ChessGame class or maybe while
 working on the engine.
 
-*General*
+**General**
 
 Legal move generation requires a few more things than normal move generation, which
 would just iterate through all possible directions/moves for a piece and add them to a list.
@@ -70,7 +70,7 @@ Code for determining which direction the king is from the piece is explained as 
 
 **Diagonal**
 
-.. code-block
+.. code-block:: c++
 
 	// Diagonal
 	// Requires a check for if the absolute difference 
