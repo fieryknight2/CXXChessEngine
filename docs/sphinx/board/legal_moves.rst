@@ -99,7 +99,6 @@ Code for determining which direction the king is from the piece is explained as 
 .. toctree::
    :maxdepth: 2
 
-   board_representation
    pieces/pawn
    pieces/knight
    pieces/bishop

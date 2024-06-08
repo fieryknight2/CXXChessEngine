@@ -374,9 +374,10 @@ std::string ChessBoard::getFEN(int halfMoveClock, int fullMoveClock) const {
  * @return String representation of the board
  */
 std::string ChessBoard::getDisplayBoard() const {
-    std::string dBoard;
-    for (int i = 0; i < 64; dBoard += "*")
-        ; // Fill the board with empty squares
+    std::string dBoard = "";
+    for (int i = 0; i < 64; ++i) {
+        dBoard += "*";
+    }
 
     // Generate display board
     for (int i = 0; i < 12; ++i) {
