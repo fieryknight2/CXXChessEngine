@@ -67,6 +67,42 @@ Piece *ChessGame::getPiece(uint64_t square) const {
     return nullptr;
 }
 
+/** Generate all possible attacks for the black pieces */
+void ChessGame::generateBlackAttacks() {
+    m_board.board.blackAttacks = 0;
+    for (auto &piece: m_pieceInformation) {
+        if (piece->getColor() == BLACK) {
+            piece->getAttacks(m_board.board.blackAttacks.value);
+        }
+    }
+}
+
+
+/** Generate all possible attacks for the white pieces */
+void ChessGame::generateWhiteAttacks() {
+    m_board.board.whiteAttacks = 0;
+    for (auto &piece: m_pieceInformation) {
+        if (piece->getColor() == WHITE) {
+            piece->getAttacks(m_board.board.whiteAttacks.value);
+        }
+    }
+}
+
+/** Generate necessary information for legal move generation
+ *
+ * Must be called before generating legal moves for any piece
+ */
+void ChessGame::pregenLegalMoves() {
+    m_board.board.allPieces = m_board.board.getTotalValue();
+    m_board.board.getWhitePieces(m_board.board.whitePieces);
+    m_board.board.getBlackPieces(m_board.board.blackPieces);
+
+    generateWhiteAttacks();
+    generateBlackAttacks();
+
+    m_board.board.genMoveInfo = true;
+}
+
 /** Get the white king
  *
  * @return A reference to the white king

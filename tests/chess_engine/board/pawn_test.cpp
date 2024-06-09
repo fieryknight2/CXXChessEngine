@@ -30,6 +30,8 @@ bool testPawnMovement(std::string fen, std::string square, std::vector<std::stri
         return false;
     }
 
+    game.pregenLegalMoves();
+
     std::vector<std::string> errorMoves;
     pawn->getLegalMoves(moves);
     for (int i = 0; i < 64; ++i) {
@@ -84,26 +86,6 @@ TEST(PawnTest, TestPawnGetAttacks) {
 }
 
 TEST(PawnTest, TestPawnGetLegalMoves) {
-    ChessGame board;
-    ASSERT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
-
-    uint64_t moves = 0;
-    auto pawn = dynamic_cast<Pawn *>(board.getPiece(9));
-    ASSERT_NE(pawn, nullptr);
-
-    pawn->getLegalMoves(moves);
-    // std::cout << "------------------------------------------------------" << std::endl;
-    // std::cout << " -        Printing legal moves for pawn             -\n";
-    // std::cout << "------------------------------------------------------\n" << std::endl;
-    // print_uint64_t_comp(moves, board.getBoard()->board.data[PieceLoc::WHITE_PAWN].value & (1ull << 9), " v");
-
-    // uint64_t square = ChessBoard::getSquareFromAlgebraic("f7");
-    // pawn = dynamic_cast<Pawn *>(board.getPiece(square));
-    // ASSERT_NE(pawn, nullptr);
-
-    // moves = 0;
-    // pawn->getLegalMoves(moves);
-    // print_uint64_t_comp(moves, board.getBoard()->board.getTotalValue().value & (1ull << square), " v");
     EXPECT_TRUE(testPawnMovement("k3q3/1bq4q/8/3PPP2/rPnpK1Pq/3PPP2/4N3/1q2q3 w - - 0 1", "d3", {}));
     EXPECT_TRUE(testPawnMovement("k3q3/1bq4q/8/3PPP2/rPnpK1Pq/3PPP2/4N3/1q2q3 w - - 0 1", "e3", {"d4"}));
     EXPECT_TRUE(testPawnMovement("k3q3/1bq4q/8/3PPP2/rPnpK1Pq/3PPP2/4N3/1q2q3 w - - 0 1", "f3", {"f4"}));

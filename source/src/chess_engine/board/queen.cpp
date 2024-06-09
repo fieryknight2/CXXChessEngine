@@ -45,18 +45,21 @@ char Queen::getType() const { return PieceType::QUEEN; }
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
 void Queen::getLegalMoves(uint64_t &moves) const {
-    uint64_t totalValue = m_board->board.getTotalValue().value;
+    if (!m_board->board.genMoveInfo) {
+        throw ChessError("Error: Move info not generated, cannot generate legal moves");
+    }
+
     Bitboard myPieces;
     Bitboard otherPieces;
 
     int pieceOffset = m_color ? 6 : 0;
 
     if (m_color) {
-        m_board->board.getWhitePieces(myPieces);
-        m_board->board.getBlackPieces(otherPieces);
+        myPieces = m_board->board.whitePieces;
+        otherPieces = m_board->board.blackPieces;
     } else {
-        m_board->board.getBlackPieces(myPieces);
-        m_board->board.getWhitePieces(otherPieces);
+        myPieces = m_board->board.blackPieces;
+        otherPieces = m_board->board.whitePieces;
     }
 
     // Process possible moves
@@ -74,10 +77,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index > 7;) {
                     index -= 8;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getAllMoves(moves, totalValue, myPieces.value);
+                        getAllMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -87,14 +90,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
 
 
                     // Pinned
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getAllMoves(moves, totalValue, myPieces.value);
+                    getAllMoves(moves);
                     return;
                 }
             }
@@ -111,10 +114,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index < 56;) {
                     index += 8;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getAllMoves(moves, totalValue, myPieces.value);
+                        getAllMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -124,14 +127,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 }
 
                 // Pinned
-                getBottomTopMoves(moves, totalValue, myPieces.value);
+                getBottomTopMoves(moves);
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getAllMoves(moves, totalValue, myPieces.value);
+                getAllMoves(moves);
                 return;
             }
         }
@@ -149,10 +152,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 > 0;) {
                     --index;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getAllMoves(moves, totalValue, myPieces.value);
+                        getAllMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -162,14 +165,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 }
 
                 // Pinned
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getLeftRightMoves(moves);
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getAllMoves(moves, totalValue, myPieces.value);
+                getAllMoves(moves);
                 return;
             }
         }
@@ -184,10 +187,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 < 7;) {
                     ++index;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getAllMoves(moves, totalValue, myPieces.value);
+                        getAllMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -197,14 +200,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                 }
 
                 // Pinned
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getLeftRightMoves(moves);
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getAllMoves(moves, totalValue, myPieces.value);
+                getAllMoves(moves);
                 return;
             }
         }
@@ -224,10 +227,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index < 56;) {
                         index += 9;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getAllMoves(moves, totalValue, myPieces.value);
+                            getAllMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -237,15 +240,15 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned, queen can only move in the direction of the pin
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
 
-                    getAllMoves(moves, totalValue, myPieces.value);
+                    getAllMoves(moves);
                     return;
                 }
             }
@@ -261,10 +264,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index > 7;) {
                         index -= 9;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getAllMoves(moves, totalValue, myPieces.value);
+                            getAllMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -274,14 +277,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getAllMoves(moves, totalValue, myPieces.value);
+                    getAllMoves(moves);
                     return;
                 }
             }
@@ -300,10 +303,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index < 56;) {
                         index += 7;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getAllMoves(moves, totalValue, myPieces.value);
+                            getAllMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -313,14 +316,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned, bishop can only move if pinned ot the side
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getAllMoves(moves, totalValue, myPieces.value);
+                    getAllMoves(moves);
                     return;
                 }
             }
@@ -336,10 +339,10 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index > 7;) {
                         index += 7;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getAllMoves(moves, totalValue, myPieces.value);
+                            getAllMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -349,14 +352,14 @@ void Queen::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned, bishop can only move if pinned ot the side
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getAllMoves(moves, totalValue, myPieces.value);
+                    getAllMoves(moves);
                     return;
                 }
             }
@@ -364,7 +367,7 @@ void Queen::getLegalMoves(uint64_t &moves) const {
     }
 
     // No pins, all possible moves:
-    getAllMoves(moves, totalValue, myPieces.value);
+    getAllMoves(moves);
 }
 
 /** Get the possible attacks for the piece
@@ -373,7 +376,6 @@ void Queen::getLegalMoves(uint64_t &moves) const {
  */
 void Queen::getAttacks(uint64_t &attacks) const {
     unsigned int index = m_location;
-    uint64_t totalValue = m_board->board.getTotalValue().value;
 
     // Rook Code
     while (index < 56) {
@@ -381,7 +383,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index += 8;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -392,7 +394,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index += 1;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -403,7 +405,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index -= 1;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -414,7 +416,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index -= 8;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -426,7 +428,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index -= 9;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -437,7 +439,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index -= 7;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -448,7 +450,7 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index += 7;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -459,14 +461,15 @@ void Queen::getAttacks(uint64_t &attacks) const {
         index += 9;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Queen::getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Queen::getLeftRightMoves(uint64_t &moves) const {
     unsigned int index = m_location;
+    uint64_t myPieces = (m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value;
 
     while (index % 8 < 7) {
         // Left
@@ -476,7 +479,7 @@ void Queen::getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &m
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -490,14 +493,15 @@ void Queen::getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &m
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Queen::getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Queen::getBottomTopMoves(uint64_t &moves) const {
     unsigned int index = m_location;
+    uint64_t myPieces = (m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value;
 
     while (index < 56) {
         // Top
@@ -507,7 +511,7 @@ void Queen::getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &m
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -521,14 +525,15 @@ void Queen::getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &m
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Queen::getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Queen::getBottomLeftTopRightMoves(uint64_t &moves) const {
     unsigned int index = m_location;
+    uint64_t myPieces = (m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value;
 
     while (index > 7 and index % 8 < 7) {
         // Bottom Left
@@ -538,7 +543,7 @@ void Queen::getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, ui
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -552,14 +557,15 @@ void Queen::getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, ui
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Queen::getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Queen::getBottomRightTopLeftMoves(uint64_t &moves) const {
     unsigned int index = m_location;
+    uint64_t myPieces = (m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value;
 
     while (index > 7 and index % 8 > 0) {
         // Bottom Right
@@ -570,7 +576,7 @@ void Queen::getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, ui
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -584,15 +590,15 @@ void Queen::getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, ui
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Queen::getAllMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
-    getLeftRightMoves(moves, totalValue, myPieces);
-    getBottomTopMoves(moves, totalValue, myPieces);
-    getBottomLeftTopRightMoves(moves, totalValue, myPieces);
-    getBottomRightTopLeftMoves(moves, totalValue, myPieces);
+void Queen::getAllMoves(uint64_t &moves) const {
+    getLeftRightMoves(moves);
+    getBottomTopMoves(moves);
+    getBottomLeftTopRightMoves(moves);
+    getBottomRightTopLeftMoves(moves);
 }

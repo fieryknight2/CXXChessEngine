@@ -56,7 +56,7 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
     void getAllMoves(uint64_t &moves) const;
-    void getForwardMoves(uint64_t &moves, const Bitboard &pieces) const;
+    void getForwardMoves(uint64_t &moves) const;
 };
 
 /** Black pawn class
@@ -72,7 +72,7 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
     void getAllMoves(uint64_t &moves) const;
-    void getForwardMoves(uint64_t &moves, const Bitboard &pieces) const;
+    void getForwardMoves(uint64_t &moves) const;
 };
 
 #endif // pawn_H

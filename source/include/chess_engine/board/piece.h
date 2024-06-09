@@ -36,6 +36,7 @@
 
 #include <cstdint>
 #include "chess_board.h"
+#include "chess_engine/chess_error.h"
 
 /** Possible types of chess pieces
  *

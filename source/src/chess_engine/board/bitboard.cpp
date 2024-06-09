@@ -27,45 +27,39 @@
 #include "chess_engine/board/bitboard.h"
 
 
-int Bitboard::getBitCount() const
-{
+int Bitboard::getBitCount() const {
     int count = 0;
-    for (uint64_t i = 0; i < 64; ++i)
-    {
-        if (value & (0b1ull << i))
-        {
+    for (uint64_t i = 0; i < 64; ++i) {
+        if (value & (0b1ull << i)) {
             ++count;
         }
     }
     return count;
 }
 
-Bitboard Board::getTotalValue() const
-{
+Bitboard Board::getTotalValue() const {
     Bitboard total;
 
-    for (auto &board: data)
-    {
+    for (auto &board: data) {
         total.value |= board.value;
     }
 
     return total;
 }
 
-void Board::getTotalValue(Bitboard &total) const
-{
-    for (auto &board: data)
-    {
+void Board::getTotalValue(Bitboard &total) const {
+    for (auto &board: data) {
         total.value |= board.value;
     }
 }
 
-void Board::getWhitePieces(Bitboard &pieces) const
-{
+void Board::getWhitePieces(Bitboard &pieces) const {
     pieces.value = data[0].value | data[1].value | data[2].value | data[3].value | data[4].value | data[5].value;
 }
 
-void Board::getBlackPieces(Bitboard &pieces) const
-{
+void Board::getBlackPieces(Bitboard &pieces) const {
     pieces.value = data[6].value | data[7].value | data[8].value | data[9].value | data[10].value | data[11].value;
 }
+
+/* To be worked on in the future */
+void Board::moveMade() { genMoveInfo = false; }

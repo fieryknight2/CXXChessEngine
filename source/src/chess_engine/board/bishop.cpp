@@ -45,19 +45,22 @@ char Bishop::getType() const { return PieceType::BISHOP; }
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
 void Bishop::getLegalMoves(uint64_t &moves) const {
+    if (!m_board->board.genMoveInfo) {
+        throw ChessError("Error: Move info not generated, cannot generate legal moves");
+    }
+
     unsigned int index = m_location;
-    uint64_t totalValue = m_board->board.getTotalValue().value;
     Bitboard myPieces;
     Bitboard otherPieces;
 
     int pieceOffset = m_color ? 6 : 0;
 
     if (m_color) {
-        m_board->board.getWhitePieces(myPieces);
-        m_board->board.getBlackPieces(otherPieces);
+        myPieces = m_board->board.whitePieces;
+        otherPieces = m_board->board.blackPieces;
     } else {
-        m_board->board.getBlackPieces(myPieces);
-        m_board->board.getWhitePieces(otherPieces);
+        myPieces = m_board->board.blackPieces;
+        otherPieces = m_board->board.whitePieces;
     }
 
     // Possible moves
@@ -73,11 +76,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index > 7;) {
                     index -= 8;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                        getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                        getBottomLeftTopRightMoves(moves);
+                        getBottomRightTopLeftMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -90,11 +93,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                getBottomLeftTopRightMoves(moves);
+                getBottomRightTopLeftMoves(moves);
                 return;
             }
         }
@@ -110,11 +113,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index < 56;) {
                     index += 8;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                        getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                        getBottomLeftTopRightMoves(moves);
+                        getBottomRightTopLeftMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -127,11 +130,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                getBottomLeftTopRightMoves(moves);
+                getBottomRightTopLeftMoves(moves);
                 return;
             }
         }
@@ -149,11 +152,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 > 0;) {
                     --index;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                        getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                        getBottomLeftTopRightMoves(moves);
+                        getBottomRightTopLeftMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -166,11 +169,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                getBottomLeftTopRightMoves(moves);
+                getBottomRightTopLeftMoves(moves);
                 return;
             }
         }
@@ -185,11 +188,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 < 7;) {
                     ++index;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                        getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                        getBottomLeftTopRightMoves(moves);
+                        getBottomRightTopLeftMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -202,11 +205,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                getBottomLeftTopRightMoves(moves);
+                getBottomRightTopLeftMoves(moves);
                 return;
             }
         }
@@ -226,11 +229,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index < 56;) {
                         index += 9;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                            getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                            getBottomLeftTopRightMoves(moves);
+                            getBottomRightTopLeftMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -240,15 +243,15 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned, bishop can only move in the direction of the pin
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
             }
@@ -264,11 +267,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index > 7;) {
                         index -= 9;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                            getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                            getBottomLeftTopRightMoves(moves);
+                            getBottomRightTopLeftMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -278,15 +281,15 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
             }
@@ -305,11 +308,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index < 56;) {
                         index += 7;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                            getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                            getBottomLeftTopRightMoves(moves);
+                            getBottomRightTopLeftMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -319,15 +322,15 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned, bishop can only move if pinned ot the side
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
             }
@@ -343,11 +346,11 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index > 7;) {
                         index += 7;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                            getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                            getBottomLeftTopRightMoves(moves);
+                            getBottomRightTopLeftMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -357,15 +360,15 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
                     }
 
                     // Pinned, bishop can only move if pinned ot the side
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-                    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+                    getBottomLeftTopRightMoves(moves);
+                    getBottomRightTopLeftMoves(moves);
                     return;
                 }
             }
@@ -373,8 +376,8 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
     }
 
     // No pins, all possible moves:
-    getBottomLeftTopRightMoves(moves, totalValue, myPieces.value);
-    getBottomRightTopLeftMoves(moves, totalValue, myPieces.value);
+    getBottomLeftTopRightMoves(moves);
+    getBottomRightTopLeftMoves(moves);
 }
 
 /** Get the possible attacks for the piece
@@ -383,14 +386,13 @@ void Bishop::getLegalMoves(uint64_t &moves) const {
  */
 void Bishop::getAttacks(uint64_t &attacks) const {
     unsigned int index = m_location;
-    uint64_t totalValue = m_board->board.getTotalValue().value;
 
     while (index > 7 and index % 8 > 0) {
         // Bottom Right
         index -= 9;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -401,7 +403,7 @@ void Bishop::getAttacks(uint64_t &attacks) const {
         index -= 7;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -412,7 +414,7 @@ void Bishop::getAttacks(uint64_t &attacks) const {
         index += 7;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -423,24 +425,24 @@ void Bishop::getAttacks(uint64_t &attacks) const {
         index += 9;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Bishop::getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Bishop::getBottomLeftTopRightMoves(uint64_t &moves) const {
     unsigned int index = m_location;
 
     while (index > 7 and index % 8 < 7) {
         // Bottom Left
         index -= 7;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -450,17 +452,17 @@ void Bishop::getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, u
         // Top Right
         index += 7;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Bishop::getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Bishop::getBottomRightTopLeftMoves(uint64_t &moves) const {
     unsigned int index = m_location;
 
     while (index > 7 and index % 8 > 0) {
@@ -468,11 +470,11 @@ void Bishop::getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, u
         index -= 9;
 
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -482,11 +484,11 @@ void Bishop::getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, u
         // Top Left
         index += 9;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }

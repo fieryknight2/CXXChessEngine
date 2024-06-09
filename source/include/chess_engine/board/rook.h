@@ -44,8 +44,8 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
 
-    void getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
-    void getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getLeftRightMoves(uint64_t &moves) const;
+    void getBottomTopMoves(uint64_t &moves) const;
 };
 
 #endif // rook_H

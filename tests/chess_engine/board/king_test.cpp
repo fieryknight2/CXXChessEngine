@@ -9,7 +9,7 @@
 #include "gtest/gtest.h"
 #include "low_level_test_functions.h"
 
-void print_attacks(uint64_t value) {
+void printStuff(uint64_t value) {
     for (int i = 0; i < 64; ++i) {
         if (i % 4 == 0) {
             std::cout << " ";
@@ -21,7 +21,7 @@ void print_attacks(uint64_t value) {
         if (value & (1ull << i)) {
             std::cout << "1";
         } else {
-            std::cout << "0";
+            std::cout << "*";
         }
     }
     std::cout << std::endl;
@@ -48,17 +48,10 @@ bool testKingMovement(std::string fen, std::string square, std::vector<std::stri
         return false;
     }
 
-    Bitboard attacks;
-    for (auto piece: game.getPieces()) {
-        if (piece->getColor() != king->getColor()) {
-            // std::cout << "Piece: " << piece->getType() << " " << ChessBoard::toAlgebraic(piece->getSquare())
-            //           << std::endl;
-            piece->getAttacks(attacks.value);
-        }
-    }
+    game.pregenLegalMoves();
 
     std::vector<std::string> errorMoves;
-    king->getLegalMoves(moves, attacks.value); // Most important line of the function lol
+    king->getLegalMoves(moves); // Most important line of the function lol
     for (int i = 0; i < 64; ++i) {
         if (moves & (1ull << i)) {
             // Try to find the resulting expected move
@@ -88,6 +81,14 @@ bool testKingMovement(std::string fen, std::string square, std::vector<std::stri
     }
 
     if (!errorMoves.empty() or !expectedMoves.empty()) {
+        std::cout << "----------- Fail info -----------\n";
+        printStuff(game.getBoard()->board.blackAttacks.value);
+        printStuff(game.getBoard()->board.whitePieces.value);
+        uint64_t attacks = 0;
+        king->getAttacks(attacks);
+        printStuff(attacks);
+        std::cout << "---------------------------------" << std::endl;
+
         return false;
     }
 
@@ -113,10 +114,6 @@ TEST(KingTest, TestKingGetAttacks) {
 }
 
 TEST(KingTest, TestKingGetLegalMoves) {
-    ChessBoard board;
-    ASSERT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12",
-                                        nullptr, nullptr));
-
     EXPECT_TRUE(testKingMovement("7k/1b3n2/8/8/3K4/8/2q5/8 w - - 0 1", "d4", {"e3"}));
     EXPECT_TRUE(testKingMovement("7k/1b3n2/8/8/2RK4/8/2q5/8 w - - 0 1", "d4", {"e3", "c5"}));
     EXPECT_TRUE(testKingMovement("7k/1b3n2/8/8/2RK4/b7/8/8 w - - 0 1", "d4", {"c3", "d3", "e3"}));

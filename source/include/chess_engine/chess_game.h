@@ -63,6 +63,10 @@ public:
     [[nodiscard]] std::vector<Piece *> getPieces() const;
     [[nodiscard]] Piece *getPiece(uint64_t square) const;
 
+    void pregenLegalMoves();
+    void generateWhiteAttacks();
+    void generateBlackAttacks();
+
     // Getters
     [[nodiscard]] Piece *getWhiteKing() const;
     [[nodiscard]] Piece *getBlackKing() const;

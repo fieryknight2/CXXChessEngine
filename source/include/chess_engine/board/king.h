@@ -42,8 +42,7 @@ public:
     void makeMove(int to) override;
     [[nodiscard]] char getType() const override;
     void getAttacks(uint64_t &attacks) const override;
-    void getLegalMoves(uint64_t &moves) const override { getLegalMoves(moves, 0); }
-    void getLegalMoves(uint64_t &moves, const uint64_t &otherSideAttacks) const;
+    void getLegalMoves(uint64_t &moves) const override;
 };
 
 #endif // king_H

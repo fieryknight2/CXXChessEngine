@@ -42,19 +42,17 @@ char King::getType() const { return PieceType::KING; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void King::getLegalMoves(uint64_t &moves, const uint64_t &otherSideAttacks) const {
-    uint64_t attacks = 0;
-    Bitboard side;
-
-    if (m_color) {
-        m_board->board.getWhitePieces(side);
-    } else {
-        m_board->board.getBlackPieces(side);
+void King::getLegalMoves(uint64_t &moves) const {
+    if (!m_board->board.genMoveInfo) {
+        throw ChessError("Error: Move info not generated, cannot generate legal moves");
     }
+
+    uint64_t attacks = 0;
 
     getAttacks(attacks);
 
-    moves |= attacks & (~side.value) & (~otherSideAttacks);
+    moves |= attacks & (~(m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value) &
+             (~(m_color ? m_board->board.blackAttacks : m_board->board.whiteAttacks).value);
 }
 
 /** Get the possible attacks for the piece

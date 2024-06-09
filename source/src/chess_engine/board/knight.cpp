@@ -45,11 +45,14 @@ char Knight::getType() const { return 'n'; }
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
 void Knight::getLegalMoves(uint64_t &moves) const {
+    if (!m_board->board.genMoveInfo) {
+        throw ChessError("Error: Move info not generated, cannot generate legal moves");
+    }
+
     // The knight cannot move if it is pinned, so go through every possible
     // pin and return if it is.
     // Same column
     unsigned int index = m_location;
-    Bitboard pieces = m_board->board.getTotalValue();
     int pieceOffset = m_color ? 6 : 0; // Black offset is 6
     // King offset is the reverse of piece offset
 
@@ -67,7 +70,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index > 7;) {
                     index -= 8;
 
-                    if (pieces.value & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // Pawn can't be pinned
                         break;
@@ -81,7 +84,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (pieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 break;
             }
         }
@@ -96,7 +99,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index < 56;) {
                     index += 8;
 
-                    if (pieces.value & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // Pawn can't be pinned
                         break;
@@ -110,7 +113,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (pieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 break;
             }
         }
@@ -127,7 +130,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 < 7;) {
                     ++index;
 
-                    if (pieces.value & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // Pawn can't be pinned
                         break;
@@ -141,7 +144,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (pieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 break;
             }
         }
@@ -155,7 +158,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 > 0;) {
                     --index;
 
-                    if (pieces.value & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // Pawn can't be pinned
                         break;
@@ -169,7 +172,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (pieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 break;
             }
         }
@@ -189,7 +192,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index < 56;) {
                         index -= 9;
 
-                        if (pieces.value & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // Pawn can't be pinned
                             break;
@@ -203,7 +206,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (pieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     break;
                 }
             }
@@ -217,7 +220,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index > 7;) {
                         index += 9;
 
-                        if (pieces.value & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // Pawn can't be pinned
                             break;
@@ -231,7 +234,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (pieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     break;
                 }
             }
@@ -248,7 +251,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index < 56;) {
                         index += 7;
 
-                        if (pieces.value & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // Pawn can't be pinned
                             break;
@@ -262,7 +265,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (pieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     break;
                 }
             }
@@ -276,7 +279,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index > 7;) {
                         index -= 7;
 
-                        if (pieces.value & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // Pawn can't be pinned
                             break;
@@ -290,7 +293,7 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (pieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     break;
                 }
             }
@@ -298,17 +301,11 @@ void Knight::getLegalMoves(uint64_t &moves) const {
     }
 
     // Possible moves:
-    Bitboard cant_go;
     uint64_t attacks = 0;
-    if (m_color) {
-        m_board->board.getWhitePieces(cant_go);
-    } else {
-        m_board->board.getBlackPieces(cant_go);
-    }
     getAttacks(attacks);
 
     // Get possible moves
-    moves |= ~cant_go.value & attacks;
+    moves |= ~(m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & attacks;
 }
 
 /** Get attacks for the piece

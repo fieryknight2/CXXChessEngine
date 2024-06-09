@@ -45,18 +45,21 @@ char Rook::getType() const { return PieceType::ROOK; }
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
 void Rook::getLegalMoves(uint64_t &moves) const {
-    uint64_t totalValue = m_board->board.getTotalValue().value;
+    if (!m_board->board.genMoveInfo) {
+        throw ChessError("Error: Move info not generated, cannot generate legal moves");
+    }
+
     Bitboard myPieces;
     Bitboard otherPieces;
 
     int pieceOffset = m_color ? 6 : 0;
 
     if (m_color) {
-        m_board->board.getWhitePieces(myPieces);
-        m_board->board.getBlackPieces(otherPieces);
+        myPieces = m_board->board.whitePieces;
+        otherPieces = m_board->board.blackPieces;
     } else {
-        m_board->board.getBlackPieces(myPieces);
-        m_board->board.getWhitePieces(otherPieces);
+        myPieces = m_board->board.blackPieces;
+        otherPieces = m_board->board.whitePieces;
     }
 
     // Process possible moves
@@ -74,11 +77,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index > 7;) {
                     index -= 8;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomTopMoves(moves, totalValue, myPieces.value);
-                        getLeftRightMoves(moves, totalValue, myPieces.value);
+                        getBottomTopMoves(moves);
+                        getLeftRightMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -88,15 +91,15 @@ void Rook::getLegalMoves(uint64_t &moves) const {
 
 
                     // Pinned
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
-                    getLeftRightMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
+                    getLeftRightMoves(moves);
                     return;
                 }
             }
@@ -113,11 +116,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index < 56;) {
                     index += 8;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomTopMoves(moves, totalValue, myPieces.value);
-                        getLeftRightMoves(moves, totalValue, myPieces.value);
+                        getBottomTopMoves(moves);
+                        getLeftRightMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -127,15 +130,15 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 }
 
                 // Pinned
-                getBottomTopMoves(moves, totalValue, myPieces.value);
+                getBottomTopMoves(moves);
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomTopMoves(moves, totalValue, myPieces.value);
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getBottomTopMoves(moves);
+                getLeftRightMoves(moves);
                 return;
             }
         }
@@ -153,11 +156,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 > 0;) {
                     --index;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomTopMoves(moves, totalValue, myPieces.value);
-                        getLeftRightMoves(moves, totalValue, myPieces.value);
+                        getBottomTopMoves(moves);
+                        getLeftRightMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -167,15 +170,15 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 }
 
                 // Pinned
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getLeftRightMoves(moves);
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomTopMoves(moves, totalValue, myPieces.value);
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getBottomTopMoves(moves);
+                getLeftRightMoves(moves);
                 return;
             }
         }
@@ -190,11 +193,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 for (index = m_location; index % 8 < 7;) {
                     ++index;
 
-                    if (totalValue & (0b1ull << index) and
+                    if (m_board->board.allPieces.value & (0b1ull << index) and
                         !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                         // No pin
-                        getBottomTopMoves(moves, totalValue, myPieces.value);
-                        getLeftRightMoves(moves, totalValue, myPieces.value);
+                        getBottomTopMoves(moves);
+                        getLeftRightMoves(moves);
                         return;
                     }
                     if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -204,15 +207,15 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                 }
 
                 // Pinned
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getLeftRightMoves(moves);
                 return;
             }
 
-            if (totalValue & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index)) {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
-                getBottomTopMoves(moves, totalValue, myPieces.value);
-                getLeftRightMoves(moves, totalValue, myPieces.value);
+                getBottomTopMoves(moves);
+                getLeftRightMoves(moves);
                 return;
             }
         }
@@ -232,11 +235,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index < 56;) {
                         index += 9;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomTopMoves(moves, totalValue, myPieces.value);
-                            getLeftRightMoves(moves, totalValue, myPieces.value);
+                            getBottomTopMoves(moves);
+                            getLeftRightMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -249,11 +252,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
-                    getLeftRightMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
+                    getLeftRightMoves(moves);
                     return;
                 }
             }
@@ -269,11 +272,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index > 7;) {
                         index -= 9;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomTopMoves(moves, totalValue, myPieces.value);
-                            getLeftRightMoves(moves, totalValue, myPieces.value);
+                            getBottomTopMoves(moves);
+                            getLeftRightMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -286,11 +289,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
-                    getLeftRightMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
+                    getLeftRightMoves(moves);
                     return;
                 }
             }
@@ -309,11 +312,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 > 0 and index < 56;) {
                         index += 7;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomTopMoves(moves, totalValue, myPieces.value);
-                            getLeftRightMoves(moves, totalValue, myPieces.value);
+                            getBottomTopMoves(moves);
+                            getLeftRightMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -326,11 +329,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
-                    getLeftRightMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
+                    getLeftRightMoves(moves);
                     return;
                 }
             }
@@ -346,11 +349,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     for (index = m_location; index % 8 < 7 and index > 7;) {
                         index += 7;
 
-                        if (totalValue & (0b1ull << index) and
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
                             !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
                             // No pin
-                            getBottomTopMoves(moves, totalValue, myPieces.value);
-                            getLeftRightMoves(moves, totalValue, myPieces.value);
+                            getBottomTopMoves(moves);
+                            getLeftRightMoves(moves);
                             return;
                         }
                         if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
@@ -363,11 +366,11 @@ void Rook::getLegalMoves(uint64_t &moves) const {
                     return;
                 }
 
-                if (totalValue & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index)) {
                     // Piece that does not pin has gotten in the way
                     // All moves are possible
-                    getBottomTopMoves(moves, totalValue, myPieces.value);
-                    getLeftRightMoves(moves, totalValue, myPieces.value);
+                    getBottomTopMoves(moves);
+                    getLeftRightMoves(moves);
                     return;
                 }
             }
@@ -375,8 +378,8 @@ void Rook::getLegalMoves(uint64_t &moves) const {
     }
 
     // No pins, all possible moves:
-    getLeftRightMoves(moves, totalValue, myPieces.value);
-    getBottomTopMoves(moves, totalValue, myPieces.value);
+    getLeftRightMoves(moves);
+    getBottomTopMoves(moves);
 }
 
 /** Get the possible attacks for the piece
@@ -385,14 +388,13 @@ void Rook::getLegalMoves(uint64_t &moves) const {
  */
 void Rook::getAttacks(uint64_t &attacks) const {
     unsigned int index = m_location;
-    uint64_t totalValue = m_board->board.getTotalValue().value;
 
     while (index < 56) {
         // Top
         index += 8;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -403,7 +405,7 @@ void Rook::getAttacks(uint64_t &attacks) const {
         index += 1;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -414,7 +416,7 @@ void Rook::getAttacks(uint64_t &attacks) const {
         index -= 1;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -425,24 +427,24 @@ void Rook::getAttacks(uint64_t &attacks) const {
         index -= 8;
         attacks |= 1ull << index;
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Rook::getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Rook::getLeftRightMoves(uint64_t &moves) const {
     unsigned int index = m_location;
 
     while (index % 8 < 7) {
         // Left
         index += 1;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -452,28 +454,28 @@ void Rook::getLeftRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &my
         // Right
         index -= 1;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
 }
 
-void Rook::getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const {
+void Rook::getBottomTopMoves(uint64_t &moves) const {
     unsigned int index = m_location;
 
     while (index < 56) {
         // Top
         index += 8;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }
@@ -483,11 +485,11 @@ void Rook::getBottomTopMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &my
         // Bottom
         index -= 8;
 
-        if (!(myPieces & (1ull << index))) {
+        if (!((m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value & (1ull << index))) {
             moves |= 1ull << index;
         }
 
-        if (totalValue & (1ull << index)) {
+        if (m_board->board.allPieces.value & (1ull << index)) {
             break;
         }
     }

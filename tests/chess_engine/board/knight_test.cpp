@@ -32,6 +32,8 @@ bool testKnightMovement(std::string fen, std::string square, std::vector<std::st
         return false;
     }
 
+    game.pregenLegalMoves();
+
     std::vector<std::string> errorMoves;
     knight->getLegalMoves(moves);
     for (int i = 0; i < 64; ++i) {
@@ -88,25 +90,6 @@ TEST(KnightTest, TestKnightGetAttacks) {
 }
 
 TEST(KnightTest, TestKnightGetLegalMoves) {
-    ChessGame board;
-    ASSERT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
-    uint64_t moves = 0;
-    auto square = ChessBoard::getSquareFromAlgebraic("f6");
-    auto knight = dynamic_cast<Knight *>(board.getPiece(square));
-    ASSERT_NE(knight, nullptr);
-
-    knight->getLegalMoves(moves);
-
-    // std::cout << "------------------------------------------------------" << std::endl;
-    // std::cout << " -        Printing legal moves for knight           -\n";
-    // std::cout << "------------------------------------------------------\n" << std::endl;
-    // print_uint64_t_comp(moves, board.getBoard()->board.data[PieceLoc::BLACK_KNIGHT].value & (1ull << square), " v");
-
-    // board.getBoard()->board.data[PieceLoc::BLACK_KNIGHT].value |= moves;
-    // std::cout << "------------------------------------------------------" << std::endl;
-    // std::cout << " -     Printing board with legal moves made         -\n";
-    // std::cout << "------------------------------------------------------\n" << std::endl;
-    // board.getBoard()->printBoard();
     EXPECT_TRUE(testKnightMovement("8/6k1/4P3/q1PPn3/1N1B4/2KP1Nr1/3n4/4B1Q1 w - - 0 1", "f3",
                                    {"e5", "d2", "h2", "g5", "h4"}));
 

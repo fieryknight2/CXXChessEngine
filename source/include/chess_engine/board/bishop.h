@@ -44,8 +44,8 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
 
-    void getBottomLeftTopRightMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
-    void getBottomRightTopLeftMoves(uint64_t &moves, uint64_t &totalValue, uint64_t &myPieces) const;
+    void getBottomLeftTopRightMoves(uint64_t &moves) const;
+    void getBottomRightTopLeftMoves(uint64_t &moves) const;
 };
 
 #endif // bishop_H
