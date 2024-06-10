@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef queen_H
-#define queen_H
+#pragma once
 
 #include "chess_engine/board/piece.h"
 
@@ -50,5 +49,3 @@ public:
     void getBottomRightTopLeftMoves(uint64_t &moves) const;
     void getAllMoves(uint64_t &moves) const;
 };
-
-#endif // queen_H

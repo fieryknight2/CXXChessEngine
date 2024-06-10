@@ -24,15 +24,13 @@
  * @author Matthew Brown
  * @date 05/28/2024
  *****************************************************************************/
-#ifndef error_H
-#define error_H
+#pragma once
 
 #include <exception>
 #include <string>
 #include <utility>
 
-class ChessError final : public std::exception
-{
+class ChessError final : public std::exception {
 public:
     explicit ChessError(std::string message) : m_message(std::move(message)) {}
 
@@ -41,5 +39,3 @@ public:
 private:
     std::string m_message;
 };
-
-#endif // error_H

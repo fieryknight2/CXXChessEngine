@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef rook_H
-#define rook_H
+#pragma once
 
 #include "chess_engine/board/piece.h"
 
@@ -47,5 +46,3 @@ public:
     void getLeftRightMoves(uint64_t &moves) const;
     void getBottomTopMoves(uint64_t &moves) const;
 };
-
-#endif // rook_H

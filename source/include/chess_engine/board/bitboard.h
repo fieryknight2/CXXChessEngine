@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/28/2024
  *****************************************************************************/
-#ifndef bitboard_H
-#define bitboard_H
+#pragma once
 
 #include <cstdint>
 
@@ -35,7 +34,7 @@
  * @author Matthew Brown
  * @date 6/6/2024
  */
-enum PieceLoc {
+enum class PieceLoc {
     WHITE_PAWN = 0,
     WHITE_KNIGHT = 1,
     WHITE_BISHOP = 2,
@@ -102,5 +101,3 @@ struct Board {
     uint64_t getWhiteAttacks(Bitboard &whiteAttacks);
     uint64_t getBlackAttacks(Bitboard &blackAttacks);
 };
-
-#endif // bitboard_H

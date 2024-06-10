@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 6/02/2024
  *****************************************************************************/
-#ifndef chess_game_H
-#define chess_game_H
+#pragma once
 
 #include <vector>
 
@@ -83,6 +82,3 @@ public:
 
     ~ChessGame();
 };
-
-
-#endif // chess_game_H

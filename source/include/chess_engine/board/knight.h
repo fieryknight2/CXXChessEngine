@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef knight_H
-#define knight_H
+#pragma once
 
 #include "chess_engine/board/piece.h"
 
@@ -34,8 +33,7 @@
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Knight final : public Piece
-{
+class Knight final : public Piece {
 public:
     Knight(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Knight() override = default;
@@ -45,5 +43,3 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
 };
-
-#endif // knight_H

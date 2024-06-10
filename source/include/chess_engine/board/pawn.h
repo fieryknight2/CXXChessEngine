@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef pawn_H
-#define pawn_H
+#pragma once
 
 #include "chess_engine/board/piece.h"
 
@@ -74,5 +73,3 @@ public:
     void getAllMoves(uint64_t &moves) const;
     void getForwardMoves(uint64_t &moves) const;
 };
-
-#endif // pawn_H

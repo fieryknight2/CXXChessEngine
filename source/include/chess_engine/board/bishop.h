@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef bishop_H
-#define bishop_H
+#pragma once
 
 #include "chess_engine/board/piece.h"
 
@@ -47,5 +46,3 @@ public:
     void getBottomLeftTopRightMoves(uint64_t &moves) const;
     void getBottomRightTopLeftMoves(uint64_t &moves) const;
 };
-
-#endif // bishop_H

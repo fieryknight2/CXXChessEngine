@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 5/25/2024
  *****************************************************************************/
-#ifndef chess_board_H
-#define chess_board_H
+#pragma once
 
 #include <cstdint>
 #include <string>
@@ -76,5 +75,3 @@ struct ChessBoard {
     void printBoard() const;
     void resetBoard();
 };
-
-#endif // chess_board_H

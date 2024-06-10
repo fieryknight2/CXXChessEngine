@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef king_H
-#define king_H
+#pragma once
 
 #include "chess_engine/board/piece.h"
 
@@ -44,5 +43,3 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
 };
-
-#endif // king_H

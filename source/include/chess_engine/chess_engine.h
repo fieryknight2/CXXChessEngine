@@ -23,8 +23,5 @@
  * chess_engine.h - <Brief description>
  * @author Matthew Brown
  * @date 05/27/2024
-*****************************************************************************/
-#ifndef chess_engine_H
-#define chess_engine_H
-
-#endif // chess_engine_H
+ *****************************************************************************/
+#pragma once

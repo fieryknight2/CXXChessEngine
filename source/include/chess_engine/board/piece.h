@@ -24,8 +24,7 @@
  * @author Matthew Brown
  * @date 05/27/2024
  *****************************************************************************/
-#ifndef piece_H
-#define piece_H
+#pragma once
 
 #ifndef WHITE
 
@@ -97,5 +96,3 @@ public:
     /** Retrieve all possible legal moves for the piece */
     virtual void getLegalMoves(uint64_t &moves) const = 0;
 };
-
-#endif // piece_H
