@@ -47,11 +47,8 @@ class ChessGame {
     Piece *m_blackKing = nullptr;
 
     /* Game information */
-    int m_halfMoveClock = 0;
+    int m_halfMoveClock = 0; // This keeps track of the 50 move rule
     int m_fullMoveClock = 0;
-
-    /* For keeping track of the fifty-move rule */
-    int reversibleMoves = 0;
 
     // std::vector<ChessMove> m_moveHistory;
 
