@@ -34,7 +34,7 @@
  * @author Matthew Brown
  * @date 6/6/2024
  */
-enum class PieceLoc {
+enum PieceLoc {
     WHITE_PAWN = 0,
     WHITE_KNIGHT = 1,
     WHITE_BISHOP = 2,
