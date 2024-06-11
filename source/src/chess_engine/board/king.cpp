@@ -45,8 +45,10 @@ char King::getType() const { return PieceType::KING; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void King::getLegalMoves(uint64_t &moves) const {
-    if (!m_board->board.genMoveInfo) {
+void King::getLegalMoves(uint64_t &moves) const
+{
+    if (!m_board->board.genMoveInfo)
+    {
         throw ChessError("Error: Move info not generated, cannot generate legal moves");
     }
 
@@ -62,39 +64,48 @@ void King::getLegalMoves(uint64_t &moves) const {
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void King::getAttacks(uint64_t &attacks) const {
+void King::getAttacks(uint64_t &attacks) const
+{
     // validate top
-    if (m_location < 56) {
-        if (m_location % 8 < 7) {
+    if (m_location < 56)
+    {
+        if (m_location % 8 < 7)
+        {
             attacks |= 1ull << (m_location + 9); // top left corner
         }
 
         attacks |= 1ull << (m_location + 8); // top
 
-        if (m_location % 8 > 0) {
+        if (m_location % 8 > 0)
+        {
             attacks |= 1ull << (m_location + 7); // top right corner
         }
     }
 
-    if (m_location % 8 < 7) {
+    if (m_location % 8 < 7)
+    {
         // validate left
         attacks |= 1ull << (m_location + 1);
     }
 
-    if (m_location % 8 > 0) {
+    if (m_location % 8 > 0)
+    {
         // validate right
         attacks |= 1ull << (m_location - 1);
     }
 
-    if (m_location > 7) {
+    if (m_location > 7)
+    {
         // validate bottom
-        if (m_location % 8 < 7) {
+        if (m_location % 8 < 7)
+        {
             attacks |= 1ull << (m_location - 7); // bottom left corner
         }
 
         attacks |= 1ull << (m_location - 8); // bottom
 
-        if (m_location % 8 > 0) {
+        if (m_location % 8 > 0)
+        {
             attacks |= 1ull << (m_location - 9); // bottom right corner
         }
     }

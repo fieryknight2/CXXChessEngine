@@ -39,12 +39,15 @@ void Pawn::makeMove(int to) { m_location = to; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void WhitePawn::getLegalMoves(uint64_t &moves) const {
-    if (!m_board->board.genMoveInfo) {
+void WhitePawn::getLegalMoves(uint64_t &moves) const
+{
+    if (!m_board->board.genMoveInfo)
+    {
         throw ChessError("Error: Move info not generated, cannot generate legal moves");
     }
 
-    if (m_location < 8 or m_location > 55) {
+    if (m_location < 8 or m_location > 55)
+    {
         return;
     }
 
@@ -54,26 +57,32 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
     // Find a possible pin and determine legal moves
 
     // Direction between ranks: - for up, + for down          Same Column == Up or Down
-    if (m_location / 8 - m_whiteKing->getSquare() / 8 > 0 and m_location % 8 - m_whiteKing->getSquare() % 8 == 0) {
+    if (m_location / 8 - m_whiteKing->getSquare() / 8 > 0 and m_location % 8 - m_whiteKing->getSquare() % 8 == 0)
+    {
         /* King is below the pawn,
            Pin direction can be from up */
-        while (index < 56) {
+        while (index < 56)
+        {
             // Not on the 8th rank
             index += 8; // Move up 1 rank
 
             // Is pinned
             if (m_board->board.data[PieceLoc::BLACK_ROOK].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                for (index = m_location; index > 7;) {
+                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+            {
+                for (index = m_location; index > 7;)
+                {
                     index -= 8;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         getAllMoves(moves);
                         return;
                     }
-                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                    {
                         // Pinned
                         break;
                     }
@@ -85,15 +94,17 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
                 getAllMoves(moves);
                 return;
             }
         }
-    } else if (m_location / 8 - m_whiteKing->getSquare() / 8 < 0 and
-               m_location % 8 - m_whiteKing->getSquare() % 8 == 0) {
+    }
+    else if (m_location / 8 - m_whiteKing->getSquare() / 8 < 0 and m_location % 8 - m_whiteKing->getSquare() % 8 == 0)
+    {
         /* King is above the pawn,
            Pin direction can be from down */
         while (index > 7) // Not on the 1st rank
@@ -102,17 +113,21 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
 
             // Is pinned
             if (m_board->board.data[PieceLoc::BLACK_ROOK].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                for (index = m_location; index < 56;) {
+                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+            {
+                for (index = m_location; index < 56;)
+                {
                     index += 8;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         getAllMoves(moves);
                         return;
                     }
-                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                    {
                         // Pinned
                         break;
                     }
@@ -124,7 +139,8 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 // Piece that does not pin has gotten in the way
                 // All moves are possible
                 getAllMoves(moves);
@@ -134,24 +150,30 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
     }
 
     // Same rank                                     Direction between columns: - for right, + for left
-    else if (m_location / 8 - m_whiteKing->getSquare() / 8 == 0 and m_location % 8 - m_whiteKing->getSquare() % 8 < 0) {
+    else if (m_location / 8 - m_whiteKing->getSquare() / 8 == 0 and m_location % 8 - m_whiteKing->getSquare() % 8 < 0)
+    {
         /** King is on the right of the pawn,
          * Pin direction can be from left */
-        while (index % 8 < 7) {
+        while (index % 8 < 7)
+        {
             ++index; // Move left 1 column
 
             if (m_board->board.data[PieceLoc::BLACK_ROOK].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                for (index = m_location; index % 8 > 0;) {
+                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+            {
+                for (index = m_location; index % 8 > 0;)
+                {
                     --index;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         getAllMoves(moves);
                         return;
                     }
-                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                    {
                         // Pinned
                         break;
                     }
@@ -161,31 +183,38 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 // No pin, all moves are possible
                 getAllMoves(moves);
                 return;
             }
         }
-    } else if (m_location / 8 - m_whiteKing->getSquare() / 8 == 0 and
-               m_location % 8 - m_whiteKing->getSquare() % 8 > 0) {
+    }
+    else if (m_location / 8 - m_whiteKing->getSquare() / 8 == 0 and m_location % 8 - m_whiteKing->getSquare() % 8 > 0)
+    {
         /** King is on the left of the pawn,
          * Pin direction can be from right */
-        while (index % 8 > 0) {
+        while (index % 8 > 0)
+        {
             --index; // Move right 1 column
 
             if (m_board->board.data[PieceLoc::BLACK_ROOK].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                for (index = m_location; index % 8 < 7;) {
+                m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+            {
+                for (index = m_location; index % 8 < 7;)
+                {
                     ++index;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         getAllMoves(moves);
                         return;
                     }
-                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                    {
                         // Pinned
                         break;
                     }
@@ -195,7 +224,8 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
                 return;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 // No pin, all moves are possible
                 getAllMoves(moves);
                 return;
@@ -205,25 +235,32 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
 
     // Diagonal moves
     // Moving from the bottom right to the top left
-    else if ((m_location / 8 - m_whiteKing->getSquare() / 8) == (m_location % 8 - m_whiteKing->getSquare() % 8)) {
+    else if ((m_location / 8 - m_whiteKing->getSquare() / 8) == (m_location % 8 - m_whiteKing->getSquare() % 8))
+    {
         // Right is positive
-        if (m_location % 8 > m_whiteKing->getSquare() % 8) {
+        if (m_location % 8 > m_whiteKing->getSquare() % 8)
+        {
             // Pin has to come from top left
-            while (index % 8 < 7 and index < 56) {
+            while (index % 8 < 7 and index < 56)
+            {
                 index += 9;
 
                 if (m_board->board.data[PieceLoc::BLACK_BISHOP].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 > 0 and index > 7;) {
+                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 > 0 and index > 7;)
+                    {
                         index -= 9;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             getAllMoves(moves);
                             return;
                         }
-                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                        {
                             // Pinned
                             break;
                         }
@@ -231,36 +268,45 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
 
                     // Pinned, only possible move is a capture to the top left
                     if (m_location % 8 > 0 and m_board->board.blackPieces.value & (0b1ull << (m_location + 9)) or
-                        m_location + 9 == m_board->enPassantSquare) {
+                        m_location + 9 == m_board->enPassantSquare)
+                    {
                         moves |= 1ull << (m_location + 9);
                     }
 
                     return;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     // No pin, all moves are possible
                     getAllMoves(moves);
                     return;
                 }
             }
-        } else {
+        }
+        else
+        {
             // Pin has to come from bottom right
-            while (index % 8 > 0 and index > 7) {
+            while (index % 8 > 0 and index > 7)
+            {
                 index -= 9;
 
                 if (m_board->board.data[PieceLoc::BLACK_BISHOP].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 < 7 and index < 56;) {
+                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 < 7 and index < 56;)
+                    {
                         index += 9;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             getAllMoves(moves);
                             return;
                         }
-                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                        {
                             // Pinned
                             break;
                         }
@@ -268,14 +314,16 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
 
                     // Pinned, only possible move is a capture to the top right
                     if (m_location % 8 > 0 and (m_board->board.blackPieces.value & (0b1ull << m_location + 9) or
-                                                m_location + 9 == m_board->enPassantSquare)) {
+                                                m_location + 9 == m_board->enPassantSquare))
+                    {
                         moves |= 1ull << (m_location + 9);
                     }
 
                     return;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     // No pin, all moves are possible
                     getAllMoves(moves);
                     return;
@@ -285,25 +333,32 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
     }
 
     // Moving from the top right to the bottom left
-    else if ((m_location / 8 - m_whiteKing->getSquare() / 8) == -(m_location % 8 - m_whiteKing->getSquare() % 8)) {
+    else if ((m_location / 8 - m_whiteKing->getSquare() / 8) == -(m_location % 8 - m_whiteKing->getSquare() % 8))
+    {
         // Right is positive
-        if (m_location % 8 > m_whiteKing->getSquare() % 8) {
+        if (m_location % 8 > m_whiteKing->getSquare() % 8)
+        {
             // Pin has to come from bottom left
-            while (index % 8 < 7 and index > 7) {
+            while (index % 8 < 7 and index > 7)
+            {
                 index -= 7;
 
                 if (m_board->board.data[PieceLoc::BLACK_BISHOP].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 > 0 and index < 56;) {
+                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 > 0 and index < 56;)
+                    {
                         index += 7;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             getAllMoves(moves);
                             return;
                         }
-                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                        {
                             // Pinned
                             break;
                         }
@@ -311,36 +366,45 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
 
                     // Pinned, only possible move is a capture to the top right
                     if (m_location % 8 < 7 and (m_board->board.blackPieces.value & (0b1ull << m_location + 7) or
-                                                m_location + 7 == m_board->enPassantSquare)) {
+                                                m_location + 7 == m_board->enPassantSquare))
+                    {
                         moves |= 1ull << (m_location + 7);
                     }
 
                     return;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     // No pin, all moves are possible
                     getAllMoves(moves);
                     return;
                 }
             }
-        } else {
+        }
+        else
+        {
             // Pin has to come from top right
-            while (index % 8 > 0 and index < 56) {
+            while (index % 8 > 0 and index < 56)
+            {
                 index += 7;
 
                 if (m_board->board.data[PieceLoc::BLACK_BISHOP].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 < 7 and index > 7;) {
+                    m_board->board.data[PieceLoc::BLACK_QUEEN].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 < 7 and index > 7;)
+                    {
                         index -= 7;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             getAllMoves(moves);
                             return;
                         }
-                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::WHITE_KING].value & (0b1ull << index))
+                        {
                             // Pinned
                             break;
                         }
@@ -348,14 +412,16 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
 
                     // Pinned, only possible move is a capture to the top left
                     if (m_location % 8 < 7 and (m_board->board.blackPieces.value & (0b1ull << m_location + 9) or
-                                                m_location + 9 == m_board->enPassantSquare)) {
+                                                m_location + 9 == m_board->enPassantSquare))
+                    {
                         moves |= 1ull << (m_location + 9);
                     }
 
                     return;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     // No pin, all moves are possible
                     getAllMoves(moves);
                     return;
@@ -372,8 +438,10 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void WhitePawn::getAttacks(uint64_t &attacks) const {
-    if (m_location > 55 or m_location < 8) {
+void WhitePawn::getAttacks(uint64_t &attacks) const
+{
+    if (m_location > 55 or m_location < 8)
+    {
         return;
     }
 
@@ -385,29 +453,35 @@ void WhitePawn::getAttacks(uint64_t &attacks) const {
      *
      *      Loc: 63
      */
-    if (m_location % 8 > 0) {
+    if (m_location % 8 > 0)
+    {
         // Right side
         attacks |= 1ull << (m_location + 7);
     }
-    if (m_location % 8 < 7) {
+    if (m_location % 8 < 7)
+    {
         // Left side
         attacks |= 1ull << (m_location + 9);
     }
 }
 
-void WhitePawn::getAllMoves(uint64_t &moves) const {
-    if (m_location > 55 or m_location < 8) {
+void WhitePawn::getAllMoves(uint64_t &moves) const
+{
+    if (m_location > 55 or m_location < 8)
+    {
         return; // Invalid location
     }
 
     // Possible attacks
     if (m_location % 8 > 0 and
-        (m_board->board.blackPieces.value & (1ull << (m_location + 7)) or m_location + 7 == m_board->enPassantSquare)) {
+        (m_board->board.blackPieces.value & (1ull << (m_location + 7)) or m_location + 7 == m_board->enPassantSquare))
+    {
         // Right side
         moves |= 1ull << (m_location + 7);
     }
     if (m_location % 8 < 7 and
-        (m_board->board.blackPieces.value & (1ull << (m_location + 9)) or m_location + 9 == m_board->enPassantSquare)) {
+        (m_board->board.blackPieces.value & (1ull << (m_location + 9)) or m_location + 9 == m_board->enPassantSquare))
+    {
         // Left side
         moves |= 1ull << (m_location + 9);
     }
@@ -415,19 +489,23 @@ void WhitePawn::getAllMoves(uint64_t &moves) const {
     getForwardMoves(moves);
 }
 
-void WhitePawn::getForwardMoves(uint64_t &moves) const {
-    if (m_location > 55 or m_location < 8) {
+void WhitePawn::getForwardMoves(uint64_t &moves) const
+{
+    if (m_location > 55 or m_location < 8)
+    {
         return; // Invalid location
     }
 
-    if (!(m_board->board.allPieces.value & (0b1ull << m_location + 8))) {
+    if (!(m_board->board.allPieces.value & (0b1ull << m_location + 8)))
+    {
         // Single square move
         moves |= 1ull << (m_location + 8);
 
         // Double square move
         if (m_location < 16) // On the second rank
         {
-            if (!(m_board->board.allPieces.value & (0b1ull << m_location + 16))) {
+            if (!(m_board->board.allPieces.value & (0b1ull << m_location + 16)))
+            {
                 moves |= 1ull << (m_location + 16);
             }
         }

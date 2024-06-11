@@ -31,9 +31,11 @@
 
 #include "chess_engine/board/bitboard.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 // Definitions for convienience
 constexpr int EMPTY = 0;
@@ -47,7 +49,8 @@ constexpr int EMPTY = 0;
  * @author Matthew Brown
  * @date 5/25/2024
  */
-struct ChessBoard {
+struct ChessBoard
+{
     Board board;
 
     /* Representing the castling rights

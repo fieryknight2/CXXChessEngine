@@ -28,16 +28,19 @@
 
 #include "chess_engine/board/piece.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 /** King class
  *
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class King final : public Piece {
+class King final : public Piece
+{
 public:
     King(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~King() override = default;

@@ -28,9 +28,11 @@
 
 #include "chess_engine/board/piece.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 
 /** Bishop class
@@ -38,7 +40,8 @@ namespace board {
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Bishop final : public Piece {
+class Bishop final : public Piece
+{
 public:
     Bishop(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Bishop() override = default;

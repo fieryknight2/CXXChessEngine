@@ -26,13 +26,16 @@
  *****************************************************************************/
 #pragma once
 
+
 #include <cstdint>
 #include "chess_board.h"
 #include "chess_engine/chess_error.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 constexpr bool WHITE = true;
 constexpr bool BLACK = false;
@@ -40,14 +43,23 @@ constexpr bool BLACK = false;
 /** Possible types of chess pieces
  *
  */
-enum PieceType { PAWN = 'p', KNIGHT = 'n', BISHOP = 'b', ROOK = 'r', QUEEN = 'q', KING = 'k' };
+enum PieceType
+{
+    PAWN = 'p',
+    KNIGHT = 'n',
+    BISHOP = 'b',
+    ROOK = 'r',
+    QUEEN = 'q',
+    KING = 'k'
+};
 
 /** Representation of a chess piece
  *
  * @author Matthew Brown
  * @date 05/27/2024
  */
-class Piece {
+class Piece
+{
 protected:
     uint64_t m_location;
     /* Boolean representation of the color of the piece, true for white, false for black */
@@ -79,7 +91,8 @@ public:
     /** Return if the piece is valid */
     [[nodiscard]] bool isValid() const { return m_location < 65; }
 
-    void setKing(Piece *king) {
+    void setKing(Piece *king)
+    {
         if (king == nullptr)
             return;
 

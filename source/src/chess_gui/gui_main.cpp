@@ -32,7 +32,8 @@
 #undef main
 #endif
 
-int main() {
+int main()
+{
     std::cout << "Hello world" << std::endl;
     return 0;
 }

@@ -33,7 +33,8 @@ using namespace board;
  *
  * @param to Location to move the piece to
  */
-void Knight::makeMove(int to) {
+void Knight::makeMove(int to)
+{
     // TODO: Implement
 }
 
@@ -47,8 +48,10 @@ char Knight::getType() const { return 'n'; }
  *
  * @param moves Pointer to a 64-bit integer to store the legal moves
  */
-void Knight::getLegalMoves(uint64_t &moves) const {
-    if (!m_board->board.genMoveInfo) {
+void Knight::getLegalMoves(uint64_t &moves) const
+{
+    if (!m_board->board.genMoveInfo)
+    {
         throw ChessError("Error: Move info not generated, cannot generate legal moves");
     }
 
@@ -60,7 +63,8 @@ void Knight::getLegalMoves(uint64_t &moves) const {
     // King offset is the reverse of piece offset
 
     if (Piece *king = m_color ? m_whiteKing : m_blackKing;
-        m_location / 8 > king->getSquare() / 8 and m_location % 8 == king->getSquare() % 8) {
+        m_location / 8 > king->getSquare() / 8 and m_location % 8 == king->getSquare() % 8)
+    {
         // King is below the knight
         while (index < 56) // Not on the 8th rank
         {
@@ -68,17 +72,21 @@ void Knight::getLegalMoves(uint64_t &moves) const {
 
             // Is pinned
             if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
                 // Check if the king is pinned
-                for (index = m_location; index > 7;) {
+                for (index = m_location; index > 7;)
+                {
                     index -= 8;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         break;
                     }
-                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                    {
                         // Pinned
                         return;
                     }
@@ -87,27 +95,34 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 break;
             }
         }
-    } else if (m_location / 8 < king->getSquare() / 8 and m_location % 8 == king->getSquare() % 8) {
+    }
+    else if (m_location / 8 < king->getSquare() / 8 and m_location % 8 == king->getSquare() % 8)
+    {
         while (index > 7) // Not on the 1st rank
         {
             index -= 8; // Move down 1 rank
 
             // Is pinned
             if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                for (index = m_location; index < 56;) {
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                for (index = m_location; index < 56;)
+                {
                     index += 8;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         break;
                     }
-                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                    {
                         // Pinned
                         return;
                     }
@@ -116,29 +131,36 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 break;
             }
         }
     }
 
     // Same rank
-    else if (m_location / 8 - king->getSquare() / 8 == 0 and m_location % 8 < king->getSquare() % 8) {
+    else if (m_location / 8 - king->getSquare() / 8 == 0 and m_location % 8 < king->getSquare() % 8)
+    {
         // King is to the left of the knight
-        while (index % 8 > 0) {
+        while (index % 8 > 0)
+        {
             --index; // Move left 1 column
 
             if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                for (index = m_location; index % 8 < 7;) {
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                for (index = m_location; index % 8 < 7;)
+                {
                     ++index;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         break;
                     }
-                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                    {
                         // Pinned
                         return;
                     }
@@ -147,26 +169,34 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 break;
             }
         }
-    } else if (m_location / 8 - king->getSquare() / 8 == 0 and m_location % 8 > king->getSquare() % 8) {
+    }
+    else if (m_location / 8 - king->getSquare() / 8 == 0 and m_location % 8 > king->getSquare() % 8)
+    {
         // King is to the right of the knight
-        while (index % 8 < 7) {
+        while (index % 8 < 7)
+        {
             ++index;
 
             if (m_board->board.data[PieceLoc::WHITE_ROOK + pieceOffset].value & (0b1ull << index) or
-                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                for (index = m_location; index % 8 > 0;) {
+                m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+            {
+                for (index = m_location; index % 8 > 0;)
+                {
                     --index;
 
                     if (m_board->board.allPieces.value & (0b1ull << index) and
-                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                        !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                    {
                         // Pawn can't be pinned
                         break;
                     }
-                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                    if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                    {
                         // Pinned
                         return;
                     }
@@ -175,32 +205,40 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                 break;
             }
 
-            if (m_board->board.allPieces.value & (0b1ull << index)) {
+            if (m_board->board.allPieces.value & (0b1ull << index))
+            {
                 break;
             }
         }
     }
 
     // Diagonal
-    else if ((m_location / 8 - king->getSquare() / 8) == (m_location % 8 - king->getSquare() % 8)) {
+    else if ((m_location / 8 - king->getSquare() / 8) == (m_location % 8 - king->getSquare() % 8))
+    {
         // Positive means right
         // Moving from the bottom right to top left
-        if (m_location % 8 > king->getSquare() % 8) {
+        if (m_location % 8 > king->getSquare() % 8)
+        {
             // Pin has to come from top left
-            while (index % 8 < 7 and index > 7) {
+            while (index % 8 < 7 and index > 7)
+            {
                 index += 9;
 
                 if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 > 0 and index < 56;) {
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 > 0 and index < 56;)
+                    {
                         index -= 9;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             break;
                         }
-                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                        {
                             // Pinned
                             return;
                         }
@@ -209,57 +247,34 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
-                    break;
-                }
-            }
-        } else {
-            // Pin has to come from bottom right
-            while (index % 8 > 0 and index < 56) {
-                index -= 9;
-
-                if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 < 7 and index > 7;) {
-                        index += 9;
-
-                        if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
-                            // Pawn can't be pinned
-                            break;
-                        }
-                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
-                            // Pinned
-                            return;
-                        }
-                    }
-
-                    break;
-                }
-
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     break;
                 }
             }
         }
-    } else if ((m_location / 8 - king->getSquare() / 8) == -(m_location % 8 - king->getSquare() % 8)) {
-        // Moving from the bottom left to the top right
-        if (m_location % 8 > king->getSquare() % 8) {
-            // Pin has to come from bottom left
-            while (index % 8 < 7 and index > 7) {
-                index -= 7;
+        else
+        {
+            // Pin has to come from bottom right
+            while (index % 8 > 0 and index < 56)
+            {
+                index -= 9;
 
                 if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 > 0 and index < 56;) {
-                        index += 7;
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 < 7 and index > 7;)
+                    {
+                        index += 9;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             break;
                         }
-                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                        {
                             // Pinned
                             return;
                         }
@@ -268,26 +283,38 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     break;
                 }
             }
-        } else {
-            // Pin has to come from top right
-            while (index % 8 < 7 and index < 56) {
-                index += 7;
+        }
+    }
+    else if ((m_location / 8 - king->getSquare() / 8) == -(m_location % 8 - king->getSquare() % 8))
+    {
+        // Moving from the bottom left to the top right
+        if (m_location % 8 > king->getSquare() % 8)
+        {
+            // Pin has to come from bottom left
+            while (index % 8 < 7 and index > 7)
+            {
+                index -= 7;
 
                 if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
-                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index)) {
-                    for (index = m_location; index % 8 < 7 and index > 7;) {
-                        index -= 7;
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 > 0 and index < 56;)
+                    {
+                        index += 7;
 
                         if (m_board->board.allPieces.value & (0b1ull << index) and
-                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))) {
+                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                        {
                             // Pawn can't be pinned
                             break;
                         }
-                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)) {
+                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                        {
                             // Pinned
                             return;
                         }
@@ -296,7 +323,44 @@ void Knight::getLegalMoves(uint64_t &moves) const {
                     break;
                 }
 
-                if (m_board->board.allPieces.value & (0b1ull << index)) {
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            // Pin has to come from top right
+            while (index % 8 < 7 and index < 56)
+            {
+                index += 7;
+
+                if (m_board->board.data[PieceLoc::WHITE_BISHOP + pieceOffset].value & (0b1ull << index) or
+                    m_board->board.data[PieceLoc::WHITE_QUEEN + pieceOffset].value & (0b1ull << index))
+                {
+                    for (index = m_location; index % 8 < 7 and index > 7;)
+                    {
+                        index -= 7;
+
+                        if (m_board->board.allPieces.value & (0b1ull << index) and
+                            !(m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index)))
+                        {
+                            // Pawn can't be pinned
+                            break;
+                        }
+                        if (m_board->board.data[PieceLoc::BLACK_KING - pieceOffset].value & (0b1ull << index))
+                        {
+                            // Pinned
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+
+                if (m_board->board.allPieces.value & (0b1ull << index))
+                {
                     break;
                 }
             }
@@ -315,51 +379,64 @@ void Knight::getLegalMoves(uint64_t &moves) const {
  *
  * @param attacks Pointer to a 64-bit integer to store the legal attacks
  */
-void Knight::getAttacks(uint64_t &attacks) const {
-    if (m_location / 8 > 1) {
+void Knight::getAttacks(uint64_t &attacks) const
+{
+    if (m_location / 8 > 1)
+    {
         // C++ automatically converts int / int to int, no integer division necessary
         // validate bottom far
-        if (m_location % 8 > 0) {
+        if (m_location % 8 > 0)
+        {
             // validate right close
             attacks |= 1ull << (m_location - 17);
         }
-        if (m_location % 8 < 7) {
+        if (m_location % 8 < 7)
+        {
             // validate left close
             attacks |= 1ull << (m_location - 15);
         }
     }
 
-    if (m_location / 8 > 0) {
+    if (m_location / 8 > 0)
+    {
         // validate bottom close
-        if (m_location % 8 > 1) {
+        if (m_location % 8 > 1)
+        {
             // validate right far
             attacks |= 1ull << (m_location - 10);
         }
-        if (m_location % 8 < 6) {
+        if (m_location % 8 < 6)
+        {
             // validate left far
             attacks |= 1ull << (m_location - 6);
         }
     }
 
-    if (m_location / 8 < 7) {
+    if (m_location / 8 < 7)
+    {
         // validate top close
-        if (m_location % 8 > 1) {
+        if (m_location % 8 > 1)
+        {
             // validate right far
             attacks |= 1ull << (m_location + 6);
         }
-        if (m_location % 8 < 6) {
+        if (m_location % 8 < 6)
+        {
             // validate left far
             attacks |= 1ull << (m_location + 10);
         }
     }
 
-    if (m_location / 8 < 6) {
+    if (m_location / 8 < 6)
+    {
         // validate top far
-        if (m_location % 8 > 0) {
+        if (m_location % 8 > 0)
+        {
             // validate right close
             attacks |= 1ull << (m_location + 15);
         }
-        if (m_location % 8 < 7) {
+        if (m_location % 8 < 7)
+        {
             // validate left close
             attacks |= 1ull << (m_location + 17);
         }

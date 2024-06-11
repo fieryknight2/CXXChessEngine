@@ -28,16 +28,19 @@
 
 #include "chess_engine/board/piece.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 /** Pawn class
  *
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Pawn : public Piece {
+class Pawn : public Piece
+{
 public:
     Pawn(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
 
@@ -51,7 +54,8 @@ public:
  * @date 06/7/2024
  *
  */
-class WhitePawn : public Pawn {
+class WhitePawn : public Pawn
+{
 public:
     WhitePawn(ChessBoard *board, unsigned int location) : Pawn(true, board, location) {}
     ~WhitePawn() override = default;
@@ -67,7 +71,8 @@ public:
  * @author Matthew Brown
  * @date 06/7/2024
  */
-class BlackPawn : public Pawn {
+class BlackPawn : public Pawn
+{
 public:
     BlackPawn(ChessBoard *board, unsigned int location) : Pawn(false, board, location) {}
     ~BlackPawn() override = default;

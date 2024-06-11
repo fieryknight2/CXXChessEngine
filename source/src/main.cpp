@@ -23,11 +23,13 @@
  * Main.cpp - The main entry point for the program
  * @author Matthew Brown
  * @date 5/21/2024
-*****************************************************************************/
+ *****************************************************************************/
 #include <iostream>
 
-int main(const int argc, char* argv[]) {
-    for (int i = 0; i < argc; ++i) {
+int main(const int argc, char *argv[])
+{
+    for (int i = 0; i < argc; ++i)
+    {
         std::cout << "Argument [" << i << "] is " << argv[i] << std::endl;
     }
 

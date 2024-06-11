@@ -28,9 +28,11 @@
 
 #include <cstdint>
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 /** Locations of the pieces in the board's array
  *
@@ -38,7 +40,8 @@ namespace board {
  * @author Matthew Brown
  * @date 6/6/2024
  */
-enum PieceLoc {
+enum PieceLoc
+{
     WHITE_PAWN = 0,
     WHITE_KNIGHT = 1,
     WHITE_BISHOP = 2,
@@ -59,7 +62,8 @@ enum PieceLoc {
  * @author Matthew Brown
  * @date 5/28/2024
  */
-struct Bitboard {
+struct Bitboard
+{
     /** Constructors */
     explicit Bitboard(uint64_t nvalue) : value(nvalue) {}
     Bitboard() : value(0) {}
@@ -71,13 +75,15 @@ struct Bitboard {
     [[nodiscard]] int getBitCount() const;
 
     /** Assignment operator for simplicity */
-    Bitboard &operator=(const uint64_t &nvalue) {
+    Bitboard &operator=(const uint64_t &nvalue)
+    {
         value = nvalue;
         return *this;
     }
 };
 
-struct Board {
+struct Board
+{
     /* 64-bit representation of all locations of the pieces
      *
      * 64-bit representation of all locations of the pieces

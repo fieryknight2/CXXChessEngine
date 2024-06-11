@@ -14,23 +14,29 @@
 using namespace chessengine;
 using namespace chessengine::board;
 
-bool testKnightMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves) {
+bool testKnightMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves)
+{
     ChessGame game;
-    try {
+    try
+    {
         game.createFromFEN(fen);
-    } catch (std::exception &e) {
+    }
+    catch (std::exception &e)
+    {
         std::cerr << "Error testing knight movement: " << e.what() << std::endl;
         return false;
     }
 
     std::vector<uint64_t> expectedMoves;
-    for (auto move: possibleMoves) {
+    for (auto move: possibleMoves)
+    {
         expectedMoves.push_back(ChessBoard::getSquareFromAlgebraic(move));
     }
 
     uint64_t moves = 0;
     Knight *knight = dynamic_cast<Knight *>(game.getPiece(ChessBoard::getSquareFromAlgebraic(square)));
-    if (knight == nullptr) {
+    if (knight == nullptr)
+    {
         std::cerr << "Error testing knight movement: Could not find knight at square " << square << std::endl;
         return false;
     }
@@ -39,35 +45,45 @@ bool testKnightMovement(std::string fen, std::string square, std::vector<std::st
 
     std::vector<std::string> errorMoves;
     knight->getLegalMoves(moves);
-    for (int i = 0; i < 64; ++i) {
-        if (moves & (1ull << i)) {
+    for (int i = 0; i < 64; ++i)
+    {
+        if (moves & (1ull << i))
+        {
             // Try to find the resulting expected move
             auto val = std::find(expectedMoves.begin(), expectedMoves.end(), i);
-            if (val == expectedMoves.end()) {
+            if (val == expectedMoves.end())
+            {
                 errorMoves.push_back(ChessBoard::toAlgebraic(i));
-            } else {
+            }
+            else
+            {
                 expectedMoves.erase(val);
             }
         }
     }
 
-    if (!errorMoves.empty()) {
+    if (!errorMoves.empty())
+    {
         std::cerr << "Error testing knight movement: Unexpected squares found: ";
-        for (auto move: errorMoves) {
+        for (auto move: errorMoves)
+        {
             std::cerr << move << " ";
         }
         std::cerr << std::endl;
     }
 
-    if (!expectedMoves.empty()) {
+    if (!expectedMoves.empty())
+    {
         std::cerr << "Error testing knight movement: Expected squares not found: ";
-        for (auto move: expectedMoves) {
+        for (auto move: expectedMoves)
+        {
             std::cerr << ChessBoard::toAlgebraic(move) << " ";
         }
         std::cerr << std::endl;
     }
 
-    if (!errorMoves.empty() or !expectedMoves.empty()) {
+    if (!errorMoves.empty() or !expectedMoves.empty())
+    {
         return false;
     }
 
@@ -78,7 +94,8 @@ TEST(KnightTest, TestKnightMovement) {}
 
 TEST(KnightTest, TestKnightGetType) { EXPECT_EQ(Knight(true, nullptr, 0).getType(), PieceType::KNIGHT); }
 
-TEST(KnightTest, TestKnightGetAttacks) {
+TEST(KnightTest, TestKnightGetAttacks)
+{
     ChessGame game;
     ASSERT_NO_THROW(game.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
 
@@ -92,7 +109,8 @@ TEST(KnightTest, TestKnightGetAttacks) {
     // EXPECT_EQ(attacks, );
 }
 
-TEST(KnightTest, TestKnightGetLegalMoves) {
+TEST(KnightTest, TestKnightGetLegalMoves)
+{
     EXPECT_TRUE(testKnightMovement("8/6k1/4P3/q1PPn3/1N1B4/2KP1Nr1/3n4/4B1Q1 w - - 0 1", "f3",
                                    {"e5", "d2", "h2", "g5", "h4"}));
 

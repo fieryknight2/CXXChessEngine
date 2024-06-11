@@ -32,7 +32,8 @@
 #include "chess_engine/board/chess_board.h"
 #include "chess_engine/board/piece.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
 /** Chess Game
  *
@@ -42,7 +43,8 @@ namespace chessengine {
  * @author Matthew Brown
  * @date 6/02/2024
  */
-class ChessGame {
+class ChessGame
+{
     /* Stored information on all pieces */
     std::vector<board::Piece *> m_pieceInformation;
 

@@ -12,41 +12,54 @@
 using namespace chessengine::board;
 using namespace chessengine;
 
-void printStuff(uint64_t value) {
-    for (int i = 0; i < 64; ++i) {
-        if (i % 4 == 0) {
+void printStuff(uint64_t value)
+{
+    for (int i = 0; i < 64; ++i)
+    {
+        if (i % 4 == 0)
+        {
             std::cout << " ";
         }
-        if (i % 8 == 0) {
+        if (i % 8 == 0)
+        {
             std::cout << "\n";
         }
 
-        if (value & (1ull << i)) {
+        if (value & (1ull << i))
+        {
             std::cout << "1";
-        } else {
+        }
+        else
+        {
             std::cout << "*";
         }
     }
     std::cout << std::endl;
 }
 
-bool testKingMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves) {
+bool testKingMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves)
+{
     ChessGame game;
-    try {
+    try
+    {
         game.createFromFEN(fen);
-    } catch (std::exception &e) {
+    }
+    catch (std::exception &e)
+    {
         std::cerr << "Error testing king movement: " << e.what() << std::endl;
         return false;
     }
 
     std::vector<uint64_t> expectedMoves;
-    for (auto move: possibleMoves) {
+    for (auto move: possibleMoves)
+    {
         expectedMoves.push_back(ChessBoard::getSquareFromAlgebraic(move));
     }
 
     uint64_t moves = 0;
     King *king = dynamic_cast<King *>(game.getPiece(ChessBoard::getSquareFromAlgebraic(square)));
-    if (king == nullptr) {
+    if (king == nullptr)
+    {
         std::cerr << "Error testing king movement: Could not find king at square " << square << std::endl;
         return false;
     }
@@ -55,35 +68,45 @@ bool testKingMovement(std::string fen, std::string square, std::vector<std::stri
 
     std::vector<std::string> errorMoves;
     king->getLegalMoves(moves); // Most important line of the function lol
-    for (int i = 0; i < 64; ++i) {
-        if (moves & (1ull << i)) {
+    for (int i = 0; i < 64; ++i)
+    {
+        if (moves & (1ull << i))
+        {
             // Try to find the resulting expected move
             auto val = std::find(expectedMoves.begin(), expectedMoves.end(), i);
-            if (val == expectedMoves.end()) {
+            if (val == expectedMoves.end())
+            {
                 errorMoves.push_back(ChessBoard::toAlgebraic(i));
-            } else {
+            }
+            else
+            {
                 expectedMoves.erase(val);
             }
         }
     }
 
-    if (!errorMoves.empty()) {
+    if (!errorMoves.empty())
+    {
         std::cerr << "Error testing king movement: Unexpected squares found: ";
-        for (auto move: errorMoves) {
+        for (auto move: errorMoves)
+        {
             std::cerr << move << " ";
         }
         std::cerr << std::endl;
     }
 
-    if (!expectedMoves.empty()) {
+    if (!expectedMoves.empty())
+    {
         std::cerr << "Error testing king movement: Expected squares not found: ";
-        for (auto move: expectedMoves) {
+        for (auto move: expectedMoves)
+        {
             std::cerr << ChessBoard::toAlgebraic(move) << " ";
         }
         std::cerr << std::endl;
     }
 
-    if (!errorMoves.empty() or !expectedMoves.empty()) {
+    if (!errorMoves.empty() or !expectedMoves.empty())
+    {
         std::cout << "----------- Fail info -----------\n";
         printStuff(game.getBoard()->board.blackAttacks.value);
         printStuff(game.getBoard()->board.whitePieces.value);
@@ -102,7 +125,8 @@ TEST(KingTest, TestKingMovement) {}
 
 TEST(KingTest, TestKingGetType) { EXPECT_EQ(King(true, nullptr, 0).getType(), PieceType::KING); }
 
-TEST(KingTest, TestKingGetAttacks) {
+TEST(KingTest, TestKingGetAttacks)
+{
     ChessGame game;
     ASSERT_NO_THROW(game.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
 
@@ -116,7 +140,8 @@ TEST(KingTest, TestKingGetAttacks) {
     // EXPECT_EQ(attacks, );
 }
 
-TEST(KingTest, TestKingGetLegalMoves) {
+TEST(KingTest, TestKingGetLegalMoves)
+{
     EXPECT_TRUE(testKingMovement("7k/1b3n2/8/8/3K4/8/2q5/8 w - - 0 1", "d4", {"e3"}));
     EXPECT_TRUE(testKingMovement("7k/1b3n2/8/8/2RK4/8/2q5/8 w - - 0 1", "d4", {"e3", "c5"}));
     EXPECT_TRUE(testKingMovement("7k/1b3n2/8/8/2RK4/b7/8/8 w - - 0 1", "d4", {"c3", "d3", "e3"}));

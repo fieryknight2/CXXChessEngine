@@ -30,9 +30,11 @@
 #include <string>
 #include <utility>
 
-namespace chessengine {
+namespace chessengine
+{
 
-class ChessError final : public std::exception {
+class ChessError final : public std::exception
+{
 public:
     explicit ChessError(std::string message) : m_message(std::move(message)) {}
 
@@ -48,7 +50,8 @@ private:
 #ifndef CHESS_ASSERT
 #ifndef NDEBUG
 #define CHESS_ASSERT(condition, message)                                                                               \
-    if (!(condition)) {                                                                                                \
+    if (!(condition))                                                                                                  \
+    {                                                                                                                  \
         throw chessengine::ChessError(message);                                                                        \
     }
 
@@ -56,5 +59,7 @@ private:
 #else
 #define CHESS_ASSERT(condition, message)
 // #define CHESS_ASSERT(condition)
+
+
 #endif // NDEBUG
 #endif // CHESS_ASSERT

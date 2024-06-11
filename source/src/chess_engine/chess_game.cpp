@@ -55,13 +55,17 @@ std::vector<board::Piece *> ChessGame::getPieces() const { return m_pieceInforma
  * @param square The square of the piece
  * @return The piece at the square
  */
-board::Piece *ChessGame::getPiece(uint64_t square) const {
-    if (m_pieceInformation.empty()) {
+board::Piece *ChessGame::getPiece(uint64_t square) const
+{
+    if (m_pieceInformation.empty())
+    {
         return nullptr;
     }
 
-    for (int j = 0; j < m_pieceInformation.size(); ++j) {
-        if (m_pieceInformation[j]->getSquare() == square) {
+    for (int j = 0; j < m_pieceInformation.size(); ++j)
+    {
+        if (m_pieceInformation[j]->getSquare() == square)
+        {
             return m_pieceInformation[j];
         }
     }
@@ -70,10 +74,13 @@ board::Piece *ChessGame::getPiece(uint64_t square) const {
 }
 
 /** Generate all possible attacks for the black pieces */
-void ChessGame::generateBlackAttacks() {
+void ChessGame::generateBlackAttacks()
+{
     m_board.board.blackAttacks = 0;
-    for (auto &piece: m_pieceInformation) {
-        if (piece->getColor() == board::BLACK) {
+    for (auto &piece: m_pieceInformation)
+    {
+        if (piece->getColor() == board::BLACK)
+        {
             piece->getAttacks(m_board.board.blackAttacks.value);
         }
     }
@@ -81,10 +88,13 @@ void ChessGame::generateBlackAttacks() {
 
 
 /** Generate all possible attacks for the white pieces */
-void ChessGame::generateWhiteAttacks() {
+void ChessGame::generateWhiteAttacks()
+{
     m_board.board.whiteAttacks = 0;
-    for (auto &piece: m_pieceInformation) {
-        if (piece->getColor() == board::WHITE) {
+    for (auto &piece: m_pieceInformation)
+    {
+        if (piece->getColor() == board::WHITE)
+        {
             piece->getAttacks(m_board.board.whiteAttacks.value);
         }
     }
@@ -94,7 +104,8 @@ void ChessGame::generateWhiteAttacks() {
  *
  * Must be called before generating legal moves for any piece
  */
-void ChessGame::pregenLegalMoves() {
+void ChessGame::pregenLegalMoves()
+{
     m_board.board.allPieces = m_board.board.getTotalValue();
     m_board.board.getWhitePieces(m_board.board.whitePieces);
     m_board.board.getBlackPieces(m_board.board.blackPieces);
@@ -109,8 +120,10 @@ void ChessGame::pregenLegalMoves() {
  *
  * @return A reference to the white king
  */
-board::Piece *ChessGame::getWhiteKing() const {
-    if (m_pieceInformation.empty() or m_whiteKing == nullptr) {
+board::Piece *ChessGame::getWhiteKing() const
+{
+    if (m_pieceInformation.empty() or m_whiteKing == nullptr)
+    {
         return nullptr;
     }
 
@@ -121,8 +134,10 @@ board::Piece *ChessGame::getWhiteKing() const {
  *
  * @return A reference to the black king
  */
-board::Piece *ChessGame::getBlackKing() const {
-    if (m_pieceInformation.empty() or m_blackKing == nullptr) {
+board::Piece *ChessGame::getBlackKing() const
+{
+    if (m_pieceInformation.empty() or m_blackKing == nullptr)
+    {
         return nullptr;
     }
 
@@ -130,11 +145,14 @@ board::Piece *ChessGame::getBlackKing() const {
 }
 
 /** Reset the board and piece information */
-void ChessGame::resetGame() {
+void ChessGame::resetGame()
+{
     m_board.resetBoard();
 
-    if (!m_pieceInformation.empty()) {
-        for (auto &elem: m_pieceInformation) {
+    if (!m_pieceInformation.empty())
+    {
+        for (auto &elem: m_pieceInformation)
+        {
             delete elem;
             elem = nullptr;
         }
@@ -148,19 +166,24 @@ void ChessGame::resetGame() {
  *
  * @param fen The FEN string
  */
-void ChessGame::createFromFEN(const std::string &fen) noexcept(false) {
+void ChessGame::createFromFEN(const std::string &fen) noexcept(false)
+{
     resetGame();
 
     m_board.createFromFEN(fen);
 
-    for (int j = 0; j < 12; ++j) {
-        for (int i = 0; i < 64; ++i) {
+    for (int j = 0; j < 12; ++j)
+    {
+        for (int i = 0; i < 64; ++i)
+        {
             int vsqr = i; // (i / 8) * 8 + (7 - i % 8);
             int sqr = i;
 
-            if (m_board.board.data[j].value & 0b1ull << vsqr) {
+            if (m_board.board.data[j].value & 0b1ull << vsqr)
+            {
                 using namespace board;
-                switch (j) {
+                switch (j)
+                {
                     case 0: // First element is white pawns
                         m_pieceInformation.push_back(new WhitePawn(&m_board, sqr));
                         break;
@@ -206,12 +229,14 @@ void ChessGame::createFromFEN(const std::string &fen) noexcept(false) {
         }
     }
 
-    if (m_whiteKing == nullptr or m_blackKing == nullptr) {
+    if (m_whiteKing == nullptr or m_blackKing == nullptr)
+    {
         throw std::runtime_error("Could not find kings in the FEN string");
         return;
     }
 
-    for (auto &j: m_pieceInformation) {
+    for (auto &j: m_pieceInformation)
+    {
         j->setKing(m_whiteKing);
         j->setKing(m_blackKing);
     }
@@ -224,9 +249,12 @@ void ChessGame::createFromFEN(const std::string &fen) noexcept(false) {
  */
 std::string ChessGame::getFEN() const { return m_board.getFEN(m_halfMoveClock, m_fullMoveClock); }
 
-ChessGame::~ChessGame() {
-    if (!m_pieceInformation.empty()) {
-        for (auto &elem: m_pieceInformation) {
+ChessGame::~ChessGame()
+{
+    if (!m_pieceInformation.empty())
+    {
+        for (auto &elem: m_pieceInformation)
+        {
             delete elem;
             elem = nullptr;
         }

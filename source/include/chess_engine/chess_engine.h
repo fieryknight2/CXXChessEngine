@@ -26,4 +26,6 @@
  *****************************************************************************/
 #pragma once
 
-namespace chessengine {}
+namespace chessengine
+{
+}

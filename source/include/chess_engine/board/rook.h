@@ -28,16 +28,19 @@
 
 #include "chess_engine/board/piece.h"
 
-namespace chessengine {
+namespace chessengine
+{
 
-namespace board {
+namespace board
+{
 
 /** Rook class
  *
  * @author Matthew Brown
  * @date 05/28/2024
  */
-class Rook final : public Piece {
+class Rook final : public Piece
+{
 public:
     Rook(bool color, ChessBoard *board, unsigned int location) : Piece(color, board, location) {}
     ~Rook() override = default;
