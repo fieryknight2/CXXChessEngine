@@ -92,7 +92,7 @@ if (UNIX AND NOT APPLE)
 		SDL2
 	)
 
-    target_include_directiores(ChessGUI PUBLIC
+    target_include_directories(ChessGUI PUBLIC
 		${SDL2_INCLUDE_DIRS}
     )
 
