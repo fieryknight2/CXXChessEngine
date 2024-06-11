@@ -48,6 +48,8 @@ void WhitePawn::getLegalMoves(uint64_t &moves) const {
         return;
     }
 
+    CHESS_ASSERT(m_whiteKing != nullptr, "Error: White king is null");
+
     unsigned int index = m_location;
     // Find a possible pin and determine legal moves
 
