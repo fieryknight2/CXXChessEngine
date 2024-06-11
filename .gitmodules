@@ -1,0 +1,4 @@
+[submodule "win_libs/SDL"]
+	path = win_libs/SDL
+	url = https://github.com/libsdl-org/SDL.git
+	branch = release-2.30.x
