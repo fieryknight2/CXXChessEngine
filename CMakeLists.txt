@@ -54,39 +54,39 @@ target_link_libraries(ChessEngine ChessBoard)
 
 # -------------------------- Chess GUI library ---------------------------
 
-# I'm using Dear ImGui for the GUI part of the project.
-add_library(ImGui
-        # Header files
-        libraries/imgui/imconfig.h 
-        libraries/imgui/imgui.h 
-        libraries/imgui/imgui_internal.h 
-
-        # Source files
-        libraries/imgui/imgui.cpp 
-        libraries/imgui/imgui_draw.cpp 
-        libraries/imgui/imgui_tables.cpp 
-        libraries/imgui/imgui_widgets.cpp 
-)
+add_subdirectory(dependencies)
 
 add_executable(ChessGUI
-		# Header files
+        # Header files
         source/include/chess_gui/chess_gui.h
 
-		# Source files
-        source/src/chess_gui/chess_gui.cpp 
-		source/src/chess_gui/gui_main.cpp
+        # Source files
+        source/src/chess_gui/chess_gui.cpp
+        source/src/chess_gui/gui_main.cpp
 
 )
 
 target_include_directories(ChessGUI PUBLIC
-		source/include
-        libraries/imgui
+        source/include
 )
 
-target_link_libraries(ChessGUI 
-        ChessEngine 
-        ImGui
+target_link_libraries(ChessGUI
+        ChessEngine
+        ImGui-SFML::ImGui-SFML
 )
+
+if (win32)
+    if (BUILD_SHARED_LIBS)
+        add_custom_command(TARGET ChessGUI POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:ImGui-SFML::ImGui-SFML>
+                $<TARGET_FILE:sfml-graphics>
+                $<TARGET_FILE:sfml-window>
+                $<TARGET_FILE:sfml-system>
+                $<TARGET_FILE_DIR:example_exe>)
+    endif ()
+endif ()
+
 
 # -------------------------- Chess Engine Run ----------------------------
 
@@ -102,10 +102,10 @@ add_subdirectory(tests)
 target_link_libraries(chess_engine_test ChessEngine)
 
 if (MSVC AND WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-	target_compile_options(chess_engine_test PRIVATE /W4 /WX)
-	target_compile_options(chess_engine_test PRIVATE /Od)
-	target_compile_options(chess_engine_test PRIVATE /Zi)
-	target_link_options(chess_engine_test PRIVATE /DEBUG)
+    target_compile_options(chess_engine_test PRIVATE /W4 /WX)
+    target_compile_options(chess_engine_test PRIVATE /Od)
+    target_compile_options(chess_engine_test PRIVATE /Zi)
+    target_link_options(chess_engine_test PRIVATE /DEBUG)
     target_link_options(chess_engine_test PRIVATE /INCREMENTAL)
 
-endif()
+endif ()
