@@ -26,6 +26,8 @@
  *****************************************************************************/
 #include "chess_engine/board/bishop.h"
 
+using namespace chessengine::board;
+
 /** Make a move on the board
  *
  * @param to Location to move the piece to

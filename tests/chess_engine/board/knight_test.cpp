@@ -11,6 +11,9 @@
 #include "chess_engine/chess_game.h"
 #include "gtest/gtest.h"
 
+using namespace chessengine;
+using namespace chessengine::board;
+
 bool testKnightMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves) {
     ChessGame game;
     try {

@@ -28,6 +28,10 @@
 
 #include "chess_engine/board/piece.h"
 
+namespace chessengine {
+
+namespace board {
+
 /** Rook class
  *
  * @author Matthew Brown
@@ -46,3 +50,7 @@ public:
     void getLeftRightMoves(uint64_t &moves) const;
     void getBottomTopMoves(uint64_t &moves) const;
 };
+
+} // namespace board
+
+} // namespace chessengine

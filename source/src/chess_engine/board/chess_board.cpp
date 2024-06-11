@@ -37,6 +37,8 @@
 #include <sstream>
 #include <string>
 
+using namespace chessengine::board;
+
 /** Get a square from a string in algebraic notation
  *
  * @param square String representation of the square

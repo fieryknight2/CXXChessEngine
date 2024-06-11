@@ -28,6 +28,10 @@
 
 #include <cstdint>
 
+namespace chessengine {
+
+namespace board {
+
 /** Locations of the pieces in the board's array
  *
  *
@@ -101,3 +105,7 @@ struct Board {
     uint64_t getWhiteAttacks(Bitboard &whiteAttacks);
     uint64_t getBlackAttacks(Bitboard &blackAttacks);
 };
+
+} // namespace board
+
+} // namespace chessengine

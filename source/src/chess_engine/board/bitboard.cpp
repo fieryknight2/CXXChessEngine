@@ -26,6 +26,7 @@
  *****************************************************************************/
 #include "chess_engine/board/bitboard.h"
 
+using namespace chessengine::board;
 
 int Bitboard::getBitCount() const {
     int count = 0;

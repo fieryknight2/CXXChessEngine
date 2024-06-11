@@ -28,6 +28,10 @@
 
 #include "chess_engine/board/piece.h"
 
+namespace chessengine {
+
+namespace board {
+
 /** Queen class
  *
  * @author Matthew Brown
@@ -49,3 +53,7 @@ public:
     void getBottomRightTopLeftMoves(uint64_t &moves) const;
     void getAllMoves(uint64_t &moves) const;
 };
+
+} // namespace board
+
+} // namespace chessengine

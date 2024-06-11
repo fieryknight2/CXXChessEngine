@@ -8,12 +8,14 @@
 #include "chess_engine/chess_game.h"
 #include "gtest/gtest.h"
 
+using namespace chessengine;
+using namespace chessengine::board;
+
 TEST(RookTest, TestRookMovement) {}
 
 TEST(RookTest, TestRookGetType) { EXPECT_EQ(Rook(true, nullptr, 0).getType(), PieceType::ROOK); }
 
-TEST(RookTest, TestRookGetAttacks)
-{
+TEST(RookTest, TestRookGetAttacks) {
     ChessGame game;
     ASSERT_NO_THROW(game.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
 
@@ -27,8 +29,7 @@ TEST(RookTest, TestRookGetAttacks)
     // EXPECT_EQ(attacks, );
 }
 
-TEST(RookTest, TestRookGetLegalMoves)
-{
+TEST(RookTest, TestRookGetLegalMoves) {
     ChessBoard board;
     ASSERT_NO_THROW(board.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12",
                                         nullptr, nullptr));

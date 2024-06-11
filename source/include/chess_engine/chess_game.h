@@ -26,10 +26,13 @@
  *****************************************************************************/
 #pragma once
 
+#include <string>
 #include <vector>
 
 #include "chess_engine/board/chess_board.h"
 #include "chess_engine/board/piece.h"
+
+namespace chessengine {
 
 /** Chess Game
  *
@@ -41,10 +44,10 @@
  */
 class ChessGame {
     /* Stored information on all pieces */
-    std::vector<Piece *> m_pieceInformation;
+    std::vector<board::Piece *> m_pieceInformation;
 
-    Piece *m_whiteKing = nullptr;
-    Piece *m_blackKing = nullptr;
+    board::Piece *m_whiteKing = nullptr;
+    board::Piece *m_blackKing = nullptr;
 
     /* Game information */
     int m_halfMoveClock = 0; // This keeps track of the 50 move rule
@@ -52,20 +55,20 @@ class ChessGame {
 
     // std::vector<ChessMove> m_moveHistory;
 
-    ChessBoard m_board;
+    board::ChessBoard m_board;
 
 public:
     [[nodiscard]] uint64_t getPieceCount() const;
-    [[nodiscard]] std::vector<Piece *> getPieces() const;
-    [[nodiscard]] Piece *getPiece(uint64_t square) const;
+    [[nodiscard]] std::vector<board::Piece *> getPieces() const;
+    [[nodiscard]] board::Piece *getPiece(uint64_t square) const;
 
     void pregenLegalMoves();
     void generateWhiteAttacks();
     void generateBlackAttacks();
 
     // Getters
-    [[nodiscard]] Piece *getWhiteKing() const;
-    [[nodiscard]] Piece *getBlackKing() const;
+    [[nodiscard]] board::Piece *getWhiteKing() const;
+    [[nodiscard]] board::Piece *getBlackKing() const;
 
     void resetGame();
 
@@ -75,7 +78,9 @@ public:
     [[nodiscard]] int getHalfMoveClock() const { return m_halfMoveClock; }
     [[nodiscard]] int getFullMoveClock() const { return m_fullMoveClock; }
 
-    [[nodiscard]] ChessBoard *getBoard() { return &m_board; }
+    [[nodiscard]] board::ChessBoard *getBoard() { return &m_board; }
 
     ~ChessGame();
 };
+
+} // namespace chessengine

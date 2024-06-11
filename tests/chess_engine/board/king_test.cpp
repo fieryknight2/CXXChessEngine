@@ -9,6 +9,9 @@
 #include "gtest/gtest.h"
 #include "low_level_test_functions.h"
 
+using namespace chessengine::board;
+using namespace chessengine;
+
 void printStuff(uint64_t value) {
     for (int i = 0; i < 64; ++i) {
         if (i % 4 == 0) {

@@ -31,8 +31,12 @@
 
 #include "chess_engine/board/bitboard.h"
 
+namespace chessengine {
+
+namespace board {
+
 // Definitions for convienience
-#define EMPTY 0
+constexpr int EMPTY = 0;
 
 /** Board Representation
  *
@@ -75,3 +79,7 @@ struct ChessBoard {
     void printBoard() const;
     void resetBoard();
 };
+
+} // namespace board
+
+} // namespace chessengine

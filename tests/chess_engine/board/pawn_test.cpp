@@ -9,6 +9,9 @@
 #include "gtest/gtest.h"
 #include "low_level_test_functions.h"
 
+using namespace chessengine;
+using namespace board;
+
 bool testPawnMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves) {
     ChessGame game;
     try {

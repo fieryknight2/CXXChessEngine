@@ -28,6 +28,10 @@
 
 #include "chess_engine/board/piece.h"
 
+namespace chessengine {
+
+namespace board {
+
 /** Pawn class
  *
  * @author Matthew Brown
@@ -73,3 +77,7 @@ public:
     void getAllMoves(uint64_t &moves) const;
     void getForwardMoves(uint64_t &moves) const;
 };
+
+} // namespace board
+
+} // namespace chessengine

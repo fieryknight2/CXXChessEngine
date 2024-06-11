@@ -26,6 +26,9 @@
  *****************************************************************************/
 #include "chess_engine/board/pawn.h"
 
+using namespace chessengine;
+using namespace board;
+
 void BlackPawn::getLegalMoves(uint64_t &moves) const {
     if (!m_board->board.genMoveInfo) {
         throw ChessError("Error: Move info not generated, cannot generate legal moves");
@@ -36,6 +39,8 @@ void BlackPawn::getLegalMoves(uint64_t &moves) const {
     }
 
     unsigned int index = m_location;
+
+    CHESS_ASSERT(m_blackKing != nullptr, "Error: Black king is null");
 
     // Direction between ranks: - for up, + for down          Same Column == Up or Down
     if (m_location / 8 > m_blackKing->getSquare() / 8 and m_location % 8 - m_blackKing->getSquare() % 8 == 0) {

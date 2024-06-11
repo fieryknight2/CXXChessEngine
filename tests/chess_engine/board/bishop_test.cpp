@@ -8,6 +8,9 @@
 #include "chess_engine/chess_game.h"
 #include "gtest/gtest.h"
 
+using namespace chessengine;
+using namespace chessengine::board;
+
 TEST(BishopTest, TestBishopMovement) {}
 
 TEST(BishopTest, TestBishopGetType) { EXPECT_EQ(Bishop(true, nullptr, 0).getType(), PieceType::BISHOP); }

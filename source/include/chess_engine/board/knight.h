@@ -28,6 +28,10 @@
 
 #include "chess_engine/board/piece.h"
 
+namespace chessengine {
+
+namespace board {
+
 /** Knight class
  *
  * @author Matthew Brown
@@ -43,3 +47,7 @@ public:
     void getAttacks(uint64_t &attacks) const override;
     void getLegalMoves(uint64_t &moves) const override;
 };
+
+} // namespace board
+
+} // namespace chessengine

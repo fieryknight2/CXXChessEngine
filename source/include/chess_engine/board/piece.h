@@ -26,16 +26,16 @@
  *****************************************************************************/
 #pragma once
 
-#ifndef WHITE
-
-#define WHITE true
-#define BLACK false
-
-#endif // WHITE
-
 #include <cstdint>
 #include "chess_board.h"
 #include "chess_engine/chess_error.h"
+
+namespace chessengine {
+
+namespace board {
+
+constexpr bool WHITE = true;
+constexpr bool BLACK = true;
 
 /** Possible types of chess pieces
  *
@@ -96,3 +96,7 @@ public:
     /** Retrieve all possible legal moves for the piece */
     virtual void getLegalMoves(uint64_t &moves) const = 0;
 };
+
+} // namespace board
+
+} // namespace chessengine

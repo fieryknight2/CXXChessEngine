@@ -6,8 +6,10 @@
 #include <gtest/gtest.h>
 #include "chess_engine/board/chess_board.h"
 
-TEST(BitboardTest, GetBitCount)
-{
+using namespace chessengine::board;
+using namespace chessengine;
+
+TEST(BitboardTest, GetBitCount) {
     Bitboard bb(0xffffffffffffffff);
     EXPECT_EQ(bb.getBitCount(), 64);
 
@@ -18,8 +20,7 @@ TEST(BitboardTest, GetBitCount)
     EXPECT_EQ(bb.getBitCount(), 2);
 }
 
-TEST(BoardRepTest, CreateFromFEN)
-{
+TEST(BoardRepTest, CreateFromFEN) {
     ChessBoard board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
@@ -35,23 +36,20 @@ TEST(BoardRepTest, CreateFromFEN)
     EXPECT_EQ(board.getFEN(), "r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 0 0");
 }
 
-TEST(BoardRepTest, GetFENWithHalfMoveClock)
-{
+TEST(BoardRepTest, GetFENWithHalfMoveClock) {
     ChessBoard board;
     int halfMoveClock = 0;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0", &halfMoveClock));
     EXPECT_EQ(board.getFEN(halfMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 0");
 }
 
-TEST(BoardRepTest, GetFENWithCastlingRights)
-{
+TEST(BoardRepTest, GetFENWithCastlingRights) {
     ChessBoard board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 0");
 }
 
-TEST(BoardRepTest, GetFENWithFullMoveClock)
-{
+TEST(BoardRepTest, GetFENWithFullMoveClock) {
     ChessBoard board;
     int fullMoveClock = 0;
     EXPECT_NO_THROW(
@@ -59,15 +57,13 @@ TEST(BoardRepTest, GetFENWithFullMoveClock)
     EXPECT_EQ(board.getFEN(0, fullMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 5");
 }
 
-TEST(BoardRepTest, GetFENWithEnPassantSquare)
-{
+TEST(BoardRepTest, GetFENWithEnPassantSquare) {
     ChessBoard board;
     EXPECT_NO_THROW(board.createFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0"));
     EXPECT_EQ(board.getFEN(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq a7 0 0");
 }
 
-TEST(BoardRepTest, GetFENWithEverything)
-{
+TEST(BoardRepTest, GetFENWithEverything) {
     ChessBoard board;
     int fullMoveClock = 0;
     int halfMoveClock = 0;
@@ -76,8 +72,7 @@ TEST(BoardRepTest, GetFENWithEverything)
     EXPECT_EQ(board.getFEN(halfMoveClock, fullMoveClock), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 5 5");
 }
 
-TEST(BoardRepTest, PrintBoard)
-{
+TEST(BoardRepTest, PrintBoard) {
     std::cout << "------------------------------------------------------" << std::endl;
     std::cout << " -          Tests for printing the board            - " << std::endl;
     std::cout << "  Results should look like an initial chess position" << std::endl;
@@ -104,8 +99,7 @@ TEST(BoardRepTest, PrintBoard)
 // TODO: Move to game test file
 #include "chess_engine/chess_game.h"
 
-TEST(ChessGameTest, GetPiece)
-{
+TEST(ChessGameTest, GetPiece) {
     ChessGame game;
     ASSERT_NO_THROW(game.createFromFEN("r2q1rk1/2p1bppp/p2p1n2/1p2P3/4P1b1/1nP1BN2/PP3PPP/RN1QR1K1 w - - 1 12"));
 

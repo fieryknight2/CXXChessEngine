@@ -30,6 +30,8 @@
 #include <string>
 #include <utility>
 
+namespace chessengine {
+
 class ChessError final : public std::exception {
 public:
     explicit ChessError(std::string message) : m_message(std::move(message)) {}
@@ -39,3 +41,20 @@ public:
 private:
     std::string m_message;
 };
+
+} // namespace chessengine
+
+/* Assertions */
+#ifndef CHESS_ASSERT
+#ifndef NDEBUG
+#define CHESS_ASSERT(condition, message)                                                                               \
+    if (!(condition)) {                                                                                                \
+        throw chessengine::ChessError(message);                                                                        \
+    }
+
+// #define CHESS_ASSERT(condition) CHESS_ASSERT(condition, "Assertion failed")
+#else
+#define CHESS_ASSERT(condition, message)
+#define CHESS_ASSERT(condition)
+#endif // NDEBUG
+#endif // CHESS_ASSERT

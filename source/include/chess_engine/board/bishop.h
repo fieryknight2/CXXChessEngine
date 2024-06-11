@@ -28,6 +28,11 @@
 
 #include "chess_engine/board/piece.h"
 
+namespace chessengine {
+
+namespace board {
+
+
 /** Bishop class
  *
  * @author Matthew Brown
@@ -46,3 +51,7 @@ public:
     void getBottomLeftTopRightMoves(uint64_t &moves) const;
     void getBottomRightTopLeftMoves(uint64_t &moves) const;
 };
+
+} // namespace board
+
+} // namespace chessengine

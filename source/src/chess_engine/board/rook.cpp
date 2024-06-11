@@ -26,6 +26,9 @@
  *****************************************************************************/
 #include "chess_engine/board/rook.h"
 
+using namespace chessengine;
+using namespace board;
+
 /** Make a move on the board
  *
  * @param to Location to move the piece to

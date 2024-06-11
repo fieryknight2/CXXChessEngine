@@ -33,6 +33,9 @@
 #include "chess_engine/board/queen.h"
 #include "chess_engine/board/rook.h"
 
+using namespace chessengine;
+using namespace board;
+
 // For debugging
 #include <iostream>
 
