@@ -2,3 +2,6 @@
 	path = win_libs/SDL
 	url = https://github.com/libsdl-org/SDL.git
 	branch = release-2.30.x
+[submodule "libraries/imgui"]
+	path = libraries/imgui
+	url = https://github.com/ocornut/imgui

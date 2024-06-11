@@ -54,14 +54,28 @@ target_link_libraries(ChessEngine ChessBoard)
 
 # -------------------------- Chess GUI library ---------------------------
 
+# I'm using Dear ImGui for the GUI part of the project.
+add_library(IMGUI
+        # Header files
+        libraries/imgui/imconfig.h 
+        libraries/imgui/imgui.h 
+        libraries/imgui/imgui_internal.h 
+
+        # Source files
+        libraries/imgui/imgui.cpp 
+        libraries/imgui/imgui_draw.cpp 
+        libraries/imgui/imgui_tables.cpp 
+        libraries/imgui/imgui_widgets.cpp 
+)
+
 add_executable(ChessGUI
 		# Header files
-        source/include/chess_gui/fonts.h
-        source/include/chess_gui/gui_elements.h 
-        source/include/chess_gui/object.h 
-        source/include/chess_gui/renderer.h
-        source/include/chess_gui/textures.h 
-        source/include/chess_gui/window.h 
+        
+         
+         
+        
+         
+         
 
 		# Source files
 		source/src/chess_gui/gui_main.cpp
@@ -70,39 +84,13 @@ add_executable(ChessGUI
 
 target_include_directories(ChessGUI PUBLIC
 		source/include
+        libraries/imgui
 )
 
-target_link_libraries(ChessGUI ChessEngine)
-
-
-if (WIN32)
-    target_link_libraries(ChessGUI ${CMAKE_SOURCE_DIR}/win_libs/SDL2-2.30.3/lib/x64/SDL2main.lib)
-    target_link_libraries(ChessGUI ${CMAKE_SOURCE_DIR}/win_libs/SDL2-2.30.3/lib/x64/SDL2.lib)
-
-    configure_file(${CMAKE_SOURCE_DIR}/win_libs/SDL2-2.30.3/lib/x64/SDL2.dll ${CMAKE_BINARY_DIR}/SDL2.dll)
-
-    target_include_directories(ChessGUI PUBLIC ${CMAKE_SOURCE_DIR}/win_libs/SDL2-2.30.3/include)
-endif(WIN32)
-
-if (UNIX AND NOT APPLE)
-    find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
-
-	target_link_libraries(ChessGUI
-        SDL2::SDL2main
-		SDL2
-	)
-
-    target_include_directories(ChessGUI PUBLIC
-		${SDL2_INCLUDE_DIRS}
-    )
-
-endif(UNIX AND NOT APPLE)
-
-if (APPLE)
-
- # If anybody knows how to do this go ahead.
-
-endif(APPLE)
+target_link_libraries(ChessGUI 
+        ChessEngine 
+        IMGUI
+)
 
 # -------------------------- Chess Engine Run ----------------------------
 
