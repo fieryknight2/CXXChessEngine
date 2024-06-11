@@ -55,6 +55,6 @@ private:
 // #define CHESS_ASSERT(condition) CHESS_ASSERT(condition, "Assertion failed")
 #else
 #define CHESS_ASSERT(condition, message)
-#define CHESS_ASSERT(condition)
+// #define CHESS_ASSERT(condition)
 #endif // NDEBUG
 #endif // CHESS_ASSERT
