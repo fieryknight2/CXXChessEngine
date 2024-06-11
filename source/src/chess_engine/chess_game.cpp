@@ -34,7 +34,6 @@
 #include "chess_engine/board/rook.h"
 
 using namespace chessengine;
-using namespace board;
 
 // For debugging
 #include <iostream>
@@ -49,14 +48,14 @@ uint64_t ChessGame::getPieceCount() const { return m_pieceInformation.size(); }
  *
  * @return The pieces in the game
  */
-std::vector<Piece *> ChessGame::getPieces() const { return m_pieceInformation; }
+std::vector<board::Piece *> ChessGame::getPieces() const { return m_pieceInformation; }
 
 /** Get a piece from the game
  *
  * @param square The square of the piece
  * @return The piece at the square
  */
-Piece *ChessGame::getPiece(uint64_t square) const {
+board::Piece *ChessGame::getPiece(uint64_t square) const {
     if (m_pieceInformation.empty()) {
         return nullptr;
     }
@@ -74,7 +73,7 @@ Piece *ChessGame::getPiece(uint64_t square) const {
 void ChessGame::generateBlackAttacks() {
     m_board.board.blackAttacks = 0;
     for (auto &piece: m_pieceInformation) {
-        if (piece->getColor() == BLACK) {
+        if (piece->getColor() == board::BLACK) {
             piece->getAttacks(m_board.board.blackAttacks.value);
         }
     }
@@ -85,7 +84,7 @@ void ChessGame::generateBlackAttacks() {
 void ChessGame::generateWhiteAttacks() {
     m_board.board.whiteAttacks = 0;
     for (auto &piece: m_pieceInformation) {
-        if (piece->getColor() == WHITE) {
+        if (piece->getColor() == board::WHITE) {
             piece->getAttacks(m_board.board.whiteAttacks.value);
         }
     }
@@ -110,7 +109,7 @@ void ChessGame::pregenLegalMoves() {
  *
  * @return A reference to the white king
  */
-Piece *ChessGame::getWhiteKing() const {
+board::Piece *ChessGame::getWhiteKing() const {
     if (m_pieceInformation.empty() or m_whiteKing == nullptr) {
         return nullptr;
     }
@@ -122,7 +121,7 @@ Piece *ChessGame::getWhiteKing() const {
  *
  * @return A reference to the black king
  */
-Piece *ChessGame::getBlackKing() const {
+board::Piece *ChessGame::getBlackKing() const {
     if (m_pieceInformation.empty() or m_blackKing == nullptr) {
         return nullptr;
     }
@@ -160,6 +159,7 @@ void ChessGame::createFromFEN(const std::string &fen) noexcept(false) {
             int sqr = i;
 
             if (m_board.board.data[j].value & 0b1ull << vsqr) {
+                using namespace board;
                 switch (j) {
                     case 0: // First element is white pawns
                         m_pieceInformation.push_back(new WhitePawn(&m_board, sqr));
