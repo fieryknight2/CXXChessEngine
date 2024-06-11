@@ -7,7 +7,6 @@ FetchContent_Declare(
         URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.zip
 )
 FetchContent_MakeAvailable(sfml)
-add_subdirectory(sfml)
 
 # Dear ImGui
 FetchContent_Declare(
@@ -23,5 +22,7 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/SFML/imgui-sfml.git
         GIT_TAG de565ac8f2b795dedc0307b60830cb006afd2ecd # 2.6
 )
+
+set(IMGUI_DIR ${imgui_SOURCE_DIR})
+set(IMGUI_SFML_FIND_SFML OFF)
 FetchContent_MakeAvailable(imgui-sfml)
-add_subdirectory(imgui-sfml)
