@@ -31,14 +31,5 @@ target_include_directories(chess_engine_test PUBLIC
 )
 target_link_libraries(chess_engine_test GTest::gtest_main)
 
-if (MSVC AND WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-	target_compile_options(chess_engine_test PRIVATE /W4 /WX)
-	target_compile_options(chess_engine_test PRIVATE /Od)
-	target_compile_options(chess_engine_test PRIVATE /Zi)
-	target_link_options(chess_engine_test PRIVATE /DEBUG)
-    target_link_options(chess_engine_test PRIVATE /INCREMENTAL)
-
-endif()
-
 include(GoogleTest)
 gtest_discover_tests(chess_engine_test)

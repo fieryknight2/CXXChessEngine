@@ -56,9 +56,15 @@ target_link_libraries(ChessEngine ChessBoard)
 
 add_executable(ChessGUI
 		# Header files
+        source/include/chess_gui/fonts.h
+        source/include/chess_gui/gui_elements.h 
+        source/include/chess_gui/object.h 
+        source/include/chess_gui/renderer.h
+        source/include/chess_gui/textures.h 
+        source/include/chess_gui/window.h 
 
 		# Source files
-		source/src/chess_gui/chess_gui.cpp
+		source/src/chess_gui/gui_main.cpp
 
 )
 
@@ -110,3 +116,12 @@ target_link_libraries(ChessEngineRun ChessEngine)
 
 add_subdirectory(tests)
 target_link_libraries(chess_engine_test ChessEngine)
+
+if (MSVC AND WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_compile_options(chess_engine_test PRIVATE /W4 /WX)
+	target_compile_options(chess_engine_test PRIVATE /Od)
+	target_compile_options(chess_engine_test PRIVATE /Zi)
+	target_link_options(chess_engine_test PRIVATE /DEBUG)
+    target_link_options(chess_engine_test PRIVATE /INCREMENTAL)
+
+endif()
