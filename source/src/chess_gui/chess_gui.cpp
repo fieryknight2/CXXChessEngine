@@ -20,27 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * chess_gui.cpp - Main entry point for ChessGUI application
+ * chess_gui.cpp - Implementation for ImGUI
  * @author Matthew Brown
- * @date 6/10/2024
+ * @date 06/11/2024
  *****************************************************************************/
-#include <iostream>
-
 #include "chess_gui/chess_gui.h"
 
-int main()
-{
-    chessgui::ChessGui chessGui;
+using namespace chessgui;
 
-    try
-    {
-        // chessGui.Run();
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-        return 1;
-    }
+ChessGui::ChessGui() {}
 
-    return 0;
-}
+ChessGui::~ChessGui() {}
