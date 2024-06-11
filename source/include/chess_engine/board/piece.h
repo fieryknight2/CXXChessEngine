@@ -35,7 +35,7 @@ namespace chessengine {
 namespace board {
 
 constexpr bool WHITE = true;
-constexpr bool BLACK = true;
+constexpr bool BLACK = false;
 
 /** Possible types of chess pieces
  *
