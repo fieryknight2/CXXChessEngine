@@ -116,6 +116,89 @@ void ChessGame::pregenLegalMoves()
     m_board.board.genMoveInfo = true;
 }
 
+namespace
+{
+
+/* Useful constants for castling */
+
+uint64_t whiteKingSide = 0b000001110ull;
+uint64_t whiteQueenSide = 0b011111000ull;
+
+uint64_t blackKingSide = whiteKingSide << 56;
+uint64_t blackQueenSide = whiteQueenSide << 56;
+
+uint64_t whiteKingSideInbetween = 0b000000110ull;
+uint64_t whiteQueenSideInbetween = 0b011110000ull;
+
+uint64_t blackKingSideInbetween = whiteKingSideInbetween << 56;
+uint64_t blackQueenSideInbetween = whiteQueenSideInbetween << 56;
+
+} // namespace
+
+/** Check if the side can castle
+ *
+ * Make sure you called pregenLegalMoves before calling this method
+ *
+ * @param type The type of castling
+ * @return True if the side can castle
+ */
+bool ChessGame::canCastle(board::CastleRights type)
+{
+    CHESS_ASSERT(m_board.board.blackAttacks.value != 0, "Black attacks are not generated");
+    CHESS_ASSERT(m_board.board.whiteAttacks.value != 0, "White attacks are not generated");
+    CHESS_ASSERT(m_board.board.getTotalValue().value != 0, "No pieces on the board");
+
+    if (m_board.castlingRights[type])
+    {
+        return false;
+    }
+
+    switch (type)
+    {
+        case board::CastleRights::WHITE_KINGSIDE:
+            if (!((m_board.board.blackAttacks.value & whiteKingSide) and
+                  (m_board.board.getTotalValue().value & whiteKingSideInbetween)))
+            {
+                return true;
+            }
+            break;
+        case board::CastleRights::WHITE_QUEENSIDE:
+            if (!((m_board.board.blackAttacks.value & whiteQueenSide) and
+                  (m_board.board.getTotalValue().value & whiteQueenSideInbetween)))
+            {
+                return true;
+            }
+            break;
+        case board::CastleRights::BLACK_KINGSIDE:
+            if (!((m_board.board.whiteAttacks.value & blackKingSide) and
+                  (m_board.board.getTotalValue().value & blackQueenSideInbetween)))
+            {
+                return true;
+            }
+            break;
+        case board::CastleRights::BLACK_QUEENSIDE:
+            if (!((m_board.board.whiteAttacks.value & blackQueenSide) and
+                  (m_board.board.getTotalValue().value & blackQueenSideInbetween)))
+            {
+                return true;
+            }
+            break;
+    }
+
+    return false;
+}
+
+/** Check if a side can castle
+ *
+ * Checks the side that can castle,
+ * if it can, then the results are stored in the castling bitboard like
+ * 2 moves to the left/right for the king
+ *
+ * @param color The color of the side
+ * @param castling Results are stored here
+ */
+void ChessGame::canCastle(bool color, board::Bitboard &castling) {}
+
 /** Get the white king
  *
  * @return A reference to the white king
@@ -160,7 +243,6 @@ void ChessGame::resetGame()
         m_pieceInformation.clear();
     }
 }
-
 
 /** Create a new game from a FEN string
  *

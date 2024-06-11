@@ -40,6 +40,14 @@ namespace board
 // Definitions for convienience
 constexpr int EMPTY = 0;
 
+enum CastleRights
+{
+    WHITE_KINGSIDE = 0,
+    WHITE_QUEENSIDE = 1,
+    BLACK_KINGSIDE = 2,
+    BLACK_QUEENSIDE = 3
+};
+
 /** Board Representation
  *
  * This is a representation of a chess board using a combination of several methods.

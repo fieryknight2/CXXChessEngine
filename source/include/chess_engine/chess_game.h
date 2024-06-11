@@ -68,6 +68,9 @@ public:
     void generateWhiteAttacks();
     void generateBlackAttacks();
 
+    bool canCastle(board::CastleRights type);
+    void canCastle(bool color, board::Bitboard &castling);
+
     // Getters
     [[nodiscard]] board::Piece *getWhiteKing() const;
     [[nodiscard]] board::Piece *getBlackKing() const;
