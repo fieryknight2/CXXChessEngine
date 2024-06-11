@@ -28,5 +28,6 @@
 
 using namespace chessgui;
 
+ChessGui::ChessGui() {}
 
 ChessGui::~ChessGui() {}

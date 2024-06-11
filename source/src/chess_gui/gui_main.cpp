@@ -42,5 +42,7 @@ int main()
         return 1;
     }
 
+    std::cout << "All done" << std::endl;
+
     return 0;
 }
