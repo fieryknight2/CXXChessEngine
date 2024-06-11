@@ -55,7 +55,7 @@ target_link_libraries(ChessEngine ChessBoard)
 # -------------------------- Chess GUI library ---------------------------
 
 # I'm using Dear ImGui for the GUI part of the project.
-add_library(IMGUI
+add_library(ImGui
         # Header files
         libraries/imgui/imconfig.h 
         libraries/imgui/imgui.h 
@@ -70,14 +70,10 @@ add_library(IMGUI
 
 add_executable(ChessGUI
 		# Header files
-        
-         
-         
-        
-         
-         
+        source/include/chess_gui/chess_gui.h
 
 		# Source files
+        source/src/chess_gui/chess_gui.cpp 
 		source/src/chess_gui/gui_main.cpp
 
 )
@@ -89,7 +85,7 @@ target_include_directories(ChessGUI PUBLIC
 
 target_link_libraries(ChessGUI 
         ChessEngine 
-        IMGUI
+        ImGui
 )
 
 # -------------------------- Chess Engine Run ----------------------------
