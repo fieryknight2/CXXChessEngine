@@ -26,8 +26,6 @@
  *****************************************************************************/
 #pragma once
 
-#include "imgui.h"
-
 namespace chessgui
 {
 
@@ -36,6 +34,8 @@ class ChessGui
 public:
     ChessGui();
     ~ChessGui();
+
+    bool run();
 };
 
 } // namespace chessgui
