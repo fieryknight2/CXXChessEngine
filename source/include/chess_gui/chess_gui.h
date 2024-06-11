@@ -26,6 +26,9 @@
  *****************************************************************************/
 #pragma once
 
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "imgui-SFML.h"
+
 namespace chessgui
 {
 
@@ -36,6 +39,9 @@ public:
     ~ChessGui();
 
     bool run();
+
+private:
+    sf::RenderWindow m_window;
 };
 
 } // namespace chessgui

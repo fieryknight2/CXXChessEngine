@@ -83,7 +83,7 @@ if (win32)
                 $<TARGET_FILE:sfml-graphics>
                 $<TARGET_FILE:sfml-window>
                 $<TARGET_FILE:sfml-system>
-                $<TARGET_FILE_DIR:example_exe>)
+                $<TARGET_FILE_DIR:ChessGUI>)
     endif ()
 endif ()
 

@@ -26,17 +26,39 @@
  *****************************************************************************/
 #include "chess_gui/chess_gui.h"
 
+#include "SFML/Window.hpp"
+
 using namespace chessgui;
 
 ChessGui::ChessGui()
 {
+    m_window.create(sf::VideoMode(800, 600), "Chess GUI");
+
+    ImGui::SFML::Init(m_window);
 }
 
-ChessGui::~ChessGui()
-{
-
-}
+ChessGui::~ChessGui() {}
 
 bool ChessGui::run()
 {
+    while (true)
+    {
+        sf::Event event;
+        while (m_window.pollEvent(event))
+        {
+            ImGui::SFML::ProcessEvent(event);
+
+            if (event.type == sf::Event::Closed)
+            {
+                m_window.close();
+                return true;
+            }
+        }
+
+        // ImGui::SFML::Update(m_window, );
+
+        m_window.clear();
+        ImGui::SFML::Render(m_window);
+        m_window.display();
+    }
 }
