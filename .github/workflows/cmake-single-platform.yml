@@ -20,7 +20,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Cehckout repository
+        uses: actions/checkout@v4
+        with:
+            submodules: 'true'
   
       - name: install_dependencies
         run: |
