@@ -3,6 +3,8 @@ project(ChessEngine)
 
 set(CMAKE_CXX_STANDARD 26)
 
+option(BUILD_GUI "Build the GUI" OFF)
+
 # -------------------------- ChessBoard library --------------------------
 
 add_library(ChessBoard STATIC
@@ -54,39 +56,43 @@ target_link_libraries(ChessEngine ChessBoard)
 
 # -------------------------- Chess GUI library ---------------------------
 
-add_subdirectory(dependencies)
+if (BUILD_GUI)
 
-add_executable(ChessGUI
-        # Header files
-        source/include/chess_gui/chess_gui.h
+    add_subdirectory(dependencies)
 
-        # Source files
-        source/src/chess_gui/chess_gui.cpp
-        source/src/chess_gui/gui_main.cpp
+    add_executable(ChessGUI
+            # Header files
+            source/include/chess_gui/chess_gui.h
 
-)
+            # Source files
+            source/src/chess_gui/chess_gui.cpp
+            source/src/chess_gui/gui_main.cpp
 
-target_include_directories(ChessGUI PUBLIC
-        source/include
-)
+    )
 
-target_link_libraries(ChessGUI
-        ChessEngine
-        ImGui-SFML::ImGui-SFML
-)
+    target_include_directories(ChessGUI PUBLIC
+            source/include
+    )
 
-if (win32)
-    if (BUILD_SHARED_LIBS)
-        add_custom_command(TARGET ChessGUI POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_FILE:ImGui-SFML::ImGui-SFML>
-                $<TARGET_FILE:sfml-graphics>
-                $<TARGET_FILE:sfml-window>
-                $<TARGET_FILE:sfml-system>
-                $<TARGET_FILE_DIR:ChessGUI>)
+    target_link_libraries(ChessGUI
+            ChessEngine
+            ImGui-SFML::ImGui-SFML
+    )
+
+    if (win32)
+        if (BUILD_SHARED_LIBS)
+            add_custom_command(TARGET ChessGUI POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    $<TARGET_FILE:ImGui-SFML::ImGui-SFML>
+                    $<TARGET_FILE:sfml-graphics>
+                    $<TARGET_FILE:sfml-window>
+                    $<TARGET_FILE:sfml-system>
+                    $<TARGET_FILE_DIR:ChessGUI>
+            )
+        endif ()
     endif ()
-endif ()
 
+endif()
 
 # -------------------------- Chess Engine Run ----------------------------
 
