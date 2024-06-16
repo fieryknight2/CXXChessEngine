@@ -29,12 +29,10 @@
 
 #include <cstdint>
 #include "chess_board.h"
-#include "chess_engine/chess_error.h"
+#include "simplelogger.hpp"
 
-namespace chessengine
-{
 
-namespace board
+namespace chessengine::board
 {
 
 constexpr bool WHITE = true;
@@ -73,23 +71,44 @@ protected:
 
 public:
     /** Constructor */
-    Piece(bool color, ChessBoard *board, uint64_t location) : m_location(location), m_color(color), m_board(board) {}
+    Piece(bool color, ChessBoard *board, uint64_t location) :
+        m_location(location), m_color(color), m_board(board)
+    {
+    }
 
     /** Destructor */
     virtual ~Piece() = default;
 
     // Getters
     /** Get the represented color of the piece */
-    [[nodiscard]] bool getColor() const { return m_color; }
+    [[nodiscard]] bool getColor() const
+    {
+        return m_color;
+    }
+
     /** Get the referenced boards that the piece is on */
-    [[nodiscard]] ChessBoard *getBoard() const { return m_board; }
+    [[nodiscard]] ChessBoard *getBoard() const
+    {
+        return m_board;
+    }
+
     /** Get the current location of the piece */
-    [[nodiscard]] uint64_t getSquare() const { return m_location; }
+    [[nodiscard]] uint64_t getSquare() const
+    {
+        return m_location;
+    }
+
     /** Get the current reference to the white/black king */
-    [[nodiscard]] Piece *getKing(int color) const { return color ? m_whiteKing : m_blackKing; }
+    [[nodiscard]] Piece *getKing(int color) const
+    {
+        return color ? m_whiteKing : m_blackKing;
+    }
 
     /** Return if the piece is valid */
-    [[nodiscard]] bool isValid() const { return m_location < 65; }
+    [[nodiscard]] bool isValid() const
+    {
+        return m_location < 65;
+    }
 
     void setKing(Piece *king)
     {
@@ -101,7 +120,11 @@ public:
 
     // Virtual methods
     /** Make a move on the board, to be overridden for special behavior */
-    virtual void makeMove(int to) { m_location = to; }
+    virtual void makeMove(int to)
+    {
+        m_location = to;
+    }
+
     /** Get the type of the piece */
     [[nodiscard]] virtual char getType() const = 0;
     /** Retrieve all possible attacks for the piece */
@@ -110,6 +133,6 @@ public:
     virtual void getLegalMoves(uint64_t &moves) const = 0;
 };
 
-} // namespace board
+} // namespace chessengine::board
 
-} // namespace chessengine
+

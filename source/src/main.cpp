@@ -26,12 +26,30 @@
  *****************************************************************************/
 #include <iostream>
 
+#include "simplelogger.hpp"
+
 int main(const int argc, char *argv[])
 {
+    SL_CAPTURE_EXCEPTIONS();
+
+    // File loggers
+    SL_LOG_TO_FILE("chess_engine_debug.log", slog::LogFileMode::OVERWRITE);
+    slog::SimpleLogger::GlobalLogger()->getLogger(1)->setMinLogLevel(slog::LogLevel::DEBUG);
+
+    SL_LOG_TO_FILE("chess_engine.log", slog::LogFileMode::OVERWRITE);
+
+    // Opening information
+    SIMPLE_LOGGER_LOG_VERSION_INFO();
+    SL_LOG_VERSION_INFO("Chess Engine", "0.0.1");
+    SL_LOG_INFO("Welcome to the Chess Engine!");
+    SL_LOG_INFO("This engine is licensed under the MIT License: https://en.wikipedia.org/wiki/MIT_License");
     for (int i = 0; i < argc; ++i)
     {
-        std::cout << "Argument [" << i << "] is " << argv[i] << std::endl;
+        SL_LOG_DEBUG("Argument [" + std::to_string(i) + std::string("] is ") + argv[i]);
     }
 
+    // Run the engine...
+
+    SL_LOG_DEBUG("Finished running the Chess Engine");
     return 0; // Not necessary, just looks cleaner to me
 }

@@ -2,6 +2,7 @@
 include(FetchContent)
 
 # SFML
+message(STATUS "Fetching SFML")
 FetchContent_Declare(
         sfml
         URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.zip
@@ -9,6 +10,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(sfml)
 
 # Dear ImGui
+message(STATUS "Fetching Dear ImGui")
 FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui.git

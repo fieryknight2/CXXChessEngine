@@ -1,6 +1,7 @@
 project(GoogleTests)
 
 include(FetchContent)
+message(STATUS "Fetching GoogleTests")
 FetchContent_Declare(
         googletest
         # Remember to update this url often!

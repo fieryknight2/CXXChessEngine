@@ -42,7 +42,10 @@ void Knight::makeMove(int to)
  *
  * @return Type of the piece
  */
-char Knight::getType() const { return 'n'; }
+char Knight::getType() const
+{
+    return 'n';
+}
 
 /** Get the legal moves for the piece
  *
@@ -50,10 +53,8 @@ char Knight::getType() const { return 'n'; }
  */
 void Knight::getLegalMoves(uint64_t &moves) const
 {
-    if (!m_board->board.genMoveInfo)
-    {
-        throw ChessError("Error: Move info not generated, cannot generate legal moves");
-    }
+    SL_ASSERT_TRUE(m_board, "Error: Board is null");
+    SL_ASSERT_TRUE(m_board->board.genMoveInfo, "Error: Move info not generated, cannot generate legal moves");
 
     // The knight cannot move if it is pinned, so go through every possible
     // pin and return if it is.

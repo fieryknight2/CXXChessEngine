@@ -37,7 +37,7 @@ void printStuff(uint64_t value)
     std::cout << std::endl;
 }
 
-bool testKingMovement(std::string fen, std::string square, std::vector<std::string> possibleMoves)
+bool testKingMovement(const std::string &fen, const std::string &square, const std::vector<std::string> &possibleMoves)
 {
     ChessGame game;
     try
@@ -51,13 +51,13 @@ bool testKingMovement(std::string fen, std::string square, std::vector<std::stri
     }
 
     std::vector<uint64_t> expectedMoves;
-    for (auto move: possibleMoves)
+    for (const auto &move: possibleMoves)
     {
         expectedMoves.push_back(ChessBoard::getSquareFromAlgebraic(move));
     }
 
     uint64_t moves = 0;
-    King *king = dynamic_cast<King *>(game.getPiece(ChessBoard::getSquareFromAlgebraic(square)));
+    auto *king = dynamic_cast<King *>(game.getPiece(ChessBoard::getSquareFromAlgebraic(square)));
     if (king == nullptr)
     {
         std::cerr << "Error testing king movement: Could not find king at square " << square << std::endl;
@@ -67,14 +67,14 @@ bool testKingMovement(std::string fen, std::string square, std::vector<std::stri
     game.pregenLegalMoves();
 
     std::vector<std::string> errorMoves;
-    king->getLegalMoves(moves); // Most important line of the function lol
+    king->getLegalMoves(moves); // Most important line of the function lo
+
     for (int i = 0; i < 64; ++i)
     {
         if (moves & (1ull << i))
         {
             // Try to find the resulting expected move
-            auto val = std::find(expectedMoves.begin(), expectedMoves.end(), i);
-            if (val == expectedMoves.end())
+            if (auto val = std::ranges::find(expectedMoves, i); val == expectedMoves.end())
             {
                 errorMoves.push_back(ChessBoard::toAlgebraic(i));
             }
@@ -121,9 +121,14 @@ bool testKingMovement(std::string fen, std::string square, std::vector<std::stri
     return true;
 }
 
-TEST(KingTest, TestKingMovement) {}
+TEST(KingTest, TestKingMovement)
+{
+}
 
-TEST(KingTest, TestKingGetType) { EXPECT_EQ(King(true, nullptr, 0).getType(), PieceType::KING); }
+TEST(KingTest, TestKingGetType)
+{
+    EXPECT_EQ(King(true, nullptr, 0).getType(), PieceType::KING);
+}
 
 TEST(KingTest, TestKingGetAttacks)
 {

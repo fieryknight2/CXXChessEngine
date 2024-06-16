@@ -42,7 +42,10 @@ void Rook::makeMove(int to)
  *
  * @return Type of the piece
  */
-char Rook::getType() const { return PieceType::ROOK; }
+char Rook::getType() const
+{
+    return PieceType::ROOK;
+}
 
 /** Get the legal moves for the piece
  *
@@ -50,10 +53,8 @@ char Rook::getType() const { return PieceType::ROOK; }
  */
 void Rook::getLegalMoves(uint64_t &moves) const
 {
-    if (!m_board->board.genMoveInfo)
-    {
-        throw ChessError("Error: Move info not generated, cannot generate legal moves");
-    }
+    SL_ASSERT_TRUE(m_board, "Error: Board is null");
+    SL_ASSERT_TRUE(m_board->board.genMoveInfo, "Error: Move info not generated, cannot generate legal moves");
 
     Bitboard myPieces;
     Bitboard otherPieces;

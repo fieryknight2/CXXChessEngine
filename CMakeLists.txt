@@ -5,6 +5,21 @@ set(CMAKE_CXX_STANDARD 26)
 
 option(BUILD_GUI "Build the GUI" OFF)
 
+# ---------------------------- Dependencies -------------------------------
+
+# SimpleLogger
+include(FetchContent)
+
+message(STATUS "Fetching SimpleLogger")
+FetchContent_Declare(
+        simplelogger
+        GIT_REPOSITORY https://github.com/fieryknight2/SimpleLogger.git
+        GIT_TAG main
+)
+
+FetchContent_MakeAvailable(simplelogger)
+
+
 # -------------------------- ChessBoard library --------------------------
 
 add_library(ChessBoard STATIC
@@ -33,8 +48,10 @@ add_library(ChessBoard STATIC
         source/src/chess_engine/board/black_pawn.cpp
 )
 
+message(STATUS "Logger include dir ${SIMPLE_LOGGER_INCLUDE_DIR}")
 target_include_directories(ChessBoard PUBLIC
         source/include
+        ${SIMPLE_LOGGER_INCLUDE_DIR}
 )
 
 # -------------------------- Chess Engine library ------------------------
@@ -50,6 +67,7 @@ add_library(ChessEngine STATIC
 
 target_include_directories(ChessEngine PUBLIC
         source/include
+        ${SIMPLE_LOGGER_INCLUDE_DIR}
 )
 
 target_link_libraries(ChessEngine ChessBoard)
@@ -72,6 +90,7 @@ if (BUILD_GUI)
 
     target_include_directories(ChessGUI PUBLIC
             source/include
+            ${SIMPLE_LOGGER_INCLUDE_DIR}
     )
 
     target_link_libraries(ChessGUI
@@ -92,7 +111,7 @@ if (BUILD_GUI)
         endif ()
     endif ()
 
-endif()
+endif ()
 
 # -------------------------- Chess Engine Run ----------------------------
 
@@ -100,7 +119,7 @@ add_executable(ChessEngineRun
         source/src/main.cpp
 )
 
-target_link_libraries(ChessEngineRun ChessEngine)
+target_link_libraries(ChessEngineRun ChessEngine SimpleLogger)
 
 # -------------------------- Google tests --------------------------------
 
@@ -113,5 +132,4 @@ if (MSVC AND WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(chess_engine_test PRIVATE /Zi)
     target_link_options(chess_engine_test PRIVATE /DEBUG)
     target_link_options(chess_engine_test PRIVATE /INCREMENTAL)
-
 endif ()

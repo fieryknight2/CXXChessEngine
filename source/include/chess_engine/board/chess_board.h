@@ -31,10 +31,7 @@
 
 #include "chess_engine/board/bitboard.h"
 
-namespace chessengine
-{
-
-namespace board
+namespace chessengine::board
 {
 
 // Definitions for convienience
@@ -91,6 +88,6 @@ struct ChessBoard
     void resetBoard();
 };
 
-} // namespace board
+} // namespace chessengine::board
 
-} // namespace chessengine
+

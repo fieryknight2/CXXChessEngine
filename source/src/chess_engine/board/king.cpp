@@ -33,13 +33,19 @@ using namespace board;
  *
  * @param to Location to move the piece to
  */
-void King::makeMove(int to) { m_location = to; }
+void King::makeMove(int to)
+{
+    m_location = to;
+}
 
 /** Get the type of the piece
  *
  * @return Type of the piece
  */
-char King::getType() const { return PieceType::KING; }
+char King::getType() const
+{
+    return PieceType::KING;
+}
 
 /** Get the legal moves for the piece
  *
@@ -47,17 +53,15 @@ char King::getType() const { return PieceType::KING; }
  */
 void King::getLegalMoves(uint64_t &moves) const
 {
-    if (!m_board->board.genMoveInfo)
-    {
-        throw ChessError("Error: Move info not generated, cannot generate legal moves");
-    }
+    SL_ASSERT_TRUE(m_board, "Error: Board is null");
+    SL_ASSERT_TRUE(m_board->board.genMoveInfo, "Error: Move info not generated, cannot generate legal moves");
 
     uint64_t attacks = 0;
 
     getAttacks(attacks);
 
     moves |= attacks & (~(m_color ? m_board->board.whitePieces : m_board->board.blackPieces).value) &
-             (~(m_color ? m_board->board.blackAttacks : m_board->board.whiteAttacks).value);
+            (~(m_color ? m_board->board.blackAttacks : m_board->board.whiteAttacks).value);
 }
 
 /** Get the possible attacks for the piece

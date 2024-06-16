@@ -36,30 +36,18 @@ namespace chessengine
 class ChessError final : public std::exception
 {
 public:
-    explicit ChessError(std::string message) : m_message(std::move(message)) {}
+    explicit ChessError(std::string message) :
+        m_message(std::move(message))
+    {
+    }
 
-    [[nodiscard]] const char *what() const noexcept override { return m_message.c_str(); }
+    [[nodiscard]] const char *what() const noexcept override
+    {
+        return m_message.c_str();
+    }
 
 private:
     std::string m_message;
 };
 
 } // namespace chessengine
-
-/* Assertions */
-#ifndef CHESS_ASSERT
-#ifndef NDEBUG
-#define CHESS_ASSERT(condition, message)                                                                               \
-    if (!(condition))                                                                                                  \
-    {                                                                                                                  \
-        throw chessengine::ChessError(message);                                                                        \
-    }
-
-// #define CHESS_ASSERT(condition) CHESS_ASSERT(condition, "Assertion failed")
-#else
-#define CHESS_ASSERT(condition, message)
-// #define CHESS_ASSERT(condition)
-
-
-#endif // NDEBUG
-#endif // CHESS_ASSERT

@@ -31,6 +31,7 @@
 
 #include "chess_engine/board/chess_board.h"
 #include "chess_engine/board/piece.h"
+#include "simplelogger.hpp"
 
 namespace chessengine
 {
@@ -80,10 +81,20 @@ public:
     void createFromFEN(const std::string &fen) noexcept(false);
     [[nodiscard]] std::string getFEN() const;
 
-    [[nodiscard]] int getHalfMoveClock() const { return m_halfMoveClock; }
-    [[nodiscard]] int getFullMoveClock() const { return m_fullMoveClock; }
+    [[nodiscard]] int getHalfMoveClock() const
+    {
+        return m_halfMoveClock;
+    }
 
-    [[nodiscard]] board::ChessBoard *getBoard() { return &m_board; }
+    [[nodiscard]] int getFullMoveClock() const
+    {
+        return m_fullMoveClock;
+    }
+
+    [[nodiscard]] board::ChessBoard *getBoard()
+    {
+        return &m_board;
+    }
 
     ~ChessGame();
 };

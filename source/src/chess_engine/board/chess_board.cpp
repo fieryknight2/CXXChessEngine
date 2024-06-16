@@ -32,6 +32,7 @@
 #include "chess_engine/board/queen.h"
 #include "chess_engine/board/rook.h"
 #include "chess_engine/chess_error.h"
+#include "simplelogger.hpp"
 
 #include <iostream>
 #include <sstream>

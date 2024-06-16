@@ -33,7 +33,10 @@ using namespace board;
  *
  * @param to Location to move the piece to
  */
-void Pawn::makeMove(int to) { m_location = to; }
+void Pawn::makeMove(int to)
+{
+    m_location = to;
+}
 
 /** Get the legal moves for the piece
  *
@@ -41,17 +44,15 @@ void Pawn::makeMove(int to) { m_location = to; }
  */
 void WhitePawn::getLegalMoves(uint64_t &moves) const
 {
-    if (!m_board->board.genMoveInfo)
-    {
-        throw ChessError("Error: Move info not generated, cannot generate legal moves");
-    }
+    SL_ASSERT_TRUE(m_board, "Error: Board is null");
+    SL_ASSERT_TRUE(m_board->board.genMoveInfo, "Error: Move info not generated, cannot generate legal moves");
 
     if (m_location < 8 or m_location > 55)
     {
         return;
     }
 
-    CHESS_ASSERT(m_whiteKing != nullptr, "Error: White king is null");
+    SL_ASSERT(m_whiteKing != nullptr, "Error: White king is null");
 
     unsigned int index = m_location;
     // Find a possible pin and determine legal moves

@@ -41,7 +41,10 @@ void Bishop::makeMove(int to)
  *
  * @return Type of the piece
  */
-char Bishop::getType() const { return PieceType::BISHOP; }
+char Bishop::getType() const
+{
+    return PieceType::BISHOP;
+}
 
 /** Get the legal moves for the piece
  *
@@ -49,10 +52,8 @@ char Bishop::getType() const { return PieceType::BISHOP; }
  */
 void Bishop::getLegalMoves(uint64_t &moves) const
 {
-    if (!m_board->board.genMoveInfo)
-    {
-        throw ChessError("Error: Move info not generated, cannot generate legal moves");
-    }
+    SL_ASSERT_TRUE(m_board, "Error: Board is null");
+    SL_ASSERT_TRUE(m_board->board.genMoveInfo, "Error: Move info not generated, cannot generate legal moves");
 
     unsigned int index = m_location;
     Bitboard myPieces;

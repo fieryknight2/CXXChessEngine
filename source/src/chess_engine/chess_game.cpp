@@ -144,9 +144,9 @@ uint64_t blackQueenSideInbetween = whiteQueenSideInbetween << 56;
  */
 bool ChessGame::canCastle(board::CastleRights type)
 {
-    CHESS_ASSERT(m_board.board.blackAttacks.value != 0, "Black attacks are not generated");
-    CHESS_ASSERT(m_board.board.whiteAttacks.value != 0, "White attacks are not generated");
-    CHESS_ASSERT(m_board.board.getTotalValue().value != 0, "No pieces on the board");
+    SL_ASSERT(m_board.board.blackAttacks.value != 0, "Black attacks are not generated");
+    SL_ASSERT(m_board.board.whiteAttacks.value != 0, "White attacks are not generated");
+    SL_ASSERT(m_board.board.getTotalValue().value != 0, "No pieces on the board");
 
     if (m_board.castlingRights[type])
     {
