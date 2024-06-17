@@ -32,7 +32,7 @@ jobs:
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         # CMake defaults to the wrong g++ version for some reason
         if: matrix.os == 'ubuntu-latest'
-        run: CXX=/usr/bin/clang++-15 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: CXX=/usr/bin/clang++-15 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_CXX_FLAGS="LIBCXX_ENABLE_INCOMPLETE_FEATURES=1"
 
       - name: Configure CMake Windows
         if: matrix.os == 'windows-latest'
