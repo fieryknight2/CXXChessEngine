@@ -1,3 +1,5 @@
+[![CMake Build and GoogleTests](https://github.com/fieryknight2/CXXChessEngine/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/fieryknight2/CXXChessEngine/actions/workflows/cmake-single-platform.yml)
+
 # ChessEngine
 
 A chess engine written in classic C++, I originally started writing this
