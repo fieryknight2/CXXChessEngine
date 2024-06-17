@@ -25,40 +25,68 @@
  * @date 06/11/2024
  *****************************************************************************/
 #include "chess_gui/chess_gui.h"
+#include "chess_gui/gui_popup_window.h"
+#include "simplelogger.hpp"
 
-#include "SFML/Window.hpp"
-
-using namespace chessgui;
-
-ChessGui::ChessGui()
+namespace chessgui
 {
-    m_window.create(sf::VideoMode(800, 600), "Chess GUI");
 
-    ImGui::SFML::Init(m_window);
+ChessGui::ChessGui() = default;
+
+ChessGui::~ChessGui()
+{
+    if (!m_mainWindow.isClosed())
+    {
+        m_mainWindow.close();
+
+    }
+
+    ImGui::SFML::Shutdown();
 }
-
-ChessGui::~ChessGui() {}
 
 bool ChessGui::run()
 {
+    SL_LOG_INFO("Starting Main Loop");
+    m_mainWindow.createGui();
+
+    m_windows.push_back(
+            std::make_unique<GuiPopupWindow>(WindowSettings("Second Window", {600, 800}, sf::ContextSettings())));
+    m_windows.back()->createGui();
+
     while (true)
     {
-        sf::Event event;
-        while (m_window.pollEvent(event))
+        if (m_mainWindow.processEvents())
         {
-            ImGui::SFML::ProcessEvent(event);
-
-            if (event.type == sf::Event::Closed)
+            for (const auto &window: m_windows)
             {
-                m_window.close();
-                return true;
+                window->close();
+            }
+
+            return true;
+        }
+        m_mainWindow.update();
+        m_mainWindow.render();
+
+        for (const auto &window: m_windows)
+        {
+            window->processEvents();
+
+            if (!window->isClosed())
+            {
+                window->update();
+                window->render();
             }
         }
 
-        // ImGui::SFML::Update(m_window, );
 
-        m_window.clear();
-        ImGui::SFML::Render(m_window);
-        m_window.display();
+        if (const uint32_t count = std::erase_if(m_windows, [](const std::unique_ptr<ChessGuiWindow> &window)
+        {
+            return window->isClosed();
+        }); count)
+        {
+            SL_LOG_DEBUG("Removed " + std::to_string(count) + " closed windows");
+        }
     }
 }
+
+} // namespace chessgui

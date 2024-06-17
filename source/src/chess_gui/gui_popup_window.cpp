@@ -1,5 +1,5 @@
 /****************************************************************************
- * MIT License
+* MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,31 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * gui_main.cpp - Main entry point for ChessGUI application
+ * gui_popup_window.cpp - Implementation for Popup Window
  * @author Matthew Brown
- * @date 6/10/2024
+ * @date 06/16/2024
  *****************************************************************************/
-#include <iostream>
+#include "chess_gui/gui_popup_window.h"
 
-#include "chess_gui/chess_gui.h"
+#include "imgui.h"
+
+#include "SFML/Window.hpp"
 #include "simplelogger.hpp"
 
-int main(const int argc, char *argv[])
+using namespace chessgui;
+
+void GuiPopupWindow::createGui()
 {
-    // Enable file loggers
-    SL_CAPTURE_EXCEPTIONS();
-    SIMPLE_LOGGER_LOG_VERSION_INFO();
-    SL_LOG_VERSION_INFO("ChessGUI", "0.0.1");
-    SL_LOG_TO_FILE("chess_gui.log", slog::LogFileMode::OVERWRITE);
-    SL_LOG_TO_FILE("chess_gui_debug.log", slog::LogFileMode::OVERWRITE);
-    slog::SimpleLogger::GlobalLogger()->getLogger(2)->setMinLogLevel(slog::LogLevel::DEBUG);
-
-    SL_LOG_INFO("Started running ChessGUI");
-
-    // Run the program
-    chessgui::ChessGui chessGui;
-    chessGui.run();
-
-    SL_LOG_INFO("Finished running");
-    return 0;
+    SL_LOG_DEBUG("Initializing GUI for Popup Window");
 }

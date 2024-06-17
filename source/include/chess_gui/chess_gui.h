@@ -26,8 +26,8 @@
  *****************************************************************************/
 #pragma once
 
-#include "SFML/Graphics/RenderWindow.hpp"
-#include "imgui-SFML.h"
+#include "chess_gui/chess_gui_window.h"
+#include "chess_gui/chess_gui_main_window.h"
 
 namespace chessgui
 {
@@ -41,7 +41,8 @@ public:
     bool run();
 
 private:
-    sf::RenderWindow m_window;
+    ChessGuiMainWindow m_mainWindow;
+    std::vector<std::unique_ptr<ChessGuiWindow>> m_windows;
 };
 
 } // namespace chessgui

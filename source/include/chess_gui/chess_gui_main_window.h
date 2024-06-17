@@ -1,5 +1,5 @@
 /****************************************************************************
- * MIT License
+* MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,31 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * gui_main.cpp - Main entry point for ChessGUI application
+ * chess_gui_main_window.h - Declarations for the main window
  * @author Matthew Brown
- * @date 6/10/2024
+ * @date 06/16/2024
  *****************************************************************************/
-#include <iostream>
+#pragma once
 
-#include "chess_gui/chess_gui.h"
-#include "simplelogger.hpp"
+#include "chess_gui/chess_gui_window.h"
 
-int main(const int argc, char *argv[])
+constexpr int MAIN_WINDOW_WIDTH = 800;
+constexpr int MAIN_WINDOW_HEIGHT = 600;
+constexpr auto MAIN_WINDOW_TITLE = "Chess GUI Application";
+
+namespace chessgui
 {
-    // Enable file loggers
-    SL_CAPTURE_EXCEPTIONS();
-    SIMPLE_LOGGER_LOG_VERSION_INFO();
-    SL_LOG_VERSION_INFO("ChessGUI", "0.0.1");
-    SL_LOG_TO_FILE("chess_gui.log", slog::LogFileMode::OVERWRITE);
-    SL_LOG_TO_FILE("chess_gui_debug.log", slog::LogFileMode::OVERWRITE);
-    slog::SimpleLogger::GlobalLogger()->getLogger(2)->setMinLogLevel(slog::LogLevel::DEBUG);
 
-    SL_LOG_INFO("Started running ChessGUI");
+class ChessGuiMainWindow final : public ChessGuiWindow
+{
+public:
+    ChessGuiMainWindow() :
+        ChessGuiWindow(
+                WindowSettings(MAIN_WINDOW_TITLE, {MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT}, sf::ContextSettings()))
+    {
+    }
 
-    // Run the program
-    chessgui::ChessGui chessGui;
-    chessGui.run();
+    ~ChessGuiMainWindow() override = default;
 
-    SL_LOG_INFO("Finished running");
-    return 0;
-}
+    void createGui() override;
+};
+
+} // namespace chessgui

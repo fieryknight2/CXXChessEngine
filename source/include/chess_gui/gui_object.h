@@ -1,5 +1,5 @@
 /****************************************************************************
- * MIT License
+* MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,31 +20,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * gui_main.cpp - Main entry point for ChessGUI application
+ * gui_object.h - Declarations for objects that can be drawn
  * @author Matthew Brown
- * @date 6/10/2024
+ * @date 06/16/2024
  *****************************************************************************/
-#include <iostream>
+#pragma once
 
-#include "chess_gui/chess_gui.h"
-#include "simplelogger.hpp"
+#include "SFML/Window/Event.hpp"
 
-int main(const int argc, char *argv[])
+class Object
 {
-    // Enable file loggers
-    SL_CAPTURE_EXCEPTIONS();
-    SIMPLE_LOGGER_LOG_VERSION_INFO();
-    SL_LOG_VERSION_INFO("ChessGUI", "0.0.1");
-    SL_LOG_TO_FILE("chess_gui.log", slog::LogFileMode::OVERWRITE);
-    SL_LOG_TO_FILE("chess_gui_debug.log", slog::LogFileMode::OVERWRITE);
-    slog::SimpleLogger::GlobalLogger()->getLogger(2)->setMinLogLevel(slog::LogLevel::DEBUG);
+public:
+    virtual ~Object() = default;
+    Object() = default;
 
-    SL_LOG_INFO("Started running ChessGUI");
+    virtual void destroy() = 0;
+    virtual void render() = 0;
+    virtual void update() = 0;
+    virtual void processEvent(const sf::Event& event) = 0;
 
-    // Run the program
-    chessgui::ChessGui chessGui;
-    chessGui.run();
+    void _render()
+    {
+        if (isVisible()) render();
+    }
 
-    SL_LOG_INFO("Finished running");
-    return 0;
-}
+    void _update()
+    {
+        if (isActive()) update();
+    }
+
+    void setActive(const bool active)
+    {
+        m_isActive = active;
+    }
+
+    [[nodiscard]] bool isActive() const
+    {
+        return m_isActive;
+    }
+
+    void setVisible(const bool visible)
+    {
+        m_isVisible = visible;
+    }
+
+    [[nodiscard]] bool isVisible() const
+    {
+        return m_isVisible;
+    }
+
+private:
+    bool m_isActive = true;
+    bool m_isVisible = true;
+};

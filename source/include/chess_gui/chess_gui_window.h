@@ -1,5 +1,5 @@
 /****************************************************************************
- * MIT License
+* MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,31 +20,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * gui_main.cpp - Main entry point for ChessGUI application
+ * chess_gui_window.h - Declarations for a window with a GUI
  * @author Matthew Brown
- * @date 6/10/2024
+ * @date 06/16/2024
  *****************************************************************************/
-#include <iostream>
+#pragma once
 
-#include "chess_gui/chess_gui.h"
-#include "simplelogger.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "imgui-SFML.h"
+#include "chess_gui/gui_object.h"
 
-int main(const int argc, char *argv[])
+#include <memory>
+#include <chrono>
+#include <utility>
+
+namespace chessgui
 {
-    // Enable file loggers
-    SL_CAPTURE_EXCEPTIONS();
-    SIMPLE_LOGGER_LOG_VERSION_INFO();
-    SL_LOG_VERSION_INFO("ChessGUI", "0.0.1");
-    SL_LOG_TO_FILE("chess_gui.log", slog::LogFileMode::OVERWRITE);
-    SL_LOG_TO_FILE("chess_gui_debug.log", slog::LogFileMode::OVERWRITE);
-    slog::SimpleLogger::GlobalLogger()->getLogger(2)->setMinLogLevel(slog::LogLevel::DEBUG);
 
-    SL_LOG_INFO("Started running ChessGUI");
+struct WindowSettings
+{
+    WindowSettings() = default;
 
-    // Run the program
-    chessgui::ChessGui chessGui;
-    chessGui.run();
+    WindowSettings(std::string title, const sf::Vector2i &windowSize,
+                   const sf::ContextSettings &contextSettings) :
+        title(std::move(title)), windowSize(windowSize), contextSettings(contextSettings)
+    {
+    }
 
-    SL_LOG_INFO("Finished running");
-    return 0;
-}
+    sf::Vector2i windowSize;
+    std::string title;
+    sf::ContextSettings contextSettings;
+};
+
+class ChessGuiWindow
+{
+public:
+    explicit ChessGuiWindow(const WindowSettings &windowSettings);
+    virtual ~ChessGuiWindow();
+
+    bool processEvents();
+    bool update();
+    void render();
+
+    virtual void createGui() = 0;
+
+    void close();
+
+    std::string getTitle() const
+    {
+        return m_windowSettings.title;
+    }
+
+    bool isClosed() const
+    {
+        return m_isClosed;
+    }
+
+private:
+    sf::RenderWindow m_window;
+
+    std::vector<std::unique_ptr<Object>> m_objects;
+    sf::Clock m_clock;
+    WindowSettings m_windowSettings;
+
+    bool m_isClosed = false;
+};
+
+} // namespace chessgui

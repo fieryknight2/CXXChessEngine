@@ -82,11 +82,16 @@ if (BUILD_GUI)
     add_executable(ChessGUI
             # Header files
             source/include/chess_gui/chess_gui.h
+            source/include/chess_gui/chess_gui_window.h
+            source/include/chess_gui/chess_gui_main_window.h
+            source/include/chess_gui/gui_popup_window.h
 
             # Source files
             source/src/chess_gui/chess_gui.cpp
             source/src/chess_gui/gui_main.cpp
-
+            source/src/chess_gui/chess_gui_window.cpp
+            source/src/chess_gui/chess_gui_main_window.cpp
+            source/src/chess_gui/gui_popup_window.cpp
     )
 
     target_include_directories(ChessGUI PUBLIC
@@ -97,19 +102,31 @@ if (BUILD_GUI)
     target_link_libraries(ChessGUI
             ChessEngine
             ImGui-SFML::ImGui-SFML
+            SimpleLogger
     )
 
-    if (win32)
-        if (BUILD_SHARED_LIBS)
-            add_custom_command(TARGET ChessGUI POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    $<TARGET_FILE:ImGui-SFML::ImGui-SFML>
-                    $<TARGET_FILE:sfml-graphics>
-                    $<TARGET_FILE:sfml-window>
-                    $<TARGET_FILE:sfml-system>
-                    $<TARGET_FILE_DIR:ChessGUI>
-            )
-        endif ()
+    if (WIN32)
+        message(STATUS "Adding copying ImGui and SFML DLLs to ChessGUI")
+        add_custom_command(TARGET ChessGUI POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:ImGui-SFML::ImGui-SFML>
+                $<TARGET_FILE_DIR:ChessGUI>
+        )
+        add_custom_command(TARGET ChessGUI POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:sfml-graphics>
+                $<TARGET_FILE_DIR:ChessGUI>
+        )
+        add_custom_command(TARGET ChessGUI POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:sfml-window>
+                $<TARGET_FILE_DIR:ChessGUI>
+        )
+        add_custom_command(TARGET ChessGUI POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:sfml-system>
+                $<TARGET_FILE_DIR:ChessGUI>
+        )
     endif ()
 
 endif ()
