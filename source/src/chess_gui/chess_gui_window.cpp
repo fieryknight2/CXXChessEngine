@@ -115,11 +115,6 @@ void ChessGuiWindow::render()
         object->_render();
     }
 
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
-    ImGui::Button("Click me");
-    ImGui::End();
-
     ImGui::SFML::Render(m_window);
 
     m_window.display();

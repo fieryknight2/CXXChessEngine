@@ -49,10 +49,6 @@ bool ChessGui::run()
     SL_LOG_INFO("Starting Main Loop");
     m_mainWindow.createGui();
 
-    m_windows.push_back(
-            std::make_unique<GuiPopupWindow>(WindowSettings("Second Window", {600, 800}, sf::ContextSettings())));
-    m_windows.back()->createGui();
-
     while (true)
     {
         if (m_mainWindow.processEvents())

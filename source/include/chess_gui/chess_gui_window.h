@@ -58,11 +58,11 @@ public:
     explicit ChessGuiWindow(const WindowSettings &windowSettings);
     virtual ~ChessGuiWindow();
 
-    bool processEvents();
-    bool update();
-    void render();
+    virtual bool processEvents();
+    virtual bool update();
+    virtual void render();
 
-    virtual void createGui() = 0;
+    virtual void createGui();
 
     void close();
 
