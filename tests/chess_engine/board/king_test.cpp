@@ -9,6 +9,8 @@
 #include "gtest/gtest.h"
 #include "low_level_test_functions.h"
 
+#include <algorithm>
+
 using namespace chessengine::board;
 using namespace chessengine;
 
@@ -57,7 +59,7 @@ bool testKingMovement(const std::string &fen, const std::string &square, const s
     }
 
     uint64_t moves = 0;
-    auto *king = dynamic_cast<King *>(game.getPiece(ChessBoard::getSquareFromAlgebraic(square)));
+    const auto *king = dynamic_cast<King *>(game.getPiece(ChessBoard::getSquareFromAlgebraic(square)));
     if (king == nullptr)
     {
         std::cerr << "Error testing king movement: Could not find king at square " << square << std::endl;
@@ -88,7 +90,7 @@ bool testKingMovement(const std::string &fen, const std::string &square, const s
     if (!errorMoves.empty())
     {
         std::cerr << "Error testing king movement: Unexpected squares found: ";
-        for (auto move: errorMoves)
+        for (const auto &move: errorMoves)
         {
             std::cerr << move << " ";
         }
@@ -98,7 +100,7 @@ bool testKingMovement(const std::string &fen, const std::string &square, const s
     if (!expectedMoves.empty())
     {
         std::cerr << "Error testing king movement: Expected squares not found: ";
-        for (auto move: expectedMoves)
+        for (const auto move: expectedMoves)
         {
             std::cerr << ChessBoard::toAlgebraic(move) << " ";
         }

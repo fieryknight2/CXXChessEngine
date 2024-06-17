@@ -252,7 +252,7 @@ void BlackPawn::getLegalMoves(uint64_t &moves) const
                     }
 
                     // Pinned, only possible move is a capture to the bottom left
-                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << m_location - 9) or
+                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << (m_location - 9)) or
                                                 m_location - 9 == m_board->enPassantSquare))
                     {
                         moves |= 1ull << (m_location - 9);
@@ -298,7 +298,7 @@ void BlackPawn::getLegalMoves(uint64_t &moves) const
                     }
 
                     // Pinned, only possible move is a capture to the bottom left
-                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << m_location - 9) or
+                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << (m_location - 9)) or
                                                 m_location - 9 == m_board->enPassantSquare))
                     {
                         moves |= 1ull << (m_location - 9);
@@ -348,7 +348,7 @@ void BlackPawn::getLegalMoves(uint64_t &moves) const
                         }
                     }
 
-                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << m_location - 7) or
+                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << (m_location - 7)) or
                                                 m_location - 7 == m_board->enPassantSquare))
                     {
                         moves |= 1ull << (m_location - 7);
@@ -394,7 +394,7 @@ void BlackPawn::getLegalMoves(uint64_t &moves) const
                     }
 
                     // Pinned, only possible move is a capture to the bottom left
-                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << m_location - 7) or
+                    if (m_location % 8 < 7 and (m_board->board.whitePieces.value & (0b1ull << (m_location - 7)) or
                                                 m_location - 7 == m_board->enPassantSquare))
                     {
                         moves |= 1ull << (m_location - 7);
@@ -471,7 +471,7 @@ void BlackPawn::getForwardMoves(uint64_t &moves) const
         return; // Invalid location
     }
 
-    if (!(m_board->board.allPieces.value & (0b1ull << m_location - 8)))
+    if (!(m_board->board.allPieces.value & (0b1ull << (m_location - 8))))
     {
         // Single square move
         moves |= 1ull << (m_location - 8);
@@ -479,7 +479,7 @@ void BlackPawn::getForwardMoves(uint64_t &moves) const
         // Double square move
         if (m_location > 48) // On the second rank
         {
-            if (!(m_board->board.allPieces.value & (0b1ull << m_location - 16)))
+            if (!(m_board->board.allPieces.value & (0b1ull << (m_location - 16))))
             {
                 moves |= 1ull << (m_location - 16);
             }
