@@ -1,5 +1,5 @@
 /****************************************************************************
-* MIT License
+ * MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,9 +26,8 @@
  *****************************************************************************/
 #include "chess_gui/chess_gui_main_window.h"
 
-#include "imgui.h"
-
 #include "SFML/Window.hpp"
+#include "imgui.h"
 #include "simplelogger.hpp"
 
 using namespace chessgui;
@@ -36,4 +35,20 @@ using namespace chessgui;
 void ChessGuiMainWindow::createGui()
 {
     SL_LOG_DEBUG("Initializing GUI for the Main Window");
+
+    m_innerWindows.push_back(std::make_unique<GuiMainWindow>());
+    m_innerWindows.back()->setName("Chess GUI");
+    m_innerWindows.back()->createGui();
+    m_innerWindows.back()->setState(WindowState(true,
+                                                sf::Vector2i(static_cast<int>(m_windowSettings.windowSize.x),
+                                                             static_cast<int>(m_windowSettings.windowSize.y)),
+                                                false));
+
+    // m_innerWindows.push_back(std::make_unique<GuiMainWindow>());
+    // m_innerWindows.back()->setName("Chess 2");
+    // m_innerWindows.back()->createGui();
+    // m_innerWindows.back()->setState(WindowState(true,
+    //                                             sf::Vector2i(static_cast<int>(m_windowSettings.windowSize.x),
+    //                                                          static_cast<int>(m_windowSettings.windowSize.y)),
+    //                                             false));
 }

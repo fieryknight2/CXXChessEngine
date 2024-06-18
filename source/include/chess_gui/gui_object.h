@@ -1,5 +1,5 @@
 /****************************************************************************
-* MIT License
+ * MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,48 +28,47 @@
 
 #include "SFML/Window/Event.hpp"
 
-class Object
+namespace chessgui
+{
+
+class GuiObject
 {
 public:
-    virtual ~Object() = default;
-    Object() = default;
+    virtual ~GuiObject() = default;
+    GuiObject() { m_id = ++s_idCounter; }
 
     virtual void destroy() = 0;
     virtual void render() = 0;
-    virtual void update() = 0;
-    virtual void processEvent(const sf::Event& event) = 0;
+    virtual void update(double deltaTime) = 0;
+    virtual void processEvent(const sf::Event &event) = 0;
 
     void _render()
     {
-        if (isVisible()) render();
+        if (isVisible())
+            render();
     }
 
-    void _update()
+    void _update(double deltaTime)
     {
-        if (isActive()) update();
+        if (isActive())
+            update(deltaTime);
     }
 
-    void setActive(const bool active)
-    {
-        m_isActive = active;
-    }
+    void setActive(const bool active) { m_isActive = active; }
 
-    [[nodiscard]] bool isActive() const
-    {
-        return m_isActive;
-    }
+    [[nodiscard]] bool isActive() const { return m_isActive; }
 
-    void setVisible(const bool visible)
-    {
-        m_isVisible = visible;
-    }
+    void setVisible(const bool visible) { m_isVisible = visible; }
 
-    [[nodiscard]] bool isVisible() const
-    {
-        return m_isVisible;
-    }
+    [[nodiscard]] bool isVisible() const { return m_isVisible; }
 
 private:
     bool m_isActive = true;
     bool m_isVisible = true;
+
+protected:
+    static uint64_t s_idCounter;
+    uint64_t m_id = 0;
 };
+
+} // namespace chessgui

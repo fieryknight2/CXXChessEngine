@@ -20,34 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * chess_gui_main_window.h - Declarations for the main window
+ * gui_menubar.cpp - Implementation of the menu bar for the Chess GUI
  * @author Matthew Brown
- * @date 06/16/2024
+ * @date 6/17/2024
  *****************************************************************************/
-#pragma once
+#include "chess_gui/gui_menubar.h"
 
-#include "chess_gui/chess_gui_window.h"
-#include "gui_menubar.h"
+#include "imgui.h"
 
-constexpr int MAIN_WINDOW_WIDTH = 800;
-constexpr int MAIN_WINDOW_HEIGHT = 600;
-constexpr auto MAIN_WINDOW_TITLE = "Chess GUI Application";
+using namespace chessgui;
 
-namespace chessgui
+GuiMenuBar::GuiMenuBar() = default;
+
+void GuiMenuBar::render()
 {
-
-class ChessGuiMainWindow final : public ChessGuiWindow
-{
-public:
-    ChessGuiMainWindow() :
-        ChessGuiWindow(
-                WindowSettings(MAIN_WINDOW_TITLE, {MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT}, sf::ContextSettings()))
+    ImGui::BeginMenuBar();
     {
+        if (ImGui::BeginMenu("Game"))
+        {
+            ImGui::MenuItem("New Game", nullptr, &m_newGame);
+            ImGui::MenuItem("Open Game", nullptr, &m_openGame);
+            ImGui::MenuItem("Save Game", nullptr, &m_saveGame);
+            ImGui::MenuItem("Save Game As", nullptr, &m_saveGameAs);
+            if (ImGui::MenuItem("Exit", nullptr, nullptr))
+            {
+                m_exit = true;
+            }
+
+            ImGui::EndMenu();
+        }
     }
-
-    ~ChessGuiMainWindow() override = default;
-
-    void createGui() override;
-};
-
-} // namespace chessgui
+    ImGui::EndMenuBar();
+}

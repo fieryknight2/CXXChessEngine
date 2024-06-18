@@ -1,5 +1,5 @@
 /****************************************************************************
-* MIT License
+ * MIT License
  * Copyright (c) 2024 Matthew
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,11 +27,12 @@
 #pragma once
 
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "chess_gui/gui_container.h"
+#include "chess_gui/gui_inner_window.h"
 #include "imgui-SFML.h"
-#include "chess_gui/gui_object.h"
 
-#include <memory>
 #include <chrono>
+#include <memory>
 #include <utility>
 
 namespace chessgui
@@ -41,8 +42,7 @@ struct WindowSettings
 {
     WindowSettings() = default;
 
-    WindowSettings(std::string title, const sf::Vector2i &windowSize,
-                   const sf::ContextSettings &contextSettings) :
+    WindowSettings(std::string title, const sf::Vector2i &windowSize, const sf::ContextSettings &contextSettings) :
         title(std::move(title)), windowSize(windowSize), contextSettings(contextSettings)
     {
     }
@@ -66,24 +66,28 @@ public:
 
     void close();
 
-    std::string getTitle() const
+    [[nodiscard]] std::string getTitle() const { return m_windowSettings.title; }
+    [[nodiscard]] bool isClosed() const { return m_isClosed; }
+    [[nodiscard]] WindowSettings getWindowSettings() const { return m_windowSettings; }
+
+    std::shared_ptr<GuiInnerWindow> getWindow(uint32_t index) const
     {
-        return m_windowSettings.title;
+        if (index < m_innerWindows.size())
+            return m_innerWindows[index];
+        return nullptr;
     }
+    int getWindowCount() const { return static_cast<int>(m_innerWindows.size()); }
+    void addWindow(const std::shared_ptr<GuiInnerWindow> &window) { m_innerWindows.push_back(window); }
 
-    bool isClosed() const
-    {
-        return m_isClosed;
-    }
+protected:
+    std::vector<std::shared_ptr<GuiInnerWindow>> m_innerWindows;
+    bool m_isClosed = false;
 
-private:
-    sf::RenderWindow m_window;
-
-    std::vector<std::unique_ptr<Object>> m_objects;
     sf::Clock m_clock;
     WindowSettings m_windowSettings;
 
-    bool m_isClosed = false;
+private:
+    sf::RenderWindow m_window;
 };
 
 } // namespace chessgui

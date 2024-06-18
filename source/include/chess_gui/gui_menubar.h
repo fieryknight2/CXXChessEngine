@@ -20,34 +20,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * chess_gui_main_window.h - Declarations for the main window
+ * gui_menubar.h - Creation of the menu bar for the Chess GUI
  * @author Matthew Brown
- * @date 06/16/2024
+ * @date 06/17/2024
  *****************************************************************************/
 #pragma once
 
-#include "chess_gui/chess_gui_window.h"
-#include "gui_menubar.h"
-
-constexpr int MAIN_WINDOW_WIDTH = 800;
-constexpr int MAIN_WINDOW_HEIGHT = 600;
-constexpr auto MAIN_WINDOW_TITLE = "Chess GUI Application";
+#include "chess_gui/gui_elements.h"
 
 namespace chessgui
 {
 
-class ChessGuiMainWindow final : public ChessGuiWindow
+class GuiMenuBar : public GuiObject
 {
 public:
-    ChessGuiMainWindow() :
-        ChessGuiWindow(
-                WindowSettings(MAIN_WINDOW_TITLE, {MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT}, sf::ContextSettings()))
-    {
-    }
+    explicit GuiMenuBar();
+    ~GuiMenuBar() override = default;
 
-    ~ChessGuiMainWindow() override = default;
+    void destroy() override {}
+    void render() override;
+    void update(double deltaTime) override {}
+    void processEvent(const sf::Event &event) override {}
 
-    void createGui() override;
+    void setNewGame(bool newGame) { m_newGame = newGame; }
+    void setOpenGame(bool openGame) { m_openGame = openGame; }
+    void setSaveGame(bool saveGame) { m_saveGame = saveGame; }
+    void setSaveGameAs(bool saveGameAs) { m_saveGameAs = saveGameAs; }
+    void setExit(bool exit) { m_exit = exit; }
+
+    [[nodiscard]] bool getNewGame() const { return m_newGame; }
+    [[nodiscard]] bool getOpenGame() const { return m_openGame; }
+    [[nodiscard]] bool getSaveGame() const { return m_saveGame; }
+    [[nodiscard]] bool getSaveGameAs() const { return m_saveGameAs; }
+    [[nodiscard]] bool getExit() const { return m_exit; }
+
+private:
+    bool m_newGame = false;
+    bool m_openGame = false;
+    bool m_saveGame = false;
+    bool m_saveGameAs = false;
+    bool m_exit = false;
 };
 
 } // namespace chessgui

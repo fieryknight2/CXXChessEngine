@@ -26,9 +26,8 @@
  *****************************************************************************/
 #include "chess_gui/chess_gui.h"
 
-#include "imgui.h"
-
 #include "SFML/Window.hpp"
+#include "imgui.h"
 #include "simplelogger.hpp"
 
 using namespace chessgui;
@@ -52,6 +51,8 @@ ChessGuiWindow::ChessGuiWindow(const WindowSettings &windowSettings)
         return;
     }
 
+    ImGui::SFML::SetCurrentWindow(m_window);
+
     m_windowSettings = windowSettings;
 }
 
@@ -63,10 +64,7 @@ ChessGuiWindow::~ChessGuiWindow()
     }
 }
 
-void ChessGuiWindow::createGui()
-{
-    SL_LOG_DEBUG("Initializing GUI for window");
-}
+void ChessGuiWindow::createGui() { SL_LOG_DEBUG("Initializing GUI for window"); }
 
 bool ChessGuiWindow::processEvents()
 {
@@ -82,9 +80,16 @@ bool ChessGuiWindow::processEvents()
             return true;
         }
 
-        for (const auto &object: m_objects)
+        for (const auto &window: m_innerWindows)
         {
-            object->processEvent(event);
+            window->processEvent(event);
+        }
+
+        if (auto r =
+                    std::erase_if(m_innerWindows, [](const std::shared_ptr<GuiInnerWindow> &w) { return w->closed(); });
+            r)
+        {
+            SL_LOG_DEBUG("Closed " + std::to_string(r) + " windows");
         }
     }
 
@@ -96,9 +101,9 @@ bool ChessGuiWindow::update()
     const sf::Time delta = m_clock.restart();
     ImGui::SFML::Update(m_window, delta);
 
-    for (const auto &object: m_objects)
+    for (const auto &window: m_innerWindows)
     {
-        object->_update();
+        window->update(delta.asSeconds());
     }
 
     return false;
@@ -110,9 +115,9 @@ void ChessGuiWindow::render()
 
     ImGui::SFML::SetCurrentWindow(m_window);
 
-    for (const auto &object: m_objects)
+    for (const auto &window: m_innerWindows)
     {
-        object->_render();
+        window->render();
     }
 
     ImGui::SFML::Render(m_window);
@@ -125,11 +130,12 @@ void ChessGuiWindow::close()
     SL_LOG_DEBUG("Closing window " + m_windowSettings.title);
     m_isClosed = true;
 
-    for (const auto &object: m_objects)
+    for (auto &window: m_innerWindows)
     {
-        object->destroy();
+        window->close();
     }
-    m_objects.clear(); // Unique pointers delete themselves
+
+    m_innerWindows.clear();
 
     m_window.close();
 }

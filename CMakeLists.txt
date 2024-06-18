@@ -85,6 +85,10 @@ if (BUILD_GUI)
             source/include/chess_gui/chess_gui_window.h
             source/include/chess_gui/chess_gui_main_window.h
             source/include/chess_gui/gui_popup_window.h
+            source/include/chess_gui/gui_elements.h
+            source/include/chess_gui/gui_container.h
+            source/include/chess_gui/gui_menubar.h
+            source/include/chess_gui/gui_inner_window.h
 
             # Source files
             source/src/chess_gui/chess_gui.cpp
@@ -92,6 +96,10 @@ if (BUILD_GUI)
             source/src/chess_gui/chess_gui_window.cpp
             source/src/chess_gui/chess_gui_main_window.cpp
             source/src/chess_gui/gui_popup_window.cpp
+            source/src/chess_gui/gui_elements.cpp
+            source/src/chess_gui/gui_container.cpp
+            source/src/chess_gui/gui_menubar.cpp
+            source/src/chess_gui/gui_inner_window.cpp
     )
 
     target_include_directories(ChessGUI PUBLIC
