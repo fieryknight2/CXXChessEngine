@@ -35,19 +35,21 @@
 namespace chessgui
 {
 
-class GuiContainer : public GuiObject
+class GuiContainer : public GuiElement
 {
 public:
-    explicit GuiContainer() : GuiObject() {}
+    explicit GuiContainer() : GuiElement() {}
     ~GuiContainer() override;
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::GuiContainer; }
 
     void destroy() final;
     void render() override;
     void update(double deltaTime) override;
     void processEvent(const sf::Event &event) override;
 
-    void addChild(const std::shared_ptr<GuiObject> &child) { m_children.push_back(child); }
-    void removeChild(const std::shared_ptr<GuiObject> &object)
+    void addChild(const std::shared_ptr<GuiElement> &child) { m_children.push_back(child); }
+    void removeChild(const std::shared_ptr<GuiElement> &object)
     {
         if (auto child = std::ranges::find(m_children.begin(), m_children.end(), object); child != m_children.end())
         {
@@ -55,7 +57,7 @@ public:
         }
     }
 
-    [[nodiscard]] const std::vector<std::shared_ptr<GuiObject>> &getChildren() const { return m_children; }
+    [[nodiscard]] const std::vector<std::shared_ptr<GuiElement>> &getChildren() const { return m_children; }
 
     [[nodiscard]] const sf::Vector2f &getPosition() const { return m_position; }
     [[nodiscard]] const sf::Vector2i &getSize() const { return m_size; }
@@ -63,7 +65,7 @@ public:
     void setSize(const sf::Vector2i &size) { m_size = size; }
 
 protected:
-    std::vector<std::shared_ptr<GuiObject>> m_children;
+    std::vector<std::shared_ptr<GuiElement>> m_children;
     sf::Vector2f m_position{0, 0};
     sf::Vector2i m_size{0, 0};
 };
@@ -73,6 +75,8 @@ class GuiGrid final : public GuiContainer
 public:
     explicit GuiGrid(int rows, int columns) : GuiContainer(), m_rows(rows), m_columns(columns) {}
     ~GuiGrid() override = default;
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::GridContainer; }
 
     void render() override;
 
@@ -93,6 +97,8 @@ public:
     explicit GuiHBox() = default;
     ~GuiHBox() override = default;
 
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::HBoxContainer; }
+
     void render() override;
 };
 
@@ -101,6 +107,8 @@ class GuiVBox final : public GuiContainer
 public:
     explicit GuiVBox() = default;
     ~GuiVBox() override = default;
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::VBoxContainer; }
 
     void render() override;
 };

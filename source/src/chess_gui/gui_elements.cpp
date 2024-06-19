@@ -37,7 +37,7 @@ namespace chessgui
 // Init outside of class
 uint64_t GuiObject::s_idCounter = 0;
 
-void GuiButton::render() { ImGui::Button(m_text.c_str()); }
+void GuiButton::render() { m_clicked = ImGui::Button(m_text.c_str()); }
 
 void GuiButton::update(double deltaTime) {}
 

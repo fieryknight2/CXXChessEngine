@@ -35,14 +35,36 @@
 namespace chessgui
 {
 
+enum class GuiElementType
+{
+    None,
+    Button,
+    TextLine,
+    TextInput,
+    CheckBox,
+    Slider,
+    NumberSelector,
+    MultiSelect,
+    MenuBar,
+    Other,
+    GuiContainer,
+    GridContainer,
+    HBoxContainer,
+    VBoxContainer,
+};
+
 class GuiElement : public GuiObject
 {
+public:
+    [[nodiscard]] virtual GuiElementType getType() const { return GuiElementType::None; }
 };
 
 class GuiButton : public GuiElement
 {
 public:
     explicit GuiButton(std::string text) : GuiElement(), m_text(std::move(text)) {}
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::Button; }
 
     void destroy() override {}
     void render() override;
@@ -52,8 +74,11 @@ public:
     [[nodiscard]] std::string getText() const { return m_text; }
     void setText(const std::string &text) { m_text = text; }
 
+    [[nodiscard]] bool isClicked() const { return m_clicked; }
+
 protected:
     std::string m_text;
+    bool m_clicked = false;
 };
 
 class GuiTextLine : public GuiElement
@@ -61,6 +86,8 @@ class GuiTextLine : public GuiElement
 public:
     explicit GuiTextLine(std::string text) : GuiElement(), m_text(std::move(text)) {}
     GuiTextLine() = default;
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::TextLine; }
 
     void destroy() override {}
     void render() override;
@@ -89,6 +116,8 @@ class GuiCheckBox : public GuiButton
 public:
     explicit GuiCheckBox(const std::string &text, bool checked = false) : GuiButton(text), m_checked(checked) {}
 
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::CheckBox; }
+
     void render() override;
     void update(double deltaTime) override;
     void processEvent(const sf::Event &event) override;
@@ -102,6 +131,8 @@ class GuiSlider : public GuiElement
 public:
     explicit GuiSlider(int minValue, int maxValue) : GuiElement(), m_minValue(minValue), m_maxValue(maxValue) {}
     GuiSlider() = default;
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::Slider; }
 
     void destroy() override {}
     void render() override;
@@ -126,6 +157,8 @@ protected:
 class GuiNumberSelector final : public GuiSlider
 {
 public:
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::NumberSelector; }
+
     void render() override;
     void update(double deltaTime) override;
     void processEvent(const sf::Event &event) override;
@@ -135,6 +168,8 @@ class GuiMultiSelect final : public GuiElement
 {
 public:
     explicit GuiMultiSelect(const std::vector<std::string> &options) : GuiElement(), m_options(options) {}
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::MultiSelect; }
 
     void destroy() override {}
     void render() override;

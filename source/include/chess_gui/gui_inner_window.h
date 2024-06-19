@@ -72,7 +72,7 @@ public:
 
 protected:
     std::shared_ptr<GuiContainer> m_root;
-    std::vector<std::shared_ptr<GuiObject>> m_children;
+    std::vector<std::shared_ptr<GuiElement>> m_children;
 
     bool m_isClosed = false;
     int m_flags = 0;
@@ -81,6 +81,7 @@ protected:
     WindowState m_state{true, sf::Vector2i(0, 0), false};
 };
 
+// TODO: Probably add this to a new file later
 class GuiMainWindow final : public GuiInnerWindow
 {
 public:

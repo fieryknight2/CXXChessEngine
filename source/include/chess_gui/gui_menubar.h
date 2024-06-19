@@ -31,11 +31,13 @@
 namespace chessgui
 {
 
-class GuiMenuBar : public GuiObject
+class GuiMenuBar : public GuiElement
 {
 public:
     explicit GuiMenuBar();
     ~GuiMenuBar() override = default;
+
+    [[nodiscard]] GuiElementType getType() const override { return GuiElementType::MenuBar; }
 
     void destroy() override {}
     void render() override;
